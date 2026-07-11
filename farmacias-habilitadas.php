@@ -1,12 +1,20 @@
 
 <?php
 
-$servidor='localhost';
-$mysql_user='recetali_receuser';
-$mysql_pass='RecePass2021';
+// DB de PRODUCCIÓN (DigitalOcean managed) — usuario read-only dedicado (solo SELECT
+// sobre pharmacy/localities/regions). Requiere SSL. Las credenciales viven solo en
+// el server (PHP se ejecuta server-side, no se envían al browser).
+$servidor='recetaliadbpreproduccion-do-user-2735981-0.i.db.ondigitalocean.com';
+$mysql_port=25060;
+$mysql_user='site_ro';
+$mysql_pass='SiteRO_2026_recetalia';
 $db_main='recetali_receta';
 global $mysqli;
-$mysqli = new mysqli($servidor, $mysql_user, $mysql_pass, $db_main);
+$mysqli = mysqli_init();
+$mysqli->ssl_set(NULL, NULL, NULL, NULL, NULL);
+$mysqli->real_connect($servidor, $mysql_user, $mysql_pass, $db_main, $mysql_port, NULL,
+    MYSQLI_CLIENT_SSL | MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT);
+$mysqli->set_charset('utf8mb4');
 
 $items = array();
 $sql = "
@@ -20,13 +28,13 @@ $res = $mysqli->query($sql);
 while ($row = mysqli_fetch_array($res, MYSQLI_ASSOC)) {
     $item = array();
     $item['id'] = $row['id'];
-    $item['name'] = utf8_encode($row['name']);
-    $item['addressStreet'] = utf8_encode($row['addressStreet']);
-	$item['addressNumber'] = utf8_encode($row['addressNumber']);
-    $item['localityName'] = utf8_encode($row['localityName']);
+    $item['name'] = $row['name'];
+    $item['addressStreet'] = $row['addressStreet'];
+	$item['addressNumber'] = $row['addressNumber'];
+    $item['localityName'] = $row['localityName'];
 	$item['phone'] = json_decode($row['phone'],true);
 
-    $regionName = utf8_encode($row['regionName']);
+    $regionName = $row['regionName'];
     if (!isset($items[$regionName])) {
         $items[$regionName] = array(); // Crear un nuevo arreglo para la región si no existe
     }
