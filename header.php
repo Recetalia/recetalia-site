@@ -10,8 +10,9 @@
                         <a class="top-sign-btn dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="dropdownMenu2" ><i class="fa fa-user"></i>Ingresar</a>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                         <!--a class="dropdown-item" href="https://pacientes.recetalia.com/login">Pacientes</a-->
-                        <a class="dropdown-item" href="https://medicos.recetalia.com/login">Médicos</a>
-                        <a class="dropdown-item" href="https://farmacias.recetalia.com/login">Farmacias</a>
+                        <a class="dropdown-item" href="https://medicos.recetalia.com/login" target="_blank" rel="noopener">Médicos</a>
+                        <a class="dropdown-item" href="https://farmacias.recetalia.com/login" target="_blank" rel="noopener">Farmacias</a>
+                        <a class="dropdown-item" href="https://prestadores.recetalia.com/login" target="_blank" rel="noopener">Prestadores</a>
                       </div>
                     </div>
 
