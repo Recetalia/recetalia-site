@@ -2,13 +2,14 @@
 <?php
 
 // DB de PRODUCCIÓN (DigitalOcean managed) — usuario read-only dedicado (solo SELECT
-// sobre pharmacy/localities/regions). Requiere SSL. Las credenciales viven solo en
-// el server (PHP se ejecuta server-side, no se envían al browser).
-$servidor='recetaliadbpreproduccion-do-user-2735981-0.i.db.ondigitalocean.com';
-$mysql_port=25060;
-$mysql_user='site_ro';
-$mysql_pass='SiteRO_2026_recetalia';
-$db_main='recetali_receta';
+// sobre pharmacy/localities/regions). Requiere SSL. Las credenciales NO van en el
+// código: se leen de variables de entorno inyectadas al contenedor (ver
+// docker-compose.yml → recetalia-site → env desde el .env gitignoreado).
+$servidor=getenv('SITE_DB_HOST');
+$mysql_port=(int)(getenv('SITE_DB_PORT') ?: 25060);
+$mysql_user=getenv('SITE_DB_USER');
+$mysql_pass=getenv('SITE_DB_PASS');
+$db_main=getenv('SITE_DB_NAME') ?: 'recetali_receta';
 global $mysqli;
 $mysqli = mysqli_init();
 $mysqli->ssl_set(NULL, NULL, NULL, NULL, NULL);
