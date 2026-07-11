@@ -1,0 +1,9 @@
+.git
+.gitignore
+Dockerfile
+.dockerignore
+README.md
+.well-known/acme-challenge
+logs
+*.log
+.DS_Store

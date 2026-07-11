@@ -1,0 +1,8 @@
+# ACME / control panel artifacts
+.well-known/acme-challenge/
+# OS junk
+.DS_Store
+Thumbs.db
+# logs
+logs/
+*.log

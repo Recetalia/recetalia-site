@@ -1,0 +1,681 @@
+{
+    "description": "DO NOT DELETE THIS FILE. This file is used to keep track of which files have been synced in the most recent deployment. If you delete this file a resync will need to be done (which can take a while) - read more: https://github.com/SamKirkland/FTP-Deploy-Action",
+    "version": "1.0.0",
+    "generatedTime": 1669215245300,
+    "data": [
+        {
+            "type": "file",
+            "name": ".htaccess",
+            "size": 604,
+            "hash": "cde25f1610cebb59edc1f7621146e2c3069c9ca4db51658fb9cfedeae48bd176"
+        },
+        {
+            "type": "folder",
+            "name": "css"
+        },
+        {
+            "type": "file",
+            "name": "favicon-16x16.png",
+            "size": 2673,
+            "hash": "d912f5f6b7c0ff9c7dfbfeb3ca616fcc35e4c48f20c783ad346b74be4335ba9e"
+        },
+        {
+            "type": "file",
+            "name": "favicon-32x32.png",
+            "size": 4050,
+            "hash": "5ba9a2bca3b7c5570607a6f8ba76be09b84c6a0e33b60ad74a69270fdfd49bc2"
+        },
+        {
+            "type": "file",
+            "name": "favicon.ico",
+            "size": 1150,
+            "hash": "e09b35f33a256ccbdcb0ac145371cabcdefb5571b3677e48a3f9402ed3dbb22d"
+        },
+        {
+            "type": "folder",
+            "name": "fonts"
+        },
+        {
+            "type": "folder",
+            "name": "img"
+        },
+        {
+            "type": "file",
+            "name": "index.html",
+            "size": 7346,
+            "hash": "ec42c6b254af31d32bf1a4b8abea8e182f4bfa9dde075afd8c6146f010b761f1"
+        },
+        {
+            "type": "folder",
+            "name": "js"
+        },
+        {
+            "type": "file",
+            "name": "manifest.json",
+            "size": 504,
+            "hash": "8ab55d135688808562ee42e5299a9450fff6f8cd7d55e3b2f09fa14ab4b673a8"
+        },
+        {
+            "type": "file",
+            "name": "precache-manifest.fa633cb0e630bca2b4c9704cf435144d.js",
+            "size": 9830,
+            "hash": "e49b6b9b226e1eee802466692d1029aba4e041dfbd4df199f3f74dc047d3ff01"
+        },
+        {
+            "type": "file",
+            "name": "robots.txt",
+            "size": 24,
+            "hash": "e5c4b84484ee4216e9373be99380320c25dd94805f99f0a805846f087636553f"
+        },
+        {
+            "type": "file",
+            "name": "service-worker.js",
+            "size": 1072,
+            "hash": "6bdce29490c6883f6dbcd5de631429595c3f6fde31220efd0e1bc9cb6ad9057b"
+        },
+        {
+            "type": "file",
+            "name": "css/app.71d7fdaf.css",
+            "size": 183595,
+            "hash": "fae7919b2a8e0e84e481809b5f7d30ff78a0521204e032db2aa2f2eca226993c"
+        },
+        {
+            "type": "file",
+            "name": "css/chunk-1061f045.0f8e10e4.css",
+            "size": 1378,
+            "hash": "95c38fddfe329ae99ef46f6fe8c659c9c92a5f8984972bf3462bd1651c32482f"
+        },
+        {
+            "type": "file",
+            "name": "css/chunk-185d3fe2.37790af5.css",
+            "size": 1378,
+            "hash": "9e128c5de1ffb369b1e034e8de87daeb86aac083e79db1fa93203e392743160b"
+        },
+        {
+            "type": "file",
+            "name": "css/chunk-28a2e088.a4b13336.css",
+            "size": 338,
+            "hash": "01e8abff420ab80e403f9b3b5a52dbbbde75a9a55ea12ccbe508719b6b0bf658"
+        },
+        {
+            "type": "file",
+            "name": "css/chunk-30f6c64e.c7a73ed0.css",
+            "size": 3892,
+            "hash": "ee17bcf8694cb37af829bc44defb9377ddec935fffb336e6c8264a848cc9a367"
+        },
+        {
+            "type": "file",
+            "name": "css/chunk-40f3ec68.75ad68da.css",
+            "size": 3180,
+            "hash": "a422fa0e691b08c44f4f1c62a041be016ad856aff163ddf3ccdb82ef3260d00a"
+        },
+        {
+            "type": "file",
+            "name": "css/chunk-5b4bb1b2.8ff462fc.css",
+            "size": 886,
+            "hash": "d968ab05368312542ba677148e1cce08c57a52f3cb880c1d178dbe5757144977"
+        },
+        {
+            "type": "file",
+            "name": "css/chunk-6ba06cae.aec0b301.css",
+            "size": 2315,
+            "hash": "eaff1d4a89bca5c85af60a5acd3b38050274f9678a074e6c739cd3df316a52e6"
+        },
+        {
+            "type": "file",
+            "name": "css/chunk-ecdb098c.05325d60.css",
+            "size": 1378,
+            "hash": "fcb7349657da85259fca320122ae075e4df18a06fe41906216267fb12e5165a6"
+        },
+        {
+            "type": "file",
+            "name": "css/chunk-vendors.51f43751.css",
+            "size": 343153,
+            "hash": "2a41b9e48c6f20a8d3378359a84a77ce629bdd8683d5b1681c57fee8a5ea1dd3"
+        },
+        {
+            "type": "file",
+            "name": "fonts/ElegantIcons.d72ad3f7.eot",
+            "size": 59572,
+            "hash": "912b4fcc232e1f45d329e2a127bca4bdf3195d965a2abce223b068e3c3c7db6a"
+        },
+        {
+            "type": "file",
+            "name": "fonts/ElegantIcons.f9d179f5.ttf",
+            "size": 59388,
+            "hash": "7be552fcc35865c045cfafde15e7939c557cb88801a1abf461a4febc6d55fea0"
+        },
+        {
+            "type": "file",
+            "name": "fonts/ElegantIcons.fdd9e757.woff",
+            "size": 63664,
+            "hash": "be1825e52a0dc7df04df9322f62abe2a2f2a25d98aac186de0140dfc7f6bdcae"
+        },
+        {
+            "type": "file",
+            "name": "fonts/Pe-icon-7-stroke.01798bc1.ttf",
+            "size": 58480,
+            "hash": "99620ded1c4d61277630422146e2488b1afaef9be2dc0924ff3f75e2ecd71820"
+        },
+        {
+            "type": "file",
+            "name": "fonts/Pe-icon-7-stroke.71394c0c.eot",
+            "size": 58680,
+            "hash": "d9896922379aeb729a67c4bc12f2a51ee970c37ea079ee30f856fd2807fd3e9c"
+        },
+        {
+            "type": "file",
+            "name": "fonts/Pe-icon-7-stroke.b38ef310.woff",
+            "size": 58556,
+            "hash": "6fb4217048f333e23e0fd0ba2ab05e05fd7500f86a5a80a7cf04a2f94b257bec"
+        },
+        {
+            "type": "file",
+            "name": "fonts/fontawesome-webfont.674f50d2.eot",
+            "size": 165742,
+            "hash": "7bfcab6db99d5cfbf1705ca0536ddc78585432cc5fa41bbd7ad0f009033b2979"
+        },
+        {
+            "type": "file",
+            "name": "fonts/fontawesome-webfont.af7ae505.woff2",
+            "size": 77160,
+            "hash": "2adefcbc041e7d18fcf2d417879dc5a09997aa64d675b7a3c4b6ce33da13f3fe"
+        },
+        {
+            "type": "file",
+            "name": "fonts/fontawesome-webfont.b06871f2.ttf",
+            "size": 165548,
+            "hash": "aa58f33f239a0fb02f5c7a6c45c043d7a9ac9a093335806694ecd6d4edc0d6a8"
+        },
+        {
+            "type": "file",
+            "name": "fonts/fontawesome-webfont.fee66e71.woff",
+            "size": 98024,
+            "hash": "ba0c59deb5450f5cb41b3f93609ee2d0d995415877ddfa223e8a8a7533474f07"
+        },
+        {
+            "type": "file",
+            "name": "fonts/fontello.36d4af80.woff",
+            "size": 320576,
+            "hash": "2c62a118e82484e6ddbd0c5abe9e870278335d9efa2d309d884cfb0122efe7ed"
+        },
+        {
+            "type": "file",
+            "name": "fonts/fontello.6700063a.eot",
+            "size": 532632,
+            "hash": "8e1c6ebb39178ccbe398801b0fc25ce232aa115526cc8a2b87e27aeccc65106d"
+        },
+        {
+            "type": "file",
+            "name": "fonts/fontello.7c436b76.ttf",
+            "size": 532464,
+            "hash": "a79f3a37f29ffa3b2862142b3f5af39c5e5a2a47d71bbc75dcef2af436377175"
+        },
+        {
+            "type": "file",
+            "name": "img/ElegantIcons.907b74de.svg",
+            "size": 277297,
+            "hash": "91f068a06a78d5ecdea0571a3b56f51d723ce1adbf5ba64283ecc1805b04e60b"
+        },
+        {
+            "type": "file",
+            "name": "img/Pe-icon-7-stroke.c45f7de0.svg",
+            "size": 164020,
+            "hash": "c508f5a34aba76da55d77ad996baf4095b6e9b64b35566e3657e5f73f1921417"
+        },
+        {
+            "type": "file",
+            "name": "img/about-us.0e9d8ca4.png",
+            "size": 86859,
+            "hash": "ea4b99b401c85b152848cc23c58417e837fc2492be4d817f6ba2b9fc09f664fb"
+        },
+        {
+            "type": "file",
+            "name": "img/arrow-gray-1.98a6c7a6.svg",
+            "size": 891,
+            "hash": "b310ff8576feab37495182f3cdcbcc9a773ced69471cc45e26144d655da64cfc"
+        },
+        {
+            "type": "file",
+            "name": "img/fontawesome-webfont.912ec66d.svg",
+            "size": 444379,
+            "hash": "ad6157926c1622ba4e1d03d478f1541368524bfc46f51e42fe0d945f7ef323e4"
+        },
+        {
+            "type": "file",
+            "name": "img/fontello.7199cf4d.svg",
+            "size": 824048,
+            "hash": "b26d0be5d8a73c21e212188d3e1bcecd4814f13f324161396bf7726ef7eff55c"
+        },
+        {
+            "type": "file",
+            "name": "img/hero_bg_1.970ce7e2.svg",
+            "size": 71774,
+            "hash": "6d336f7664f93cd9ee131ac6c59752249f35059a89b4d9ea58982493e9411d22"
+        },
+        {
+            "type": "file",
+            "name": "img/icon-home-1.58e29fd1.svg",
+            "size": 3362,
+            "hash": "adafe52b6b0196b836adfef527bfaf9f85728efdd066887a3cb5b243682ad1ae"
+        },
+        {
+            "type": "file",
+            "name": "img/icon-home-2.5ac5db74.svg",
+            "size": 4359,
+            "hash": "a037969d76fa66ea4168a3714309c7ede4d6b4ab8a8a6fa8f16b5ee0953f7cb6"
+        },
+        {
+            "type": "file",
+            "name": "img/icon-home-3.ed6f39f7.svg",
+            "size": 4658,
+            "hash": "c95129b10b351f29f845333d5a1d46e62e2e552eb85257118081fe7b62a22ef7"
+        },
+        {
+            "type": "file",
+            "name": "img/icon-medicine.18f1c0c4.svg",
+            "size": 455,
+            "hash": "413eb44b252eca0b17fd7b5e0af7624fd98ffd6268d24442ea648df3f96a2214"
+        },
+        {
+            "type": "folder",
+            "name": "img/icons"
+        },
+        {
+            "type": "file",
+            "name": "img/loader.fee776d9.gif",
+            "size": 58279,
+            "hash": "29f0c92998b2078825311a1735792f03c5d4ef26dd0f9c1d21f3fe699f6dc5dd"
+        },
+        {
+            "type": "file",
+            "name": "img/logo.d756a73c.png",
+            "size": 9964,
+            "hash": "a7249d7737f40f7f881475ff23491df4837dc848db38394da5a81eaa50408ce2"
+        },
+        {
+            "type": "file",
+            "name": "js/app.57c14cc1.js",
+            "size": 64185,
+            "hash": "0df9321ae72923a23fe8cb2816c3f710ea327c41522f6921e39af67940da060d"
+        },
+        {
+            "type": "file",
+            "name": "js/app.57c14cc1.js.map",
+            "size": 292330,
+            "hash": "91f137b0a63107761db3b4b37769d9571e46a7d681a9e62e1a6b16f3a918054b"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-1061f045.bc1d7b97.js",
+            "size": 4852,
+            "hash": "b91188089e4f6884224852f5ce7ec8e731241a8c319bd69e793582bab5bfc9e2"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-1061f045.bc1d7b97.js.map",
+            "size": 17695,
+            "hash": "41a36e4d8c47c3746e1e25c6bd1affd602cf0532ce7ee7f503893c2e8769f001"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-185d3fe2.d31e0ed8.js",
+            "size": 3561,
+            "hash": "9886001def4b7624cd39cbc0ffcd4e87a00ed3d02dd7379db85eda1316450e56"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-185d3fe2.d31e0ed8.js.map",
+            "size": 14850,
+            "hash": "4f8c7f9113a8a9af4de5406da790d6cb96ca784728547367a16206721555b872"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-28a2e088.99df08eb.js",
+            "size": 7060,
+            "hash": "9f9b064f2671e13dc5f390702d41a33fe90fbcfd8df6af48cc3f35a1261b2e9d"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-28a2e088.99df08eb.js.map",
+            "size": 26549,
+            "hash": "b54cd6944517ccb2613b50164fdcf8759a780571b5515dbc5d48b95aba3d4dbb"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-2d0bd54f.049ee032.js",
+            "size": 9207,
+            "hash": "60226713742ace754cf1f4bf05d09e0090cce60ecf161256778a253ff59d0597"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-2d0bd54f.049ee032.js.map",
+            "size": 27843,
+            "hash": "0deb726bcf20d68e28158729ab1baaaec2ae5f7a05f5df9b25254e99db1f81a7"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-2d0c1da5.3658173e.js",
+            "size": 3998,
+            "hash": "49f1d5488b60e19d127398773bddfe32888fd017b290ae7dab709a28716e2c31"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-2d0c1da5.3658173e.js.map",
+            "size": 14270,
+            "hash": "d055a7e8a0ebecd487ab99076c7a1890d24fe2d69e3859424e72d30bdb3be85f"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-2d0db312.b679c6da.js",
+            "size": 530,
+            "hash": "51ba7447533cfc7c0628691a4cadaa2bbbe1713eb54d613d9c4fefde578afbec"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-2d0db312.b679c6da.js.map",
+            "size": 2657,
+            "hash": "b35c1f79d193065b2d47829d4799ddf0c3fc8fa0215939d69a58d427f65d3322"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-2d40554e.3792f8e8.js",
+            "size": 12598,
+            "hash": "730c79a8efc25acf8197bf7cabe8b5d3b37955cfc923584bdc31b2be93480c68"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-2d40554e.3792f8e8.js.map",
+            "size": 44697,
+            "hash": "492d4f5bd466be7f9ae3fde6757c903c7f4b3ffaa955b89fd28df1f7acef2047"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-30f6c64e.3879ad34.js",
+            "size": 31184,
+            "hash": "0b423a53a44806ed7d6fd72d9032f0bd0adfb2b49da8122236c0d2c85b9f3aa0"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-30f6c64e.3879ad34.js.map",
+            "size": 113324,
+            "hash": "cc98552f220a05852c4157e0f91ae2bd4c8ebc30544c160dd3579347c6a0d0e0"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-40f3ec68.cc16668b.js",
+            "size": 5310,
+            "hash": "021db00a60b9b634317cd80c5dfb934a4ac511976b0e685258cfb3637979cfc7"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-40f3ec68.cc16668b.js.map",
+            "size": 28418,
+            "hash": "4d36f1c411bbf37b7f4514b29b2937f6f05868f1bde609372c448a0cf07216ee"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-5b4bb1b2.36af21ce.js",
+            "size": 3888,
+            "hash": "9b886fce475d1f0e23e3dc401c4f3f701efdd41653169598bddc88f169955cec"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-5b4bb1b2.36af21ce.js.map",
+            "size": 15707,
+            "hash": "bd6d8d00fa53935f6f0b86b4cc1987e9dceb51f9ff69f5514b718b85e900a96d"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-6ba06cae.aaf78cc6.js",
+            "size": 3646,
+            "hash": "0e7922a91a670d51ee994c2f82a7e5e08c99261458c9c0079bda4a0febccdc82"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-6ba06cae.aaf78cc6.js.map",
+            "size": 17552,
+            "hash": "b6eb14e638b24a573d9377fc8f50157433ab0e6a89a0d655d6bf50e14eda3b54"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-ecdb098c.086b1721.js",
+            "size": 3143,
+            "hash": "f72f219df12dbef6ade9c63241f6e560841a811fa36e7cf7a2258fbe2a2a6143"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-ecdb098c.086b1721.js.map",
+            "size": 13254,
+            "hash": "62fcda643336e27d59986b6fbcf39e9476652965cf265143a4afdd4462707872"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-vendors.098e9e69.js",
+            "size": 2780666,
+            "hash": "af77f49b6188ccbbd70c6d0ac822caac28a9eb3a6687211ae917d62d778a6181"
+        },
+        {
+            "type": "file",
+            "name": "js/chunk-vendors.098e9e69.js.map",
+            "size": 7099969,
+            "hash": "79da6f463bea832a1faf794b1a7e32412949078217b3176d6982843390d6105f"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/android-chrome-192x192.png",
+            "size": 13135,
+            "hash": "418d7b8e4189a5931e20ae98a78bd82434e76a0095bcbeab89efaf7a107dad32"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/android-chrome-512x512.png",
+            "size": 34478,
+            "hash": "b413883ba2decd515f7f7abcdc979f7cd423e932674e1a94a961df6261e8746d"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-icon-152x152.png",
+            "size": 4683,
+            "hash": "fe14639fbc80abc3276a8d5756dc7b1faa7fe7e2f9ee8138c3de9d0f5b705b29"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-icon.png",
+            "size": 11980,
+            "hash": "0881ccdad89b4ad30f2b7ac428b4cecf4b6142a3692d85d8673c79ecdb97db7a"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-1125x2436.png",
+            "size": 27138,
+            "hash": "7ac104877d4ef0b5835bf6edfa4bd3a58e83201ebb103dcb09925eb60a320fd7"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-1136x640.png",
+            "size": 18883,
+            "hash": "d2698c31f2653a021002b32ca4bf6868e4f99ac891109eb2bbd46166b16b02c4"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-1242x2208.png",
+            "size": 26921,
+            "hash": "f5306d70b09f7e1210333f35f58ceb88f5c9d85f7a3096dba97856620a4b12eb"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-1242x2688.png",
+            "size": 29358,
+            "hash": "9b07f3349af261f447c24be448df53506efd9cc12d3e4c70c9bf3ec0a11015ff"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-1334x750.png",
+            "size": 19869,
+            "hash": "49edc0cdc08d371630d89c880d463fdfb179513bbbfa53e72c8457981bb07800"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-1536x2008.png",
+            "size": 30027,
+            "hash": "091cb5cc2a3d26851636741deaf01d93fc14eb464476869aae7ea78fec05b54d"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-1536x2048.png",
+            "size": 30405,
+            "hash": "07df2dc840a32b3d192ed6e4d5aabbec84f7c775099de0e2248f2d068838e067"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-1668x2224.png",
+            "size": 32796,
+            "hash": "44f5169b530d427a20f424cdce1c87dce7222e012c69678262899ba9bce17714"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-1668x2388.png",
+            "size": 33988,
+            "hash": "23c1cd5c754db31db8308c60a660a4d66bdf178e43e9b957a6814327fd024228"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-1792x828.png",
+            "size": 22734,
+            "hash": "014296dbdbcb9730f0703debf4dc573968838f8188631fca96241b84b4f094a3"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-2048x1496.png",
+            "size": 29160,
+            "hash": "ebf4e586c831f63d8c9cdc6f680452e1c53c7d493777eb1fd0f3a9f2527ed86e"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-2048x1536.png",
+            "size": 29558,
+            "hash": "f9c1ff783f759ced7583a9d7284485fcd3abe5161e0d9c8fddeffd37e2d4d733"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-2048x2732.png",
+            "size": 39435,
+            "hash": "86f6159c9ba7f746d62a478f57f554b6c975f4efc4b62c5ef7ca1e5cde655971"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-2208x1242.png",
+            "size": 27404,
+            "hash": "5d038285dc7e9af852795d0fe378b2898fae1dd78ebbb7f75d0114d2b9f1d435"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-2224x1668.png",
+            "size": 31512,
+            "hash": "ed42f99055da07c12f9510d573562e6edf6a27d16b6cd2a77ec2fd83dc97d3aa"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-2388x1668.png",
+            "size": 32289,
+            "hash": "8adb4b50babbbd0aafecaa57bbbae182ca83d046e0f595b6da6195ca50139f9c"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-2436x1125.png",
+            "size": 27044,
+            "hash": "64db4a65c34b274c9ab8749b75b7d2910d860c670675ede517a17359159adb66"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-2688x1242.png",
+            "size": 29407,
+            "hash": "c9b4291b720e6eb64f661934ff2309e7c95d8f042317781c26c0cd9b06f60810"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-2732x2048.png",
+            "size": 38524,
+            "hash": "264aed58468899417c4ef431e693ccb2325b4832cae36eaa373efa3bcac3179c"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-320x460.png",
+            "size": 7606,
+            "hash": "5d3398ef2c276251f87e838aa743b7e120cf548b90b93115aed5fe44ecdd8ae3"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-640x1136.png",
+            "size": 19178,
+            "hash": "b44112f16a108b688a9df32bd2474b25a0c29cee7bc9c4b13e1cd4a8b242db65"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-640x920.png",
+            "size": 18459,
+            "hash": "6f82094b38233fe57e74b15a4702c8c4830a683518ff35c1cdf194674ba16d5b"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-748x1024png.png",
+            "size": 19388,
+            "hash": "b3d74b9069e94d25c84778ec1241166ee96d635dfc2bfcc076b19ef68c72802b"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-750x1334.png",
+            "size": 20496,
+            "hash": "61cd815b7d4ec348599821b7d033e2aab34b18a4c30dc84b457b62a1bc278bc5"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-768x1004.png",
+            "size": 19388,
+            "hash": "ce876fb93fb369a5e91a5ab5ee59a6f6f2243db48c8ee15db2f297eb5c9856d6"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/apple-touch-startup-image-828x1792.png",
+            "size": 22551,
+            "hash": "3e99ec45d04a3cd530a11e2f0632c8e28e4388a5ba8173eb4388d1855f0c46d6"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/browserconfig.xml",
+            "size": 246,
+            "hash": "c348b0d6df3d900efef7ae4b4dfc8b62b1737b04d09d4584fef243211c266866"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/favicon-16x16.png",
+            "size": 2673,
+            "hash": "d912f5f6b7c0ff9c7dfbfeb3ca616fcc35e4c48f20c783ad346b74be4335ba9e"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/favicon-32x32.png",
+            "size": 4050,
+            "hash": "5ba9a2bca3b7c5570607a6f8ba76be09b84c6a0e33b60ad74a69270fdfd49bc2"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/favicon.ico",
+            "size": 1150,
+            "hash": "e09b35f33a256ccbdcb0ac145371cabcdefb5571b3677e48a3f9402ed3dbb22d"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/msapplication-icon-144x144.png",
+            "size": 9329,
+            "hash": "7bd866ffa1b0f14a9c5f42a4e733f9a9680860c7d801332402f6c3332a65ba46"
+        },
+        {
+            "type": "file",
+            "name": "img/icons/safari-pinned-tab.svg",
+            "size": 3443,
+            "hash": "bcabbf49338c6807965a17133eb4852e3e245f5080bf6d9227d1dad9c288eec6"
+        }
+    ]
+}
