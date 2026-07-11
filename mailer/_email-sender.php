@@ -34,8 +34,7 @@ function sendEmail($sendEmail){
 	$mail->Body = $sendEmail['body'];
 	//$mail->Body = "a ver";
 
-    //$mail->AddAddress("soporte@avisil.com");
-    $mail->AddAddress("hello@doctorconsultas.com");
+    $mail->AddAddress("hello@recetalia.com");
 	$mail->AddBCC("soporte@avisil.com");
 
     if(!$mail->Send()) {
