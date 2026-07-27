@@ -10,8 +10,7 @@
                             </div>
                             <p>
 							<i class="fa fa-envelope mr-2" aria-hidden="true"></i> hello@recetalia.com<br>
-							<i class="fa fa-map-marker mr-2" aria-hidden="true"></i> WTC Montevideo, Torre III, Piso 12.<br>
-							<i class="fa fa-phone fa-2 mr-2" aria-hidden="true"></i> 093 800 024</p>
+							<i class="fa fa-map-marker mr-2" aria-hidden="true"></i> WTC Montevideo, Torre III, Piso 12.</p>
 							<!--
                             <h5>Subscribe</h5>
                             <form class="footer-subscribe " action="#">
