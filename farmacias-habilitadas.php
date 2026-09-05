@@ -38,7 +38,6 @@ if (!$conectado) {
 $fhRegiones = $fhDatos['regiones'];
 $fhTotal = $fhDatos['total'];
 $fhInicial = fh_region_inicial($fhRegiones);
-$fhCantidadInicial = $fhInicial !== '' ? $fhRegiones[$fhInicial]['cantidad'] : 0;
 
 function fh_e($s) {
     return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8');
@@ -70,36 +69,38 @@ function fh_e($s) {
         .fh-buscar .form-control { height: 48px; padding-left: 44px; font-size: 15px; }
         .fh-buscar .fa { position: absolute; left: 16px; top: 16px; color: #a6a6a6; }
 
-        .fh-departamentos { list-style: none; padding: 0; margin: 0; background: #fff;
-            box-shadow: -1px 0px 30px 0px rgba(0, 0, 0, 0.05); }
+        /* Acordeón: un bloque blanco por departamento, cabezal clickeable + lista. */
+        .fh-region { background: #fff; box-shadow: -1px 0px 30px 0px rgba(0, 0, 0, 0.05); margin-bottom: 10px; }
         .fh-dep { display: flex; justify-content: space-between; align-items: center; width: 100%;
-            padding: 11px 18px; border: 0; border-left: 3px solid transparent; background: none;
-            text-align: left; font-family: inherit; font-size: 14px; color: #212832; cursor: pointer; }
+            padding: 14px 20px; border: 0; border-left: 3px solid transparent; background: none;
+            text-align: left; font-family: inherit; font-size: 15px; font-weight: 500; color: #212832; cursor: pointer; }
         .fh-dep:hover { border-left-color: #dbdbdb; background: #F4F6F8; }
-        .fh-dep.activo { border-left-color: #2EA1B1; color: #2EA1B1; font-weight: 500; background: #F4F6F8; }
-        .fh-dep .fh-cantidad { font-size: 12px; color: #7d7d7d; }
-        .fh-dep.activo .fh-cantidad { color: #2EA1B1; }
-        .fh-dep, .fh-dep .fh-cantidad { transition: all 0.15s ease-in-out; }
-        .fh-select { margin-bottom: 20px; height: 48px; }
+        .fh-region.abierta .fh-dep { border-left-color: #2EA1B1; color: #2EA1B1; }
+        .fh-cantidad { display: inline-block; min-width: 28px; text-align: center; margin-right: 14px;
+            padding: 1px 10px; border-radius: 12px; background: #F4F6F8; color: #7d7d7d; font-size: 12px; font-weight: 400; }
+        .fh-region.abierta .fh-cantidad { color: #2EA1B1; }
+        .fh-dep .fa-chevron-down { font-size: 12px; color: #a6a6a6; }
+        .fh-region.abierta .fa-chevron-down { transform: rotate(180deg); color: #2EA1B1; }
+        .fh-dep, .fh-cantidad { transition: all 0.15s ease-in-out; }
+        .fh-dep .fa-chevron-down { transition: transform 0.2s ease-in-out, color 0.15s ease-in-out; }
 
-        .fh-contador { font-size: 14px; color: #7d7d7d; margin: 0 0 12px; }
-        .fh-lista { list-style: none; padding: 0; margin: 0; background: #fff;
-            box-shadow: -1px 0px 30px 0px rgba(0, 0, 0, 0.05); }
+        .fh-lista { list-style: none; padding: 0; margin: 0; border-top: 1px solid #e5e5e5; }
+        .fh-region:not(.abierta) .fh-lista { display: none; }
         .fh-item { display: flex; justify-content: space-between; align-items: center; gap: 16px;
-            padding: 14px 20px; border-bottom: 1px solid #e5e5e5; }
+            padding: 14px 20px 14px 23px; border-bottom: 1px solid #e5e5e5; }
         .fh-item:last-child { border-bottom: 0; }
         .fh-item h6 { font-size: 15px; font-weight: 500; margin: 0 0 2px; color: #212832; }
         .fh-item p { font-size: 13px; line-height: 20px; margin: 0; color: #7d7d7d; }
         .fh-item .fh-tel { white-space: nowrap; font-size: 14px; color: #2EA1B1; }
         .fh-item .fh-tel .fa { margin-right: 6px; }
-        .fh-etiqueta { display: none; margin-left: 8px; padding: 1px 10px; border-radius: 12px;
-            background: #F4F6F8; color: #2EA1B1; font-size: 12px; }
-        .fh-lista.fh-buscando .fh-etiqueta { display: inline-block; }
+
+        .fh-contador { font-size: 14px; color: #7d7d7d; margin: 0 0 12px; }
         .fh-vacio, .fh-error { background: #fff; padding: 30px 20px; text-align: center; color: #7d7d7d; }
         [hidden] { display: none !important; }
 
         @media (max-width: 767px) {
-            .fh-item { flex-direction: column; align-items: flex-start; gap: 4px; padding: 12px 16px; }
+            .fh-item { flex-direction: column; align-items: flex-start; gap: 4px; padding: 12px 16px 12px 19px; }
+            .fh-dep { padding: 12px 16px; }
             .fh-buscar { margin-bottom: 24px; }
         }
     </style>
@@ -135,34 +136,31 @@ function fh_e($s) {
             </div>
 
             <div class="row">
-                <aside class="col-md-4 col-lg-3">
-                    <select id="fh-select" class="form-control fh-select d-md-none" aria-label="Departamento">
-                        <?php foreach ($fhRegiones as $r): ?>
-                        <option value="<?php echo fh_e($r['nombre']); ?>"<?php echo $r['nombre'] === $fhInicial ? ' selected' : ''; ?>><?php echo fh_e($r['nombre']); ?> (<?php echo $r['cantidad']; ?>)</option>
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <p id="fh-contador" class="fh-contador" aria-live="polite" hidden></p>
+                    <div id="fh-acordeon" data-inicial="<?php echo fh_e($fhInicial); ?>">
+                        <?php $i = 0; foreach ($fhRegiones as $r): $i++; $abierta = $r['nombre'] === $fhInicial; ?>
+                        <section class="fh-region<?php echo $abierta ? ' abierta' : ''; ?>" data-region="<?php echo fh_e($r['nombre']); ?>">
+                            <button type="button" class="fh-dep" aria-expanded="<?php echo $abierta ? 'true' : 'false'; ?>" aria-controls="fh-lista-<?php echo $i; ?>">
+                                <span><?php echo fh_e($r['nombre']); ?></span>
+                                <span><span class="fh-cantidad"><?php echo $r['cantidad']; ?></span><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+                            </button>
+                            <ul class="fh-lista" id="fh-lista-<?php echo $i; ?>">
+                                <?php foreach ($r['farmacias'] as $f): ?>
+                                <li class="fh-item" data-search="<?php echo fh_e($f['busqueda']); ?>">
+                                    <div>
+                                        <h6><?php echo fh_e($f['nombre']); ?></h6>
+                                        <p><?php echo fh_e(implode(' · ', array_filter(array($f['direccion'], $f['localidad']), 'strlen'))); ?></p>
+                                    </div>
+                                    <?php if ($f['telefono']): ?>
+                                    <a class="fh-tel" href="tel:<?php echo fh_e($f['telefono']['international']); ?>"><i class="fa fa-phone" aria-hidden="true"></i><?php echo fh_e($f['telefono']['national']); ?></a>
+                                    <?php endif; ?>
+                                </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </section>
                         <?php endforeach; ?>
-                    </select>
-                    <ul class="fh-departamentos d-none d-md-block">
-                        <?php foreach ($fhRegiones as $r): ?>
-                        <li><button type="button" class="fh-dep<?php echo $r['nombre'] === $fhInicial ? ' activo' : ''; ?>" data-region="<?php echo fh_e($r['nombre']); ?>"><?php echo fh_e($r['nombre']); ?> <span class="fh-cantidad"><?php echo $r['cantidad']; ?></span></button></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </aside>
-
-                <div class="col-md-8 col-lg-9">
-                    <p id="fh-contador" class="fh-contador" aria-live="polite"><?php echo fh_plural($fhCantidadInicial, 'farmacia', 'farmacias'); ?> en <?php echo fh_e($fhInicial); ?></p>
-                    <ul id="fh-lista" class="fh-lista">
-                        <?php foreach ($fhRegiones as $r): foreach ($r['farmacias'] as $f): ?>
-                        <li class="fh-item" data-region="<?php echo fh_e($r['nombre']); ?>" data-search="<?php echo fh_e($f['busqueda']); ?>"<?php echo $r['nombre'] === $fhInicial ? '' : ' hidden'; ?>>
-                            <div>
-                                <h6><?php echo fh_e($f['nombre']); ?></h6>
-                                <p><?php echo fh_e(implode(' · ', array_filter(array($f['direccion'], $f['localidad']), 'strlen'))); ?><span class="fh-etiqueta"><?php echo fh_e($r['nombre']); ?></span></p>
-                            </div>
-                            <?php if ($f['telefono']): ?>
-                            <a class="fh-tel" href="tel:<?php echo fh_e($f['telefono']['international']); ?>"><i class="fa fa-phone" aria-hidden="true"></i><?php echo fh_e($f['telefono']['national']); ?></a>
-                            <?php endif; ?>
-                        </li>
-                        <?php endforeach; endforeach; ?>
-                    </ul>
+                    </div>
                     <p id="fh-vacio" class="fh-vacio" hidden>No encontramos farmacias con ese nombre.</p>
                 </div>
             </div>
@@ -183,13 +181,10 @@ function fh_e($s) {
     <script>
     (function () {
         var input = document.getElementById('fh-buscar');
-        var select = document.getElementById('fh-select');
-        var lista = document.getElementById('fh-lista');
         var contador = document.getElementById('fh-contador');
         var vacio = document.getElementById('fh-vacio');
-        var deps = document.querySelectorAll('.fh-dep');
-        var items = lista.querySelectorAll('.fh-item');
-        var region = select.value;
+        var regiones = document.querySelectorAll('.fh-region');
+        var inicial = document.getElementById('fh-acordeon').getAttribute('data-inicial');
 
         // Misma regla que fh_normalizar() en PHP: minúsculas, sin tildes, espacios colapsados.
         function normalizar(s) {
@@ -198,40 +193,41 @@ function fh_e($s) {
         function plural(n, singular, pluralTxt) {
             return n + ' ' + (n === 1 ? singular : pluralTxt);
         }
+        function abrir(region, abierta) {
+            region.classList.toggle('abierta', abierta);
+            region.querySelector('.fh-dep').setAttribute('aria-expanded', abierta ? 'true' : 'false');
+        }
 
-        function aplicar() {
+        // Con texto: busca en todo el país, abre los departamentos con coincidencias y
+        // esconde los demás. Sin texto: todo visible, sólo el departamento inicial abierto.
+        function buscar() {
             var q = normalizar(input.value);
             var buscando = q !== '';
-            var visibles = 0;
-            lista.classList.toggle('fh-buscando', buscando);
-            for (var i = 0; i < items.length; i++) {
-                var it = items[i];
-                var ok = buscando
-                    ? it.getAttribute('data-search').indexOf(q) !== -1
-                    : it.getAttribute('data-region') === region;
-                it.hidden = !ok;
-                if (ok) visibles++;
+            var total = 0;
+            for (var i = 0; i < regiones.length; i++) {
+                var region = regiones[i];
+                var items = region.querySelectorAll('.fh-item');
+                var visibles = 0;
+                for (var j = 0; j < items.length; j++) {
+                    var ok = !buscando || items[j].getAttribute('data-search').indexOf(q) !== -1;
+                    items[j].hidden = !ok;
+                    if (ok) visibles++;
+                }
+                region.hidden = buscando && visibles === 0;
+                abrir(region, buscando ? visibles > 0 : region.getAttribute('data-region') === inicial);
+                if (buscando) total += visibles;
             }
-            for (var j = 0; j < deps.length; j++) {
-                deps[j].classList.toggle('activo', !buscando && deps[j].getAttribute('data-region') === region);
-            }
-            contador.textContent = buscando
-                ? plural(visibles, 'farmacia encontrada', 'farmacias encontradas')
-                : plural(visibles, 'farmacia', 'farmacias') + ' en ' + region;
-            vacio.hidden = visibles > 0;
+            contador.hidden = !buscando;
+            contador.textContent = buscando ? plural(total, 'farmacia encontrada', 'farmacias encontradas') : '';
+            vacio.hidden = !buscando || total > 0;
         }
 
-        function elegir(r) {
-            region = r;
-            select.value = r;
-            input.value = '';
-            aplicar();
-        }
-
-        input.addEventListener('input', aplicar);
-        select.addEventListener('change', function () { elegir(select.value); });
-        for (var k = 0; k < deps.length; k++) {
-            deps[k].addEventListener('click', function () { elegir(this.getAttribute('data-region')); });
+        input.addEventListener('input', buscar);
+        for (var k = 0; k < regiones.length; k++) {
+            regiones[k].querySelector('.fh-dep').addEventListener('click', function () {
+                var region = this.parentNode;
+                abrir(region, !region.classList.contains('abierta'));
+            });
         }
     })();
     </script>
