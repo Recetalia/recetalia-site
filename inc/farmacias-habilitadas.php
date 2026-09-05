@@ -19,6 +19,7 @@ function fh_normalizar($texto) {
         'á' => 'a', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ú' => 'u', 'ü' => 'u', 'ñ' => 'n',
         'à' => 'a', 'è' => 'e', 'ì' => 'i', 'ò' => 'o', 'ù' => 'u',
     ));
+    $texto = preg_replace('/\p{M}+/u', '', $texto);
     return trim(preg_replace('/\s+/', ' ', $texto));
 }
 

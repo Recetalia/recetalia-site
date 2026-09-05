@@ -14,6 +14,7 @@ echo "fh_normalizar\n";
 ok(fh_normalizar('Farmacia Río  Negro') === 'farmacia rio negro', 'minúsculas, sin tildes, espacios colapsados');
 ok(fh_normalizar('Ñandú Ünico') === 'nandu unico', 'ñ y diéresis');
 ok(fh_normalizar(null) === '', 'null → vacío');
+ok(fh_normalizar("Ri\xCC\x81o Negro") === 'rio negro', 'tilde combinante (NFD) también se quita');
 
 echo "fh_telefono\n";
 ok(fh_telefono('{"national":"2924 1234","international":"+59829241234"}') === array('national' => '2924 1234', 'international' => '+59829241234'), 'json completo');
