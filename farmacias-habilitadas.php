@@ -37,7 +37,6 @@ if (!$conectado) {
 
 $fhRegiones = $fhDatos['regiones'];
 $fhTotal = $fhDatos['total'];
-$fhInicial = fh_region_inicial($fhRegiones);
 
 function fh_e($s) {
     return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8');
@@ -84,8 +83,10 @@ function fh_e($s) {
         .fh-dep, .fh-cantidad { transition: all 0.15s ease-in-out; }
         .fh-dep .fa-chevron-down { transition: transform 0.2s ease-in-out, color 0.15s ease-in-out; }
 
-        .fh-lista { list-style: none; padding: 0; margin: 0; border-top: 1px solid #e5e5e5; }
-        .fh-region:not(.abierta) .fh-lista { display: none; }
+        /* Cerrada por defecto; el script fija max-height al alto real para animar el despliegue. */
+        .fh-lista { list-style: none; padding: 0; margin: 0; max-height: 0; overflow: hidden;
+            transition: max-height 0.3s ease-in-out; }
+        .fh-region.abierta .fh-lista { border-top: 1px solid #e5e5e5; }
         .fh-item { display: flex; justify-content: space-between; align-items: center; gap: 16px;
             padding: 14px 20px 14px 23px; border-bottom: 1px solid #e5e5e5; }
         .fh-item:last-child { border-bottom: 0; }
@@ -138,10 +139,10 @@ function fh_e($s) {
             <div class="row">
                 <div class="col-lg-8 col-md-10 mx-auto">
                     <p id="fh-contador" class="fh-contador" aria-live="polite" hidden></p>
-                    <div id="fh-acordeon" data-inicial="<?php echo fh_e($fhInicial); ?>">
-                        <?php $i = 0; foreach ($fhRegiones as $r): $i++; $abierta = $r['nombre'] === $fhInicial; ?>
-                        <section class="fh-region<?php echo $abierta ? ' abierta' : ''; ?>" data-region="<?php echo fh_e($r['nombre']); ?>">
-                            <button type="button" class="fh-dep" aria-expanded="<?php echo $abierta ? 'true' : 'false'; ?>" aria-controls="fh-lista-<?php echo $i; ?>">
+                    <div id="fh-acordeon">
+                        <?php $i = 0; foreach ($fhRegiones as $r): $i++; ?>
+                        <section class="fh-region" data-region="<?php echo fh_e($r['nombre']); ?>">
+                            <button type="button" class="fh-dep" aria-expanded="false" aria-controls="fh-lista-<?php echo $i; ?>">
                                 <span><?php echo fh_e($r['nombre']); ?></span>
                                 <span><span class="fh-cantidad"><?php echo $r['cantidad']; ?></span><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
                             </button>
@@ -184,7 +185,6 @@ function fh_e($s) {
         var contador = document.getElementById('fh-contador');
         var vacio = document.getElementById('fh-vacio');
         var regiones = document.querySelectorAll('.fh-region');
-        var inicial = document.getElementById('fh-acordeon').getAttribute('data-inicial');
 
         // Misma regla que fh_normalizar() en PHP: minúsculas, sin tildes, espacios colapsados.
         function normalizar(s) {
@@ -193,13 +193,25 @@ function fh_e($s) {
         function plural(n, singular, pluralTxt) {
             return n + ' ' + (n === 1 ? singular : pluralTxt);
         }
+        // Despliega o pliega la lista de un departamento animando max-height hasta su alto real.
         function abrir(region, abierta) {
+            var lista = region.querySelector('.fh-lista');
             region.classList.toggle('abierta', abierta);
             region.querySelector('.fh-dep').setAttribute('aria-expanded', abierta ? 'true' : 'false');
+            lista.style.maxHeight = abierta ? lista.scrollHeight + 'px' : '0px';
+        }
+
+        // Acordeón: abrir un departamento cierra el que estaba abierto; click en el abierto lo cierra.
+        function alternar(region) {
+            var estabaAbierta = region.classList.contains('abierta');
+            for (var i = 0; i < regiones.length; i++) {
+                if (regiones[i].classList.contains('abierta')) abrir(regiones[i], false);
+            }
+            if (!estabaAbierta) abrir(region, true);
         }
 
         // Con texto: busca en todo el país, abre los departamentos con coincidencias y
-        // esconde los demás. Sin texto: todo visible, sólo el departamento inicial abierto.
+        // esconde los demás. Sin texto: todo visible y todo cerrado.
         function buscar() {
             var q = normalizar(input.value);
             var buscando = q !== '';
@@ -214,7 +226,7 @@ function fh_e($s) {
                     if (ok) visibles++;
                 }
                 region.hidden = buscando && visibles === 0;
-                abrir(region, buscando ? visibles > 0 : region.getAttribute('data-region') === inicial);
+                abrir(region, buscando && visibles > 0);
                 if (buscando) total += visibles;
             }
             contador.hidden = !buscando;
@@ -225,8 +237,7 @@ function fh_e($s) {
         input.addEventListener('input', buscar);
         for (var k = 0; k < regiones.length; k++) {
             regiones[k].querySelector('.fh-dep').addEventListener('click', function () {
-                var region = this.parentNode;
-                abrir(region, !region.classList.contains('abierta'));
+                alternar(this.parentNode);
             });
         }
     })();
