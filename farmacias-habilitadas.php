@@ -1,485 +1,244 @@
-
 <?php
+// Listado público de farmacias habilitadas. Renderizado en el servidor; el script
+// de abajo sólo muestra u oculta filas. Spec: doc/plans/2026-09-04-farmacias-habilitadas-rediseno-design.md
+require_once __DIR__ . '/inc/farmacias-habilitadas.php';
 
-// DB de PRODUCCIÓN (DigitalOcean managed) — usuario read-only dedicado (solo SELECT
-// sobre pharmacy/localities/regions). Requiere SSL. Las credenciales NO van en el
-// código: se leen de variables de entorno inyectadas al contenedor (ver
-// docker-compose.yml → recetalia-site → env desde el .env gitignoreado).
-$servidor=getenv('SITE_DB_HOST');
-$mysql_port=(int)(getenv('SITE_DB_PORT') ?: 25060);
-$mysql_user=getenv('SITE_DB_USER');
-$mysql_pass=getenv('SITE_DB_PASS');
-$db_main=getenv('SITE_DB_NAME') ?: 'recetali_receta';
-global $mysqli;
+// Credenciales read-only (SELECT sobre pharmacy/localities/regions), por env del
+// contenedor (docker-compose.yml → recetalia-site). Requiere SSL.
+$fhError = false;
+$fhDatos = array('total' => 0, 'regiones' => array());
+
+mysqli_report(MYSQLI_REPORT_OFF);
 $mysqli = mysqli_init();
 $mysqli->ssl_set(NULL, NULL, NULL, NULL, NULL);
-$mysqli->real_connect($servidor, $mysql_user, $mysql_pass, $db_main, $mysql_port, NULL,
-    MYSQLI_CLIENT_SSL | MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT);
-$mysqli->set_charset('utf8mb4');
-
-$items = array();
-$sql = "
-    SELECT `pharmacy`.*, `regions`.`name` as `regionName`, `localities`.`name` as `localityName`
-    FROM `pharmacy`
-	JOIN `localities` ON `localities`.`id` = `pharmacy`.`addressLocalityId`
-	JOIN `regions` ON `regions`.`id` = `localities`.`region_id`
-    WHERE `pharmacy`.`status`='ACTIVE'
-    ORDER BY `pharmacy`.`name` ASC ";
-$res = $mysqli->query($sql);
-while ($row = mysqli_fetch_array($res, MYSQLI_ASSOC)) {
-    $item = array();
-    $item['id'] = $row['id'];
-    $item['name'] = $row['name'];
-    $item['addressStreet'] = $row['addressStreet'];
-	$item['addressNumber'] = $row['addressNumber'];
-    $item['localityName'] = $row['localityName'];
-	$item['phone'] = json_decode($row['phone'],true);
-
-    $regionName = $row['regionName'];
-    if (!isset($items[$regionName])) {
-        $items[$regionName] = array(); // Crear un nuevo arreglo para la región si no existe
+$conectado = @$mysqli->real_connect(
+    getenv('SITE_DB_HOST'),
+    getenv('SITE_DB_USER'),
+    getenv('SITE_DB_PASS'),
+    getenv('SITE_DB_NAME') ?: 'recetali_receta',
+    (int)(getenv('SITE_DB_PORT') ?: 25060),
+    NULL,
+    MYSQLI_CLIENT_SSL | MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT
+);
+if (!$conectado) {
+    error_log('farmacias-habilitadas: no se pudo conectar a la DB: ' . mysqli_connect_error());
+    $fhError = true;
+} else {
+    $mysqli->set_charset('utf8mb4');
+    $res = $mysqli->query(FH_SQL);
+    if ($res === false) {
+        error_log('farmacias-habilitadas: consulta fallida: ' . $mysqli->error);
+        $fhError = true;
+    } else {
+        $fhDatos = fh_agrupar($res->fetch_all(MYSQLI_ASSOC));
     }
-
-    array_push($items[$regionName], $item); // Agregar la farmacia al arreglo correspondiente a la región
+    $mysqli->close();
 }
-ksort($items); 
 
+$fhRegiones = $fhDatos['regiones'];
+$fhTotal = $fhDatos['total'];
+$fhInicial = fh_region_inicial($fhRegiones);
+$fhCantidadInicial = $fhInicial !== '' ? $fhRegiones[$fhInicial]['cantidad'] : 0;
+
+function fh_e($s) {
+    return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8');
+}
 ?>
-
 <!DOCTYPE HTML>
-<html lang="en-US">
+<html lang="es">
 
 <head>
-
-    <base href="https://recetalia.com/">  
-
-
+    <base href="https://recetalia.com/">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="RECETALIA es la Plataforma de prescripción de órdenes médicas" />
+    <meta name="description" content="Farmacias habilitadas para dispensar recetas digitales de Recetalia en todo el Uruguay." />
     <meta name="author" content="Recetalia" />
-    <title> Recetalia - Receta Digital</title>
-    <!--  Add Favicon Icon-->
+    <title>Recetalia - Farmacias habilitadas</title>
     <link rel="shortcut icon" href="images/favicon-recetalia.png" type="image/x-icon">
     <link rel="icon" href="images/favicon-recetalia.png" type="image/x-icon">
-    <!-- Add All Style -->
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/font-awesome.min.css" />
-    <link rel="stylesheet" href="css/owl.carousel.min.css" />
     <link rel="stylesheet" href="css/slimmenu.min.css" />
-    <link rel="stylesheet" href="css/modal-video.min.css" />
     <link rel="stylesheet" href="css/animate.min.css" />
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="css/responsive.css" />
-    <!-- Poppins Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700" rel="stylesheet">
 
-    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
-    <script>
-    var onloadCallback = function() {
-        grecaptcha.render('html_element', {
-            'sitekey' : '6LdnY14aAAAAANJNq-fqC7aUT2lrU9C4jZvKsete'
-        });
-    };
-		
-		var items = <?php echo json_encode($items); ?>;
+    <style>
+        /* Estilos propios del listado. Sólo colores que ya usa styles.css. */
+        .fh-buscar { max-width: 560px; margin: 0 auto 40px; position: relative; }
+        .fh-buscar .form-control { height: 48px; padding-left: 44px; font-size: 15px; }
+        .fh-buscar .fa { position: absolute; left: 16px; top: 16px; color: #a6a6a6; }
 
-    document.addEventListener('DOMContentLoaded', function() {
-		
-		console.log('items',items)
-		
-        var pharmacyContainer = document.querySelector('.pharmacy-container');
-        for (var regionName in items) {
-            var regionItems = items[regionName];
-            var regionElement = document.createElement('div');
-            regionElement.className = 'region-list';
-            regionElement.id = 'region-' + regionName;
-            var regionHtml = '<h5 class="toggle-btn" onclick="togglePharmacyList(\'' + regionName + '\')">' + regionName + '<span class="icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-down" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M6 9l6 6l6 -6"></path></svg></span></h5>';
+        .fh-departamentos { list-style: none; padding: 0; margin: 0; background: #fff;
+            box-shadow: -1px 0px 30px 0px rgba(0, 0, 0, 0.05); }
+        .fh-dep { display: flex; justify-content: space-between; align-items: center; width: 100%;
+            padding: 11px 18px; border: 0; border-left: 3px solid transparent; background: none;
+            text-align: left; font-family: inherit; font-size: 14px; color: #212832; cursor: pointer; }
+        .fh-dep:hover { border-left-color: #dbdbdb; background: #F4F6F8; }
+        .fh-dep.activo { border-left-color: #2EA1B1; color: #2EA1B1; font-weight: 500; background: #F4F6F8; }
+        .fh-dep .fh-cantidad { font-size: 12px; color: #7d7d7d; }
+        .fh-dep.activo .fh-cantidad { color: #2EA1B1; }
+        .fh-select { margin-bottom: 20px; height: 48px; }
 
-            regionHtml += '<ul class="pharmacy-list" id="pharmacy-list-' + regionName + '">';
-            for (var i = 0; i < regionItems.length; i++) {
-                var item = regionItems[i];
-                regionHtml += '<li><h6 class="mb-0">' + item.name + '</h6>';
-                regionHtml += '<p>' + item.addressStreet + ' ' + item.addressNumber + ' - ' + item.localityName + ' <br>Teléfono: <a href="tel:' +item.phone.international + '">' +item.phone.national + '</a></p></li>';
-            }
-            regionHtml += '</ul>';
-            regionElement.innerHTML = regionHtml;
-            pharmacyContainer.appendChild(regionElement);
+        .fh-contador { font-size: 14px; color: #7d7d7d; margin: 0 0 12px; }
+        .fh-lista { list-style: none; padding: 0; margin: 0; background: #fff;
+            box-shadow: -1px 0px 30px 0px rgba(0, 0, 0, 0.05); }
+        .fh-item { display: flex; justify-content: space-between; align-items: center; gap: 16px;
+            padding: 14px 20px; border-bottom: 1px solid #e5e5e5; }
+        .fh-item:last-child { border-bottom: 0; }
+        .fh-item h6 { font-size: 15px; font-weight: 500; margin: 0 0 2px; color: #212832; }
+        .fh-item p { font-size: 13px; line-height: 20px; margin: 0; color: #7d7d7d; }
+        .fh-item .fh-tel { white-space: nowrap; font-size: 14px; color: #2EA1B1; }
+        .fh-item .fh-tel .fa { margin-right: 6px; }
+        .fh-etiqueta { display: none; margin-left: 8px; padding: 1px 10px; border-radius: 12px;
+            background: #F4F6F8; color: #2EA1B1; font-size: 12px; }
+        .fh-lista.fh-buscando .fh-etiqueta { display: inline-block; }
+        .fh-vacio, .fh-error { background: #fff; padding: 30px 20px; text-align: center; color: #7d7d7d; }
+        [hidden] { display: none !important; }
+
+        @media (max-width: 767px) {
+            .fh-item { flex-direction: column; align-items: flex-start; gap: 4px; padding: 12px 16px; }
+            .fh-buscar { margin-bottom: 24px; }
         }
-
-        
-
-		document.getElementById('searchInput').addEventListener('input', function() {
-			var searchTerm = this.value.toLowerCase();
-			var regions = document.querySelectorAll('.region-list');
-
-			if (searchTerm === '') {
-				// Si el campo de búsqueda está vacío, cerrar todas las listas de farmacias
-				for (var i = 0; i < regions.length; i++) {
-					var region = regions[i];
-					var pharmacyList = region.querySelector('.pharmacy-list');
-					pharmacyList.style.display = 'none';
-					region.classList.remove('opened');
-				}
-				var montevideoSection = document.getElementById('region-Montevideo');
-				var montevideoPharmacyList = document.getElementById('pharmacy-list-Montevideo');
-
-				montevideoSection.classList.add('opened');
-				montevideoPharmacyList.style.display = 'block';
-			} else {
-				// Si el campo de búsqueda tiene texto, abrir las listas de farmacias que contienen farmacias coincidentes
-				for (var i = 0; i < regions.length; i++) {
-					var region = regions[i];
-					var pharmacies = region.querySelectorAll('.pharmacy-list li');
-					var isRegionEmpty = true;
-					for (var j = 0; j < pharmacies.length; j++) {
-						var pharmacy = pharmacies[j];
-						var pharmacyName = pharmacy.querySelector('h6').textContent.toLowerCase();
-						if (pharmacyName.includes(searchTerm)) {
-							pharmacy.style.display = 'list-item';
-							isRegionEmpty = false;
-						} else {
-							pharmacy.style.display = 'none';
-						}
-					}
-					// Verificar si la región está vacía después de la búsqueda y ocultar si es necesario
-					if (isRegionEmpty) {
-						region.style.display = 'none';
-						region.classList.remove('opened');
-					} else {
-						region.style.display = 'block';
-						region.classList.add('opened');
-						// Aquí es donde se expande la lista de farmacias si la región no está vacía
-						var pharmacyList = region.querySelector('.pharmacy-list');
-						pharmacyList.style.display = 'block';
-					}
-				}
-			}
-		});
-	});
-		
-		
-    </script>
-	
-	<style>
-        .region-list {
-        padding-left: 20px;
-    }
-
-    .region-list .toggle-btn {
-        cursor: pointer;
-        font-weight: bold;
-        display: flex;
-        width: 100%;
-        border-bottom: 1px solid #e8e7e7;
-        justify-content: space-between;
-    }
-
-    .region-list .toggle-btn .icon {
-        transition: transform 0.3s;
-    }
-
-    .region-list.opened .toggle-btn .icon {
-        transform: rotate(180deg);
-    }
-
-    .region-list .pharmacy-list {
-        display: none;
-        padding-left: 20px;
-    }
-    .region-list .pharmacy-list li p {
-        font-size: 12px;
-        line-height: 12px;
-    }
-	.region-list .pharmacy-list li p a {
-
-        line-height: 12px;
-    }
     </style>
-	<script>
-        function togglePharmacyList(regionId) {
-            var pharmacyList = document.getElementById('pharmacy-list-' + regionId);
-            var regionSection = document.getElementById('region-' + regionId);
-
-            if (pharmacyList.style.display === 'none') {
-                pharmacyList.style.display = 'block';
-                regionSection.classList.add('opened');
-            } else {
-                pharmacyList.style.display = 'none';
-                regionSection.classList.remove('opened');
-            }
-        }
-		
-
-        // Marcar la sección de Montevideo como abierta por defecto al cargar la página
-        window.onload = function() {
-            var montevideoSection = document.getElementById('region-Montevideo');
-            var montevideoPharmacyList = document.getElementById('pharmacy-list-Montevideo');
-
-            montevideoSection.classList.add('opened');
-            montevideoPharmacyList.style.display = 'block';
-        };
-    </script>
-
 </head>
+
 <body>
-    <header class="themeix-header">
-        <div class="themeix-header-top bg-color2">
-            <div class="container">
-                <div class="d-flex justify-content-between themeix">
-                    <div class="themeix-top-bar-left">
-                        <p class="top-content"><a href="mailto:hello@recetalia.com">hello@recetalia.com</a></p>
-                    </div>
+    <?php include_once("header.php"); ?>
 
-                    <div class="dropdown">
-                        <a class="top-sign-btn dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="dropdownMenu2" ><i class="fa fa-user"></i>Ingresar</a>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                        <!--a class="dropdown-item" href="https://pacientes.recetalia.com/login">Pacientes</a-->
-                        <a class="dropdown-item" href="https://medicos.recetalia.com/login" target="_blank" rel="noopener">Médicos</a>
-                        <a class="dropdown-item" href="https://farmacias.recetalia.com/login" target="_blank" rel="noopener">Farmacias</a>
-                        <a class="dropdown-item" href="https://prestadores.recetalia.com/login" target="_blank" rel="noopener">Prestadores</a>
-                      </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- Modal -->
-        <div class="top-login-modal modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="tmx-loginform" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="tmx-loginform">Area de Acceso</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="login-form-modal">
-                            <form action="#" method="get">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-row">
-                                            <div class="form-group col-md-12">
-                                                <input type="text" class="form-control" placeholder="Nombre">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-row">
-                                            <div class="form-group col-md-12">
-                                                <input type="password" class="form-control" placeholder="Password">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-row">
-                                            <div class="form-group col-md-12">
-                                                <button type="submit" class="btn btn-primary login-btn">Ingreso</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p class="message">No está registrado? <a href="#">Cree una cuenta</a></p>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="themeix-header-navigation bg-color">
-            <div class="container">
-                <div class="d-flex justify-content-between themeix">
-                    <div class="themeix-logo">
-                        <a class="themeix-brand" href="/"><img src="/images/header-brand.png" alt="Recetalia" /></a>
-                    </div>
-                    <nav class="themeix-menu">
-                        <ul id="navigation-menu" class="slimmenu">
-                            <li><a href="/">Inicio</a></li>
-							<!--
-                            <li><a href="about.html">About</a></li>
-                            <li>
-                                <a href="#">Blog </a>
-                                <ul>
-                                    <li><a href="blog-left-sidebar.html">Blog  Left Sidebar</a></li>
-                                    <li><a href="blog-right-sidebar.html">Blog Right Sidebar</a></li>
-                                    <li><a href="single.html">Blog Details</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">Pages </a>
-                                <ul>
-                                    <li><a href="services-details.html">Service Details</a></li>
-                                    <li><a href="#">Projects</a></li>
-                                    <li><a href="projects-details.html">Project Details</a></li>
-                                    <li><a href="single.html">Blog Details</a></li>
-                                    <li><a href="about.html">About</a></li>
-                                    <li><a href="404.html">404 Page</a></li>
-                                </ul>
-                            </li>
-							-->
-
-                            <li><a href="#ContactSet">Contacto</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    
-    <!-- Start Services -->
     <section class="services-section padding-60-0 bg-color3 section-spacing">
         <div class="container">
             <div class="row">
-                <div class="col-md-12 m-auto">
+                <div class="col-md-12">
                     <div class="section-title margin-bottom-60 text-center">
                         <h4>Farmacias habilitadas</h4>
+                        <?php if (!$fhError): ?>
+                        <p><?php echo fh_plural($fhTotal, 'farmacia habilitada', 'farmacias habilitadas'); ?> en todo el país</p>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
-			
-			<div class="row">
-                <div class="col-md-8 col-lg-6 mx-auto wow fadeIn" data-wow-duration="1s">
-					<div class="d-flex align-items-center pb-4">
-						<input type="text" id="searchInput" placeholder="Buscar farmacia" class="form-control mr-1">
-						<button onclick="search()" class="btn btn-primary">Buscar</button>
-					</div>
 
-				</div>
-			</div>
+            <?php if ($fhError): ?>
+            <div class="row">
+                <div class="col-md-8 col-lg-6 mx-auto">
+                    <p class="fh-error">No pudimos cargar el listado en este momento. Volvé a intentarlo en unos minutos.</p>
+                </div>
+            </div>
+            <?php else: ?>
+            <div class="fh-buscar">
+                <i class="fa fa-search" aria-hidden="true"></i>
+                <input type="search" id="fh-buscar" class="form-control" autocomplete="off"
+                       placeholder="Buscar por nombre, localidad o dirección" aria-label="Buscar farmacia">
+            </div>
 
             <div class="row">
-                <div class="col-md-8 col-lg-6 mx-auto wow fadeIn" data-wow-duration="1s">
-                    <div class="pharmacy-container"></div>
+                <aside class="col-md-4 col-lg-3">
+                    <select id="fh-select" class="form-control fh-select d-md-none" aria-label="Departamento">
+                        <?php foreach ($fhRegiones as $r): ?>
+                        <option value="<?php echo fh_e($r['nombre']); ?>"<?php echo $r['nombre'] === $fhInicial ? ' selected' : ''; ?>><?php echo fh_e($r['nombre']); ?> (<?php echo $r['cantidad']; ?>)</option>
+                        <?php endforeach; ?>
+                    </select>
+                    <ul class="fh-departamentos d-none d-md-block">
+                        <?php foreach ($fhRegiones as $r): ?>
+                        <li><button type="button" class="fh-dep<?php echo $r['nombre'] === $fhInicial ? ' activo' : ''; ?>" data-region="<?php echo fh_e($r['nombre']); ?>"><?php echo fh_e($r['nombre']); ?> <span class="fh-cantidad"><?php echo $r['cantidad']; ?></span></button></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </aside>
+
+                <div class="col-md-8 col-lg-9">
+                    <p id="fh-contador" class="fh-contador" aria-live="polite"><?php echo fh_plural($fhCantidadInicial, 'farmacia', 'farmacias'); ?> en <?php echo fh_e($fhInicial); ?></p>
+                    <ul id="fh-lista" class="fh-lista">
+                        <?php foreach ($fhRegiones as $r): foreach ($r['farmacias'] as $f): ?>
+                        <li class="fh-item" data-region="<?php echo fh_e($r['nombre']); ?>" data-search="<?php echo fh_e($f['busqueda']); ?>"<?php echo $r['nombre'] === $fhInicial ? '' : ' hidden'; ?>>
+                            <div>
+                                <h6><?php echo fh_e($f['nombre']); ?></h6>
+                                <p><?php echo fh_e($f['direccion']); ?><?php if ($f['localidad'] !== ''): ?> · <?php echo fh_e($f['localidad']); ?><?php endif; ?><span class="fh-etiqueta"><?php echo fh_e($r['nombre']); ?></span></p>
+                            </div>
+                            <?php if ($f['telefono']): ?>
+                            <a class="fh-tel" href="tel:<?php echo fh_e($f['telefono']['international']); ?>"><i class="fa fa-phone" aria-hidden="true"></i><?php echo fh_e($f['telefono']['national']); ?></a>
+                            <?php endif; ?>
+                        </li>
+                        <?php endforeach; endforeach; ?>
+                    </ul>
+                    <p id="fh-vacio" class="fh-vacio" hidden>No encontramos farmacias con ese nombre.</p>
                 </div>
             </div>
+            <?php endif; ?>
         </div>
     </section>
-	
-    <!-- Start Footer -->
-    <footer class="footer-section">
-        <div class="footer-widget-container section-spacing bg-color4">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 col-md-6">
-                        <div class="footer-widget">
-                            <div class="footer-logo">
-                                <a href="index.html"><img src="/images/footer-brand.png" alt="footer logo img" /></a>
-                            </div>
-                            <p>
-							<i class="fa fa-envelope mr-2" aria-hidden="true"></i> hello@recetalia.com<br>
-							<i class="fa fa-map-marker mr-2" aria-hidden="true"></i> WTC Montevideo, Torre III, Piso 12.</p>
-							<!--
-                            <h5>Subscribe</h5>
-                            <form class="footer-subscribe " action="#">
-                                <div class="input-group">
-                                    <input type="email" class="form-control" placeholder="Your Email">
-                                    <span class="input-group-btn">
-                              <button class="btn btn-primary" type="submit"><i class="fa fa-long-arrow-right"></i></button>
-                              </span>
-                                </div>
-                            </form>
-							-->
-							<!--
-                            <ul class="footer-social-link list-inline">
-                                <li class="list-inline-item"><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li class="list-inline-item"><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li class="list-inline-item"><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                <li class="list-inline-item"><a href="#"><i class="fa fa-youtube"></i></a></li>
-                            </ul>
-							--->
-                        </div>
-                    </div>
-					<!--
-                    <div class="col-lg-2 col-md-6">
-                        <div class="footer-widget">
-                            <h4>Usefull Link </h4>
-                            <ul class="footer-usefull-link list-inline">
-                                <li><a href="#">Consulting</a></li>
-                                <li><a href="#">Help Line</a></li>
-                                <li><a href="#">About Us</a></li>
-                                <li><a href="#">Services</a></li>
-                                <li><a href="#">Project</a></li>
-                                <li><a href="#">Meet Team</a></li>
-                            </ul>
-                        </div>
-                    </div>
-					-->
-					<!--
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-widget">
-                            <h4>Our Blog Post</h4>
-                            <ul class="footer-post-link list-inline">
-                                <li>
-                                    <a href="#">Finance project  amet quis tullam cursus, metus .</a>
-                                    <span>05 may 2017</span>
-                                </li>
-                                <li>
-                                    <a href="#">Helex  is Your Best quis tullam cursus, metus .</a>
-                                    <span>05 may 2017</span>
-                                </li>
-                                <li>
-                                    <a href="#">Established sed fact will  quis tullam cursus, metus .</a>
-                                    <span>05 may 2017</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-					-->
-					<!--
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-widget">
-                            <h4>Contact  Form</h4>
-                        </div>
-                        <form class="footer-contact-form">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Name">
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Email Address">
-                            </div>
-                            <div class="form-group">
-                                <textarea class="form-control" rows="5" placeholder="Message"></textarea>
-                            </div>
-                            <button type="submit" class="btn-style1 btn-color1 btn btn-primary">Submit</button>
-                        </form>
-                    </div>
-					-->
-					
-                </div>
-            </div>
-        </div>
-        <div class="footer-intro-container bg-color5">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4 mt-3 mb-3"><a href="/terms" class="small">Términos y condiciones</a> <span class="text-secondary">|</span> <a href="/privacy" class="small">Política de privacidad</a></div>
-                    <div class="col-md-4 small text-secondary mt-4 mb-3 text-center">&copy; Copyright - 2022 Recetalia</div>
-                    <div class="col-md-4 mt-3 mb-3"><center><a href="https://www.iwtg.com/"><img style="max-width: 150px;" src="/iwtg/powered-by-iwtg.png" alt="IWTG"></a></center></div>
-                </div>
-                
-                
-            </div>
-        </div>
-    </footer>
-    <!-- End Footer -->    <!-- Add Javascript File -->
+
+    <?php include_once("footer.php"); ?>
+
     <script src="js/jquery-3.2.1.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/jquery-modal-video.min.js"></script>
-    <script src="js/isotope.pkgd.min.js"></script>
     <script src="js/jquery.slimmenu.min.js"></script>
     <script src="js/wow.min.js"></script>
     <script src="js/custom.js"></script>
-    
-    
+
+    <?php if (!$fhError): ?>
+    <script>
+    (function () {
+        var input = document.getElementById('fh-buscar');
+        var select = document.getElementById('fh-select');
+        var lista = document.getElementById('fh-lista');
+        var contador = document.getElementById('fh-contador');
+        var vacio = document.getElementById('fh-vacio');
+        var deps = document.querySelectorAll('.fh-dep');
+        var items = lista.querySelectorAll('.fh-item');
+        var region = select.value;
+
+        // Misma regla que fh_normalizar() en PHP: minúsculas, sin tildes, espacios colapsados.
+        function normalizar(s) {
+            return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim();
+        }
+        function plural(n, singular, pluralTxt) {
+            return n + ' ' + (n === 1 ? singular : pluralTxt);
+        }
+
+        function aplicar() {
+            var q = normalizar(input.value);
+            var buscando = q !== '';
+            var visibles = 0;
+            lista.classList.toggle('fh-buscando', buscando);
+            for (var i = 0; i < items.length; i++) {
+                var it = items[i];
+                var ok = buscando
+                    ? it.getAttribute('data-search').indexOf(q) !== -1
+                    : it.getAttribute('data-region') === region;
+                it.hidden = !ok;
+                if (ok) visibles++;
+            }
+            for (var j = 0; j < deps.length; j++) {
+                deps[j].classList.toggle('activo', !buscando && deps[j].getAttribute('data-region') === region);
+            }
+            contador.textContent = buscando
+                ? plural(visibles, 'farmacia encontrada', 'farmacias encontradas')
+                : plural(visibles, 'farmacia', 'farmacias') + ' en ' + region;
+            vacio.hidden = visibles > 0;
+        }
+
+        function elegir(r) {
+            region = r;
+            select.value = r;
+            input.value = '';
+            aplicar();
+        }
+
+        input.addEventListener('input', aplicar);
+        select.addEventListener('change', function () { elegir(select.value); });
+        for (var k = 0; k < deps.length; k++) {
+            deps[k].addEventListener('click', function () { elegir(this.getAttribute('data-region')); });
+        }
+    })();
+    </script>
+    <?php endif; ?>
+
     <script src="https://videoconsulta.iwtg.com/video-chat.umd.min.js"></script>
     <link rel="stylesheet" href="https://videoconsulta.iwtg.com/video-chat.css">
-    <video-chat bottom right text-color="#ffffff" primary-color="#13a0b2" public-key="QXfeToaWrocXmZosEiwJlXcoy" ></video-chat>
-    
-    
+    <video-chat bottom right text-color="#ffffff" primary-color="#13a0b2" public-key="QXfeToaWrocXmZosEiwJlXcoy"></video-chat>
 </body>
 
 </html>
