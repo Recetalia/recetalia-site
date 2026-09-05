@@ -3,7 +3,7 @@
 // probarlas con tests/farmacias-habilitadas.test.php. Compatibles con PHP 7.4.
 
 const FH_SQL = "
-    SELECT pharmacy.id, pharmacy.name, pharmacy.addressStreet, pharmacy.addressNumber,
+    SELECT pharmacy.name, pharmacy.addressStreet, pharmacy.addressNumber,
            pharmacy.phone, regions.name AS regionName, localities.name AS localityName
     FROM pharmacy
     JOIN localities ON localities.id = pharmacy.addressLocalityId
@@ -15,9 +15,15 @@ const FH_SQL = "
 // script de la página: lo que se compara tiene que salir igual en PHP y en JS.
 function fh_normalizar($texto) {
     $texto = mb_strtolower((string)$texto, 'UTF-8');
+    // Descomponer (NFD) si intl está disponible: así cualquier letra acentuada
+    // (ç, ã, ö...) queda como base + marca, y la marca se quita abajo.
+    if (class_exists('Normalizer')) {
+        $texto = Normalizer::normalize($texto, Normalizer::FORM_D);
+    }
     $texto = strtr($texto, array(
         'á' => 'a', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ú' => 'u', 'ü' => 'u', 'ñ' => 'n',
         'à' => 'a', 'è' => 'e', 'ì' => 'i', 'ò' => 'o', 'ù' => 'u',
+        "\xC2\xA0" => ' ',
     ));
     $texto = preg_replace('/\p{M}+/u', '', $texto);
     return trim(preg_replace('/\s+/', ' ', $texto));
@@ -43,7 +49,6 @@ function fh_agrupar(array $filas) {
         $direccion = trim(trim((string)$fila['addressStreet']) . ' ' . trim((string)$fila['addressNumber']));
         $localidad = trim((string)$fila['localityName']);
         $farmacia = array(
-            'id' => (int)$fila['id'],
             'nombre' => trim((string)$fila['name']),
             'direccion' => $direccion,
             'localidad' => $localidad,

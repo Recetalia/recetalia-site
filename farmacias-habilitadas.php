@@ -79,6 +79,7 @@ function fh_e($s) {
         .fh-dep.activo { border-left-color: #2EA1B1; color: #2EA1B1; font-weight: 500; background: #F4F6F8; }
         .fh-dep .fh-cantidad { font-size: 12px; color: #7d7d7d; }
         .fh-dep.activo .fh-cantidad { color: #2EA1B1; }
+        .fh-dep, .fh-dep .fh-cantidad { transition: all 0.15s ease-in-out; }
         .fh-select { margin-bottom: 20px; height: 48px; }
 
         .fh-contador { font-size: 14px; color: #7d7d7d; margin: 0 0 12px; }
@@ -154,7 +155,7 @@ function fh_e($s) {
                         <li class="fh-item" data-region="<?php echo fh_e($r['nombre']); ?>" data-search="<?php echo fh_e($f['busqueda']); ?>"<?php echo $r['nombre'] === $fhInicial ? '' : ' hidden'; ?>>
                             <div>
                                 <h6><?php echo fh_e($f['nombre']); ?></h6>
-                                <p><?php echo fh_e($f['direccion']); ?><?php if ($f['localidad'] !== ''): ?> · <?php echo fh_e($f['localidad']); ?><?php endif; ?><span class="fh-etiqueta"><?php echo fh_e($r['nombre']); ?></span></p>
+                                <p><?php echo fh_e(implode(' · ', array_filter(array($f['direccion'], $f['localidad']), 'strlen'))); ?><span class="fh-etiqueta"><?php echo fh_e($r['nombre']); ?></span></p>
                             </div>
                             <?php if ($f['telefono']): ?>
                             <a class="fh-tel" href="tel:<?php echo fh_e($f['telefono']['international']); ?>"><i class="fa fa-phone" aria-hidden="true"></i><?php echo fh_e($f['telefono']['national']); ?></a>

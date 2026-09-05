@@ -15,6 +15,10 @@ ok(fh_normalizar('Farmacia Río  Negro') === 'farmacia rio negro', 'minúsculas,
 ok(fh_normalizar('Ñandú Ünico') === 'nandu unico', 'ñ y diéresis');
 ok(fh_normalizar(null) === '', 'null → vacío');
 ok(fh_normalizar("Ri\xCC\x81o Negro") === 'rio negro', 'tilde combinante (NFD) también se quita');
+ok(fh_normalizar("Farmacia\xC2\xA0Central") === 'farmacia central', 'NBSP → espacio');
+if (class_exists('Normalizer')) {
+    ok(fh_normalizar('Ançã São') === 'anca sao', 'ç/ã con intl (Normalizer)');
+}
 
 echo "fh_telefono\n";
 ok(fh_telefono('{"national":"2924 1234","international":"+59829241234"}') === array('national' => '2924 1234', 'international' => '+59829241234'), 'json completo');
@@ -25,16 +29,15 @@ ok(fh_telefono('no es json') === null, 'basura');
 
 echo "fh_agrupar\n";
 $filas = array(
-    array('id' => '3', 'name' => 'Farmacia Rivera', 'addressStreet' => 'Sarandí', 'addressNumber' => '100', 'phone' => null, 'regionName' => 'Rivera', 'localityName' => 'Rivera'),
-    array('id' => '1', 'name' => 'Farmacia Aguada', 'addressStreet' => ' Av. Gral. Rondeau ', 'addressNumber' => '1795', 'phone' => '{"national":"2924 1234","international":"+59829241234"}', 'regionName' => 'Montevideo', 'localityName' => 'Montevideo'),
-    array('id' => '2', 'name' => 'Farmacia Fray Bentos', 'addressStreet' => '18 de Julio', 'addressNumber' => '', 'phone' => null, 'regionName' => 'Río Negro', 'localityName' => 'Fray Bentos'),
+    array('name' => 'Farmacia Rivera', 'addressStreet' => 'Sarandí', 'addressNumber' => '100', 'phone' => null, 'regionName' => 'Rivera', 'localityName' => 'Rivera'),
+    array('name' => 'Farmacia Aguada', 'addressStreet' => ' Av. Gral. Rondeau ', 'addressNumber' => '1795', 'phone' => '{"national":"2924 1234","international":"+59829241234"}', 'regionName' => 'Montevideo', 'localityName' => 'Montevideo'),
+    array('name' => 'Farmacia Fray Bentos', 'addressStreet' => '18 de Julio', 'addressNumber' => '', 'phone' => null, 'regionName' => 'Río Negro', 'localityName' => 'Fray Bentos'),
 );
 $d = fh_agrupar($filas);
 ok($d['total'] === 3, 'total');
 ok(array_keys($d['regiones']) === array('Montevideo', 'Río Negro', 'Rivera'), 'regiones ordenadas sin tildes (Río Negro antes que Rivera)');
 ok($d['regiones']['Montevideo']['cantidad'] === 1, 'cantidad por región');
 $f = $d['regiones']['Montevideo']['farmacias'][0];
-ok($f['id'] === 1, 'id entero');
 ok($f['direccion'] === 'Av. Gral. Rondeau 1795', 'dirección recortada');
 ok($f['busqueda'] === 'farmacia aguada montevideo av. gral. rondeau 1795', 'texto de búsqueda');
 ok($f['telefono']['international'] === '+59829241234', 'teléfono');
