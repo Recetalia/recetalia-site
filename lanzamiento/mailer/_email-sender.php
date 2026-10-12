@@ -24,10 +24,11 @@ function sendEmail($sendEmail){
 		);
 		$mail->SMTPAuth = true;
     $mail->SMTPSecure = 'ssl';
-    $mail->Host = 'mail01.iwtg.com';
+    // Credenciales SMTP fuera del código: las inyecta el compose desde el .env del server.
+    $mail->Host = getenv('SITE_SMTP_HOST') ?: 'mail01.iwtg.com';
     $mail->Port = 465;
-    $mail->Username = 'notificaciones@doctorconsultas.com';
-    $mail->Password = 'no1953fdc1';
+    $mail->Username = getenv('SITE_SMTP_USER');
+    $mail->Password = getenv('SITE_SMTP_PASS');
     $mail->SetFrom('notificaciones@doctorconsultas.com', 'Recetalia - Lanzamiento');
     $mail->Subject = $sendEmail['subject'];
 	$mail->IsHTML(true); // El correo se envía como HTML
@@ -35,8 +36,6 @@ function sendEmail($sendEmail){
 	//$mail->Body = "a ver";
 
     $mail->AddAddress("hello@doctorconsultas.com");
-	$mail->AddBCC("soporte@avisil.com");
-	//$mail->AddBCC("maurice@play.com.uy");
 
     if(!$mail->Send()) {
         //echo 'Mail error: '.$mail->ErrorInfo;
