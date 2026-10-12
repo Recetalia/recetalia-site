@@ -25,7 +25,7 @@ function sendEmail($sendEmail){
 		$mail->SMTPAuth = true;
     $mail->SMTPSecure = 'ssl';
     // Credenciales SMTP fuera del código: las inyecta el compose desde el .env del server.
-    $mail->Host = getenv('SITE_SMTP_HOST') ?: 'mail01.iwtg.com';
+    $mail->Host = getenv('SITE_SMTP_HOST') ?: 'mail.iwtg.com';
     $mail->Port = 465;
     $mail->Username = getenv('SITE_SMTP_USER');
     $mail->Password = getenv('SITE_SMTP_PASS');
