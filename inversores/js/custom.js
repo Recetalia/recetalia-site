@@ -43,7 +43,9 @@
 						email: $('#email').val(),
 						phone: $('#phone').val(),
 						cjp: $('#cjp').val(),
-						speciality: $('#speciality').val()
+						speciality: $('#speciality').val(),
+                            ft: $('#ft').val(),
+                            website: $('#website').val()
 					},
 					function(data) {
 						document.getElementById('message').innerHTML = data;

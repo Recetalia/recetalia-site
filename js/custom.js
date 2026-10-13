@@ -49,7 +49,9 @@
                     $.post(action, {
                             name: $('#name').val(),
                             email: $('#email').val(),
-                            comment: $('#comment').val()
+                            comment: $('#comment').val(),
+                            ft: $('#ft').val(),
+                            website: $('#website').val()
                         },
                         function(data) {
                             document.getElementById('message').innerHTML = data;

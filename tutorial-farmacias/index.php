@@ -126,6 +126,7 @@
                     <p>Envianos tu mensaje y te contestaremos a la brevedad..</p>
                 </div>
                 <form class="about-contact-form" action="mailer/contact.php" method="POST">
+                    <?php require_once __DIR__ . '/../inc/antispam.php'; echo antispam_campos(); ?>
                     <div class="row">
                         <div class="col-md-9">
                             <div class="row">
@@ -530,7 +531,7 @@
     <script src="js/isotope.pkgd.min.js"></script>
     <script src="js/jquery.slimmenu.min.js"></script>
     <script src="js/wow.min.js"></script>
-    <script src="js/custom.js"></script>
+    <script src="js/custom.js?v=20261013"></script>
     
     
     <script src="https://videoconsulta.iwtg.com/video-chat.umd.min.js"></script>
