@@ -9,13 +9,13 @@ function isEmail($email) {
 
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
-$name     = $_POST['name'];
-$lastname  = $_POST['lastname'];
-$email    = $_POST['email'];
-$phone    = $_POST['phone'];
-$cjp = $_POST['cjp'];
-$speciality = $_POST['speciality'];
-$comment = $_POST['comment'];
+$name     = $_POST['name'] ?? '';
+$lastname  = $_POST['lastname'] ?? '';
+$email    = $_POST['email'] ?? '';
+$phone    = $_POST['phone'] ?? '';
+$cjp = $_POST['cjp'] ?? '';
+$speciality = $_POST['speciality'] ?? '';
+$comment = $_POST['comment'] ?? '';
 
 if(trim($name) == '') {
 	echo '<div class="alert alert-error">Ingresa un nombre.</div>';
@@ -42,22 +42,25 @@ if(trim($name) == '') {
 } 
 
 
+require __DIR__ . '/../../inc/antispam.php';
+antispam_cortar_si_spam([$name, $lastname, $email, $phone, $cjp, $speciality, $comment], true);
+
 require '_email-sender.php';
 
 $sendEmail = array();
 $sendEmail['subject']	= "Desde el Inversores de Recetalia.com";
 $sendEmail['body'] = "Datos ingresados:<br /><br />
- Nombre: ".$name." ".$lastname." <br />
- Tel: ".$phone."   <br />
- Mail:  ".$email."   <br />
- CJP:  ".$cjp."   <br />
- Epecialidad:  ".$speciality."   <br />
- Comentarios:  ".$comment;
+ Nombre: ".antispam_html($name)." ".antispam_html($lastname)." <br />
+ Tel: ".antispam_html($phone)."   <br />
+ Mail:  ".antispam_html($email)."   <br />
+ CJP:  ".antispam_html($cjp)."   <br />
+ Epecialidad:  ".antispam_html($speciality)."   <br />
+ Comentarios:  ".antispam_html($comment);
 
 if(sendEmail($sendEmail)){
 		echo "<div class='alert alert-success'>";
 		echo "<h3>Email enviado Exitosamente.</h3>";
-		echo "<p>Muchas Gracias <strong>$name</strong>, Su mensaje ha sido enviado exitosamente.</p>";
+		echo "<p>Muchas Gracias <strong>".htmlspecialchars($name, ENT_QUOTES, 'UTF-8')."</strong>, Su mensaje ha sido enviado exitosamente.</p>";
 		echo "</div>";
 }else{
 	echo "El envio fallo";

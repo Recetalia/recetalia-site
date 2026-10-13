@@ -176,6 +176,7 @@ participación accionaria a un valor accesible..</p>
 contigo para darte más información.</p>
                 </div>
                 <form class="about-contact-form" action="mailer/contact.php" method="POST">
+                    <?php require_once __DIR__ . '/../inc/antispam.php'; echo antispam_campos(); ?>
                     <div class="row">
                         <div class="col-md-9">
                             <div class="row">
@@ -595,7 +596,7 @@ contigo para darte más información.</p>
     <script src="js/isotope.pkgd.min.js"></script>
     <script src="js/jquery.slimmenu.min.js"></script>
     <script src="js/wow.min.js"></script>
-    <script src="js/custom.js"></script>
+    <script src="js/custom.js?v=20261013"></script>
 </body>
 
 </html>

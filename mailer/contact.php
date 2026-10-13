@@ -9,10 +9,11 @@ function isEmail($email) {
 
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
-$name     = $_POST['name'];
-$email    = $_POST['email'];
-$phone    = $_POST['phone'];
-$comment    = $_POST['comment'];
+$name     = $_POST['name'] ?? '';
+$email    = $_POST['email'] ?? '';
+$phone    = $_POST['phone'] ?? '';
+$comment    = $_POST['comment'] ?? '';
+$lastname   = '';
 
 if(trim($name) == '') {
 	echo '<div class="alert alert-error">Ingresa un nombre.</div>';
@@ -27,19 +28,22 @@ if(trim($name) == '') {
 } 
 
 
+require __DIR__ . '/../inc/antispam.php';
+antispam_cortar_si_spam([$name, $email, $comment], true);
+
 require '_email-sender.php';
 
 $sendEmail = array();
 $sendEmail['subject']	= "Desde el Form de Contacto de Recetalia.com";
 $sendEmail['body'] = "Datos ingresados:<br /><br />
- Nombre: ".$name." ".$lastname." <br />
- Mail:  ".$email."   <br />
- Comentarios:  ".$comment;
+ Nombre: ".antispam_html($name)." ".antispam_html($lastname)." <br />
+ Mail:  ".antispam_html($email)."   <br />
+ Comentarios:  ".antispam_html($comment);
 
 if(sendEmail($sendEmail)){
 		echo "<div class='alert alert-success'>";
 		echo "<h3>Email enviado Exitosamente.</h3>";
-		echo "<p>Muchas Gracias <strong>$name</strong>, Su mensaje ha sido enviado exitosamente.</p>";
+		echo "<p>Muchas Gracias <strong>".htmlspecialchars($name, ENT_QUOTES, 'UTF-8')."</strong>, Su mensaje ha sido enviado exitosamente.</p>";
 		echo "</div>";
 }else{
 	echo "El envio fallo";
