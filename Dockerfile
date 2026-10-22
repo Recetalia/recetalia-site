@@ -5,7 +5,9 @@
 # (CentOS 7, kernel 3.10, sin getrandom()) necesita la variante buster —
 # el Apache de bullseye (APR 1.7) muere con "AH00141: Could not initialize
 # random number generator" en loop. El override vive en docker-compose.dev98.yml.
-ARG PHP_BASE=php:7.4-apache
+# Las dos son php:7.4-apache(-buster) recompiladas con el arreglo de PHP2Shell
+# (CVE-2026-109618/109619); receta en deploy-recetalia/php-parcheado/.
+ARG PHP_BASE=registrypre.recetadigital.uy/recetalia/php-base:7.4-apache-php2shell
 FROM ${PHP_BASE}
 
 # mod_rewrite por el .htaccess + extensión mysqli (farmacias-habilitadas.php
