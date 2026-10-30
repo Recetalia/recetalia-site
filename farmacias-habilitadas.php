@@ -8,31 +8,24 @@ require_once __DIR__ . '/inc/farmacias-habilitadas.php';
 $fhError = false;
 $fhDatos = array('total' => 0, 'regiones' => array());
 
-mysqli_report(MYSQLI_REPORT_OFF);
-$mysqli = mysqli_init();
-$mysqli->ssl_set(NULL, NULL, NULL, NULL, NULL);
-$conectado = @$mysqli->real_connect(
-    getenv('SITE_DB_HOST'),
-    getenv('SITE_DB_USER'),
-    getenv('SITE_DB_PASS'),
-    getenv('SITE_DB_NAME') ?: 'recetali_receta',
-    (int)(getenv('SITE_DB_PORT') ?: 25060),
-    NULL,
-    MYSQLI_CLIENT_SSL | MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT
-);
-if (!$conectado) {
-    error_log('farmacias-habilitadas: no se pudo conectar a la DB: ' . mysqli_connect_error());
+// PostgreSQL (base `recetalia`, schema `receta`) por PDO; SSL obligatorio (CA propia de DigitalOcean:
+// cifrado sí, verificación de la cadena no — sslmode=require, como el MYSQLI_CLIENT_SSL_DONT_VERIFY de antes).
+try {
+    $dsn = sprintf(
+        'pgsql:host=%s;port=%d;dbname=%s;sslmode=require',
+        getenv('SITE_DB_HOST'),
+        (int)(getenv('SITE_DB_PORT') ?: 25060),
+        getenv('SITE_DB_NAME') ?: 'recetalia'
+    );
+    $pdo = new PDO($dsn, getenv('SITE_DB_USER'), getenv('SITE_DB_PASS'), array(
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_TIMEOUT => 5,
+    ));
+    $fhDatos = fh_agrupar($pdo->query(FH_SQL)->fetchAll(PDO::FETCH_ASSOC));
+    $pdo = null;
+} catch (PDOException $e) {
+    error_log('farmacias-habilitadas: ' . $e->getMessage());
     $fhError = true;
-} else {
-    $mysqli->set_charset('utf8mb4');
-    $res = $mysqli->query(FH_SQL);
-    if ($res === false) {
-        error_log('farmacias-habilitadas: consulta fallida: ' . $mysqli->error);
-        $fhError = true;
-    } else {
-        $fhDatos = fh_agrupar($res->fetch_all(MYSQLI_ASSOC));
-    }
-    $mysqli->close();
 }
 
 $fhRegiones = $fhDatos['regiones'];

@@ -3,11 +3,11 @@
 // probarlas con tests/farmacias-habilitadas.test.php. Compatibles con PHP 7.4.
 
 const FH_SQL = "
-    SELECT pharmacy.name, pharmacy.addressStreet, pharmacy.addressNumber,
-           pharmacy.phone, regions.name AS regionName, localities.name AS localityName
-    FROM pharmacy
-    JOIN localities ON localities.id = pharmacy.addressLocalityId
-    JOIN regions ON regions.id = localities.region_id
+    SELECT pharmacy.name, pharmacy.addressStreet AS \"addressStreet\", pharmacy.addressNumber AS \"addressNumber\",
+           pharmacy.phone, regions.name AS \"regionName\", localities.name AS \"localityName\"
+    FROM receta.pharmacy
+    JOIN receta.localities ON localities.id = pharmacy.addressLocalityId
+    JOIN receta.regions ON regions.id = localities.region_id
     WHERE pharmacy.status = 'ACTIVE'
     ORDER BY pharmacy.name ASC";
 
