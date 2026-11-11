@@ -26,7 +26,7 @@ vd_head(array(
 ?>
 <main id="contenido" class="vd-main">
     <section class="vd-hero">
-        <div class="container vd-contenedor">
+        <div class="container vd-contenedor vd-contenedor-ancho">
             <h1 class="vd-h1">Medicamentos</h1>
             <div class="vd-columnas">
             <section class="vd-col" aria-labelledby="vd-col-medicos">
@@ -53,7 +53,7 @@ vd_head(array(
         </div>
     </section>
 
-    <div class="container vd-contenedor">
+    <div class="container vd-contenedor vd-contenedor-ancho">
         <p id="vd-contador" class="vd-contador" aria-live="polite"><?php
             if ($q !== '' && !$error) {
                 echo count($resultados) ? count($resultados) . (count($resultados) === 1 ? ' resultado' : ' resultados') : '';

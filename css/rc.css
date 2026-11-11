@@ -95,6 +95,8 @@ strong, b { font-weight: 700; }
 .rc-seccion-fondo { background: var(--rc-fondo); }
 .rc-seccion-cabeza { max-width: 680px; margin: 0 auto var(--rc-s6); text-align: center; }
 .rc-seccion-cabeza p { color: var(--rc-suave); font-size: 18px; margin: 0; }
+.rc-seccion-cabeza .rc-sobretitulo { color: var(--rc-primario); font-size: 14px; margin-bottom: var(--rc-s2); }
+.rc-seccion-cabeza h2 { margin: 0; }
 .rc-sobretitulo {
     font-family: var(--rc-f-titulo); font-size: 14px; font-weight: 600; letter-spacing: .06em;
     text-transform: uppercase; color: var(--rc-primario); margin: 0 0 var(--rc-s2);
@@ -372,7 +374,8 @@ html:not(.rc-js) .rc-hamburguesa { display: none; }
 .rc-med-tarjeta { display: flex; flex-direction: column; }
 .rc-med-tarjeta .rc-bajada { font-size: 17px; flex: 1; }
 .rc-med-tarjeta form { margin-top: auto; }
-.rc-med-fila { display: flex; gap: var(--rc-s2); }
+.rc-med-fila { display: flex; flex-direction: column; gap: var(--rc-s2); }
+@media (min-width: 480px) { .rc-med-fila { flex-direction: row; } }
 .rc-med-fila .rc-buscador { flex: 1; min-width: 0; }
 .rc-med-tarjeta-pacientes { background: var(--rc-tinta); border-color: var(--rc-tinta); color: #E7EEF0; }
 .rc-med-tarjeta-pacientes h3, .rc-med-tarjeta-pacientes .rc-sobretitulo { color: #fff; }

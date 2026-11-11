@@ -11,6 +11,7 @@
 .vd-main a { color: var(--rc-primario); text-decoration: underline; text-underline-offset: 3px; }
 .vd-main a:hover { color: var(--rc-primario-osc); }
 
+.vd-h1, .vd-h2, .vd-h3 { font-family: var(--rc-f-titulo); color: var(--rc-tinta); font-weight: 600; letter-spacing: -0.01em; }
 .vd-h1 { font-size: 30px; line-height: 1.2; font-weight: 700; margin: 0 0 var(--rc-s2); }
 .vd-h2 { font-size: 22px; line-height: 1.3; margin: 0 0 var(--rc-s3); }
 .vd-h3 { font-size: 18px; line-height: 1.35; margin: 0 0 var(--rc-s2); }
@@ -25,8 +26,9 @@
 .vd-bajada { font-size: 18px; line-height: 1.6; color: var(--rc-suave); margin: 0 0 var(--rc-s5); max-width: 62ch; }
 .vd-etiqueta { display: block; font-weight: 600; color: var(--rc-tinta); margin-bottom: 6px; font-size: 16px; }
 .vd-buscador-fila { display: flex; gap: var(--rc-s2); }
+.vd-buscador-fila > input { flex: 1 1 auto; }
 .vd-buscador input, #vr-buscar, #vr-alergias, #vr-enf {
-    flex: 1; min-width: 0; width: 100%; height: 52px; padding: 0 14px 0 44px; font-size: 17px; color: var(--rc-texto);
+    min-width: 0; width: 100%; height: 52px; padding: 0 14px 0 44px; font-size: 17px; color: var(--rc-texto);
     border: 1.5px solid var(--rc-borde-campo); border-radius: var(--rc-radio); background: #fff;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2356636A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E");
     background-repeat: no-repeat; background-position: 14px center;
@@ -135,7 +137,7 @@
 .vd-404 { padding-top: var(--rc-s7); min-height: 50vh; }
 
 /* ---- Landing en dos columnas (Médicos / Pacientes) ------------------------------------ */
-.vd-hero .vd-contenedor { max-width: 1120px; }
+.vd-contenedor-ancho { max-width: 1120px; }
 .vd-columnas { display: grid; grid-template-columns: 1fr; gap: var(--rc-s4); margin-top: var(--rc-s4); }
 @media (min-width: 900px) { .vd-columnas { grid-template-columns: 1fr 1fr; gap: var(--rc-s5); } }
 .vd-col {
@@ -157,6 +159,10 @@
 .vd-col-pacientes .vd-col-etiqueta { color: #8FD9E3; }
 .vd-col .vd-bajada { font-size: 17px; margin-bottom: var(--rc-s5); flex: 1; }
 .vd-col .vd-buscador-fila .vd-boton { flex: none; }
+@media (max-width: 479.98px) {
+    .vd-buscador-fila { flex-direction: column; }
+    .vd-buscador-fila .vd-boton { width: 100%; }
+}
 
 /* ---- Verificador de interacciones ------------------------------------------------------ */
 .vr-paso {
@@ -245,6 +251,13 @@
     border-radius: 6px;
 }
 .vr-detalle summary:hover { color: var(--rc-primario-osc); }
+.vr-detalle summary { list-style: none; gap: 10px; }
+.vr-detalle summary::-webkit-details-marker { display: none; }
+.vr-detalle summary::after {
+    content: ""; width: 7px; height: 7px; margin-top: -4px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+    transform: rotate(45deg); transition: transform var(--rc-dur) ease;
+}
+.vr-detalle[open] summary::after { transform: rotate(-135deg); margin-top: 4px; }
 .vr-detalle ul { margin: 6px 0 0; padding-left: 18px; font-size: 15px; line-height: 1.55; color: var(--rc-suave); }
 .vr-fuente { font-style: italic; }
 .vr-email-estado { font-size: 16px; color: var(--rc-texto); margin: var(--rc-s5) 0; }

@@ -159,7 +159,7 @@ rc_head(array(
         <div class="rc-container">
             <div class="rc-banda">
                 <div>
-                    <h2 id="farmacias-titulo">+600 farmacias registradas en todo el país</h2>
+                    <h2 id="farmacias-titulo">Farmacias en todo el país</h2>
                     <p>Pedile Recetalia a tu médico.</p>
                 </div>
                 <a class="rc-btn rc-btn-primario rc-btn-grande" href="/farmacias-habilitadas.php"><?php echo rc_icono('map-pin'); ?>Ver farmacias habilitadas</a>

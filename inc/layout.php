@@ -77,7 +77,7 @@ function rc_head(array $meta) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
-    <link rel="stylesheet" href="/css/rc.css?v=1" />
+    <link rel="stylesheet" href="/css/rc.css?v=2" />
     <?php if (!empty($meta['css'])): foreach ($meta['css'] as $hoja): ?>
     <link rel="stylesheet" href="<?php echo rc_e($hoja); ?>" />
     <?php endforeach; endif; ?>
@@ -105,7 +105,7 @@ function rc_head(array $meta) {
 function rc_pie($scriptsExtra = '', $chat = false) {
     include __DIR__ . '/../footer.php';
     ?>
-    <script src="/js/rc.js?v=1" defer></script>
+    <script src="/js/rc.js?v=2" defer></script>
     <?php echo $scriptsExtra; ?>
     <?php if ($chat): ?>
     <script src="https://videoconsulta.iwtg.com/video-chat.umd.min.js" defer></script>

@@ -17,7 +17,7 @@ require_once __DIR__ . '/inc/layout.php';
                 <ul>
                     <li><a href="/">Inicio</a></li>
                     <li><a href="/medicamentos/">Medicamentos</a></li>
-                    <li><a href="/medicamentos/interacciones/">Interacciones entre medicamentos</a></li>
+                    <li><a href="/medicamentos/interacciones/">Interacciones</a></li>
                     <li><a href="/farmacias-habilitadas.php">Farmacias habilitadas</a></li>
                     <li><a href="/tutorial-farmacias/">Tutorial para farmacias</a></li>
                 </ul>
