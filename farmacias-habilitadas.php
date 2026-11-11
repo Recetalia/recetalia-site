@@ -34,144 +34,75 @@ $fhTotal = $fhDatos['total'];
 function fh_e($s) {
     return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8');
 }
+
+require_once __DIR__ . '/inc/layout.php';
+rc_head(array(
+    'title' => 'Farmacias habilitadas | Recetalia',
+    'description' => 'Farmacias habilitadas para dispensar recetas digitales de Recetalia en todo el Uruguay.',
+    'canonical' => rtrim(getenv('SITE_PUBLIC_URL') ?: 'https://recetalia.com', '/') . '/farmacias-habilitadas.php',
+));
 ?>
-<!DOCTYPE HTML>
-<html lang="es">
-
-<head>
-    <base href="https://recetalia.com/">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="Farmacias habilitadas para dispensar recetas digitales de Recetalia en todo el Uruguay." />
-    <meta name="author" content="Recetalia" />
-    <title>Recetalia - Farmacias habilitadas</title>
-    <link rel="shortcut icon" href="images/favicon-recetalia.png" type="image/x-icon">
-    <link rel="icon" href="images/favicon-recetalia.png" type="image/x-icon">
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/font-awesome.min.css" />
-    <link rel="stylesheet" href="css/slimmenu.min.css" />
-    <link rel="stylesheet" href="css/animate.min.css" />
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="css/responsive.css" />
-    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700" rel="stylesheet">
-
-    <style>
-        /* Estilos propios del listado. Sólo colores que ya usa styles.css. */
-        .fh-buscar { max-width: 560px; margin: 0 auto 40px; position: relative; }
-        .fh-buscar .form-control { height: 48px; padding-left: 44px; font-size: 15px; }
-        .fh-buscar .fa { position: absolute; left: 16px; top: 16px; color: #a6a6a6; }
-
-        /* Acordeón: un bloque blanco por departamento, cabezal clickeable + lista. */
-        .fh-region { background: #fff; box-shadow: -1px 0px 30px 0px rgba(0, 0, 0, 0.05); margin-bottom: 10px; }
-        .fh-dep { display: flex; justify-content: space-between; align-items: center; width: 100%;
-            padding: 14px 20px; border: 0; border-left: 3px solid transparent; background: none;
-            text-align: left; font-family: inherit; font-size: 15px; font-weight: 500; color: #212832; cursor: pointer; }
-        .fh-dep:hover { border-left-color: #dbdbdb; background: #F4F6F8; }
-        .fh-region.abierta .fh-dep { border-left-color: #2EA1B1; color: #2EA1B1; }
-        .fh-cantidad { display: inline-block; min-width: 28px; text-align: center; margin-right: 14px;
-            padding: 1px 10px; border-radius: 12px; background: #F4F6F8; color: #7d7d7d; font-size: 12px; font-weight: 400; }
-        .fh-region.abierta .fh-cantidad { color: #2EA1B1; }
-        .fh-dep .fa-chevron-down { font-size: 12px; color: #a6a6a6; }
-        .fh-region.abierta .fa-chevron-down { transform: rotate(180deg); color: #2EA1B1; }
-        .fh-dep, .fh-cantidad { transition: all 0.15s ease-in-out; }
-        .fh-dep .fa-chevron-down { transition: transform 0.2s ease-in-out, color 0.15s ease-in-out; }
-
-        /* Cerrada por defecto; el script fija max-height al alto real para animar el despliegue. */
-        .fh-lista { list-style: none; padding: 0; margin: 0; max-height: 0; overflow: hidden;
-            transition: max-height 0.3s ease-in-out; }
-        .fh-region.abierta .fh-lista { border-top: 1px solid #e5e5e5; }
-        .fh-item { display: flex; justify-content: space-between; align-items: center; gap: 16px;
-            padding: 14px 20px 14px 23px; border-bottom: 1px solid #e5e5e5; }
-        .fh-item:last-child { border-bottom: 0; }
-        .fh-item h6 { font-size: 15px; font-weight: 500; margin: 0 0 2px; color: #212832; }
-        .fh-item p { font-size: 13px; line-height: 20px; margin: 0; color: #7d7d7d; }
-        .fh-item .fh-tel { white-space: nowrap; font-size: 14px; color: #2EA1B1; }
-        .fh-item .fh-tel .fa { margin-right: 6px; }
-
-        .fh-contador { font-size: 14px; color: #7d7d7d; margin: 0 0 12px; }
-        .fh-vacio, .fh-error { background: #fff; padding: 30px 20px; text-align: center; color: #7d7d7d; }
-        [hidden] { display: none !important; }
-
-        @media (max-width: 767px) {
-            .fh-item { flex-direction: column; align-items: flex-start; gap: 4px; padding: 12px 16px 12px 19px; }
-            .fh-dep { padding: 12px 16px; }
-            .fh-buscar { margin-bottom: 24px; }
-        }
-    </style>
-</head>
-
-<body>
-    <?php include_once("header.php"); ?>
-
-    <section class="services-section padding-60-0 bg-color3 section-spacing">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="section-title margin-bottom-60 text-center">
-                        <h4>Farmacias habilitadas</h4>
-                        <?php if (!$fhError): ?>
-                        <p><?php echo fh_plural($fhTotal, 'farmacia habilitada', 'farmacias habilitadas'); ?> en todo el país</p>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
-
-            <?php if ($fhError): ?>
-            <div class="row">
-                <div class="col-md-8 col-lg-6 mx-auto">
-                    <p class="fh-error">No pudimos cargar el listado en este momento. Volvé a intentarlo en unos minutos.</p>
-                </div>
-            </div>
-            <?php else: ?>
-            <div class="fh-buscar">
-                <i class="fa fa-search" aria-hidden="true"></i>
-                <input type="search" id="fh-buscar" class="form-control" autocomplete="off"
-                       placeholder="Buscar por nombre, localidad o dirección" aria-label="Buscar farmacia">
-            </div>
-
-            <div class="row">
-                <div class="col-lg-8 col-md-10 mx-auto">
-                    <p id="fh-contador" class="fh-contador" aria-live="polite" hidden></p>
-                    <div id="fh-acordeon">
-                        <?php $i = 0; foreach ($fhRegiones as $r): $i++; ?>
-                        <section class="fh-region" data-region="<?php echo fh_e($r['nombre']); ?>">
-                            <button type="button" class="fh-dep" aria-expanded="false" aria-controls="fh-lista-<?php echo $i; ?>">
-                                <span><?php echo fh_e($r['nombre']); ?></span>
-                                <span><span class="fh-cantidad"><?php echo $r['cantidad']; ?></span><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
-                            </button>
-                            <ul class="fh-lista" id="fh-lista-<?php echo $i; ?>">
-                                <?php foreach ($r['farmacias'] as $f): ?>
-                                <li class="fh-item" data-search="<?php echo fh_e($f['busqueda']); ?>">
-                                    <div>
-                                        <h6><?php echo fh_e($f['nombre']); ?></h6>
-                                        <p><?php echo fh_e(implode(' · ', array_filter(array($f['direccion'], $f['localidad']), 'strlen'))); ?></p>
-                                    </div>
-                                    <?php if ($f['telefono']): ?>
-                                    <a class="fh-tel" href="tel:<?php echo fh_e($f['telefono']['international']); ?>"><i class="fa fa-phone" aria-hidden="true"></i><?php echo fh_e($f['telefono']['national']); ?></a>
-                                    <?php endif; ?>
-                                </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </section>
-                        <?php endforeach; ?>
-                    </div>
-                    <p id="fh-vacio" class="fh-vacio" hidden>No encontramos farmacias con ese nombre.</p>
-                </div>
-            </div>
+<main id="contenido">
+    <section class="rc-pagina-cabeza" aria-labelledby="fh-titulo">
+        <div class="rc-container rc-angosto">
+            <nav class="rc-migas" aria-label="Ruta de navegación">
+                <ol>
+                    <li><a href="/">Inicio</a><?php echo rc_icono('chevron-right'); ?></li>
+                    <li><span aria-current="page">Farmacias habilitadas</span></li>
+                </ol>
+            </nav>
+            <h1 id="fh-titulo">Farmacias habilitadas</h1>
+            <?php if (!$fhError): ?>
+            <p class="rc-bajada"><?php echo fh_plural($fhTotal, 'farmacia habilitada', 'farmacias habilitadas'); ?> en todo el país</p>
             <?php endif; ?>
         </div>
     </section>
-
-    <?php include_once("footer.php"); ?>
-
-    <script src="js/jquery-3.2.1.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.slimmenu.min.js"></script>
-    <script src="js/wow.min.js"></script>
-    <script src="js/custom.js"></script>
-
-    <?php if (!$fhError): ?>
+    <section class="rc-seccion fh-seccion">
+        <div class="rc-container rc-angosto">
+            <?php if ($fhError): ?>
+            <p class="rc-alerta rc-alerta-error fh-error"><?php echo rc_icono('alert'); ?><span>No pudimos cargar el listado en este momento. Volvé a intentarlo en unos minutos.</span></p>
+            <?php else: ?>
+            <div class="rc-campo fh-buscar">
+                <label class="rc-label" for="fh-buscar">Buscar farmacia</label>
+                <div class="rc-buscador">
+                    <?php echo rc_icono('search'); ?>
+                    <input type="search" id="fh-buscar" class="rc-input" autocomplete="off"
+                           placeholder="Nombre, localidad o dirección">
+                </div>
+            </div>
+            <p id="fh-contador" class="fh-contador" aria-live="polite" hidden></p>
+            <div id="fh-acordeon">
+                <?php $i = 0; foreach ($fhRegiones as $r): $i++; ?>
+                <section class="fh-region rc-acordeon-item" data-region="<?php echo fh_e($r['nombre']); ?>">
+                    <button type="button" class="fh-dep rc-acordeon-cabeza" aria-expanded="false" aria-controls="fh-lista-<?php echo $i; ?>">
+                        <span><?php echo fh_e($r['nombre']); ?></span>
+                        <span class="fh-dep-der"><span class="fh-cantidad"><?php echo $r['cantidad']; ?><span class="rc-sr"> farmacias</span></span><?php echo rc_icono('chevron-down'); ?></span>
+                    </button>
+                    <ul class="fh-lista" id="fh-lista-<?php echo $i; ?>">
+                        <?php foreach ($r['farmacias'] as $f): ?>
+                        <li class="fh-item" data-search="<?php echo fh_e($f['busqueda']); ?>">
+                            <div>
+                                <h3 class="fh-nombre"><?php echo fh_e($f['nombre']); ?></h3>
+                                <p><?php echo fh_e(implode(' · ', array_filter(array($f['direccion'], $f['localidad']), 'strlen'))); ?></p>
+                            </div>
+                            <?php if ($f['telefono']): ?>
+                            <a class="fh-tel" href="tel:<?php echo fh_e($f['telefono']['international']); ?>"><?php echo rc_icono('phone', 'rc-icono rc-icono-chico'); ?><?php echo fh_e($f['telefono']['national']); ?></a>
+                            <?php endif; ?>
+                        </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </section>
+                <?php endforeach; ?>
+            </div>
+            <p id="fh-vacio" class="rc-alerta fh-vacio" hidden>No encontramos farmacias con ese nombre.</p>
+            <?php endif; ?>
+        </div>
+    </section>
+</main>
+<?php
+$fhScript = '';
+if (!$fhError) {
+    ob_start(); ?>
     <script>
     (function () {
         var input = document.getElementById('fh-buscar');
@@ -235,11 +166,7 @@ function fh_e($s) {
         }
     })();
     </script>
-    <?php endif; ?>
-
-    <script src="https://videoconsulta.iwtg.com/video-chat.umd.min.js"></script>
-    <link rel="stylesheet" href="https://videoconsulta.iwtg.com/video-chat.css">
-    <video-chat bottom right text-color="#ffffff" primary-color="#13a0b2" public-key="QXfeToaWrocXmZosEiwJlXcoy"></video-chat>
-</body>
-
-</html>
+<?php
+    $fhScript = ob_get_clean();
+}
+rc_pie($fhScript, true);
