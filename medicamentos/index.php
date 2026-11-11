@@ -30,7 +30,7 @@ vd_head(array(
             <h1 class="vd-h1">Medicamentos</h1>
             <div class="vd-columnas">
             <section class="vd-col" aria-labelledby="vd-col-medicos">
-            <p class="vd-col-etiqueta">Médicos</p>
+            <p class="vd-col-etiqueta"><?php echo rc_icono('stethoscope'); ?>Médicos</p>
             <h2 id="vd-col-medicos" class="vd-h2">Información técnica de medicamentos</h2>
             <p class="vd-bajada">Buscá cualquier medicamento registrado en Uruguay y consultá su ficha técnica de referencia: indicaciones, posología, contraindicaciones e interacciones.</p>
             <form class="vd-buscador" action="/medicamentos/" method="get" role="search">
@@ -44,10 +44,10 @@ vd_head(array(
             </form>
             </section>
             <section class="vd-col vd-col-pacientes" aria-labelledby="vd-col-pacientes">
-            <p class="vd-col-etiqueta">Pacientes</p>
+            <p class="vd-col-etiqueta"><?php echo rc_icono('heart-pulse'); ?>Pacientes</p>
             <h2 id="vd-col-pacientes" class="vd-h2">Mis medicamentos</h2>
             <p class="vd-bajada">¿Tomás más de un medicamento? Revisá si se llevan bien entre sí y con tu situación (edad, embarazo, alergias, enfermedades), explicado en lenguaje simple.</p>
-            <p><a class="vd-boton" href="/medicamentos/interacciones/">Revisar mis medicamentos</a></p>
+            <p><a class="vd-boton" href="/medicamentos/interacciones/"><?php echo rc_icono('list-check'); ?>Revisar mis medicamentos</a></p>
             </section>
             </div>
         </div>

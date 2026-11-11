@@ -3,16 +3,7 @@
 (function () {
     'use strict';
 
-    // ---- Menú y header fijo (custom.js no se carga: inicializa carruseles que acá no existen) ----
-    if (window.jQuery) {
-        var $ = window.jQuery;
-        if ($.fn.slimmenu) {
-            $('.slimmenu').slimmenu({ resizeWidth: '800', collapserTitle: 'Menú', animSpeed: 'medium', indentChildren: true });
-        }
-        $(window).on('scroll', function () {
-            $('.themeix-header-navigation').toggleClass('fixed-navigation', $(this).scrollTop() > 90);
-        });
-    }
+    // El menú y el header los maneja js/rc.js (layout común).
 
     // ---- Secciones plegables -------------------------------------------------------------
     // Se pliegan sólo si el texto supera el alto de ~5 líneas; si no, no hace falta el botón.

@@ -187,6 +187,7 @@ $err = function ($campo) use ($errores) {
                 </div>
             </fieldset>
             <div class="vr-aviso-caja" role="note">
+                <?php echo rc_icono('alert'); ?>
                 <p><?php echo vd_e(VR_AVISO); ?></p>
             </div>
             <div class="vr-consentimiento">
@@ -195,8 +196,10 @@ $err = function ($campo) use ($errores) {
             <?php // Consentimiento por acción afirmativa: tocar el botón, con el texto al lado (decisión de Pablo, 2026-11-11).
                   // El campo oculto prueba que el envío salió de este formulario, que muestra el texto. ?>
             <input type="hidden" name="consentimiento" value="<?php echo vd_e(VR_CONSENTIMIENTO_VERSION); ?>">
+            <div class="vr-enviar-fila">
             <button type="submit" class="vd-boton vr-enviar" aria-describedby="vr-consent-texto">Ver interacciones</button>
             <p id="vr-consent-texto" class="vr-consent-texto">Al tocar <strong>Ver interacciones</strong> aceptás que Recetalia guarde estos datos (incluidos datos de salud) para darte el resultado y enviártelo por email, según la <a href="/privacy/" target="_blank" rel="noopener">política de privacidad</a>. Podés pedir que los borren en cualquier momento.</p>
+            </div>
             <?php echo $err('consentimiento'); ?>
         </form>
     <?php endif; ?>

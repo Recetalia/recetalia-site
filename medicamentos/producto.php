@@ -90,7 +90,7 @@ vd_head(array(
         </nav>
 
         <header class="vd-producto">
-            <p class="vd-sobretitulo">Medicamento registrado en Uruguay</p>
+            <p class="vd-sobretitulo"><?php echo rc_icono('pill', 'rc-icono rc-icono-chico'); ?>Medicamento registrado en Uruguay</p>
             <h1 class="vd-h1"><?php echo vd_e($nombre); ?></h1>
             <p class="vd-generico"><?php echo vd_e(vd_nombre($generico)); ?></p>
             <dl class="vd-datos">
@@ -137,7 +137,7 @@ vd_head(array(
                 echo $fecha ? ', actualizada el ' . vd_e($fecha) : ''; ?>.
                 Es la referencia española del principio activo y puede diferir del producto registrado en Uruguay.
                 <?php if (!empty($fuente['url_ficha'])): ?>
-                <a href="<?php echo vd_e($fuente['url_ficha']); ?>" target="_blank" rel="noopener nofollow">Ver ficha completa en la AEMPS<span class="vd-sr"> (abre en otra pestaña)</span> ↗</a>
+                <a href="<?php echo vd_e($fuente['url_ficha']); ?>" target="_blank" rel="noopener nofollow">Ver ficha completa en la AEMPS<span class="vd-sr"> (abre en otra pestaña)</span><?php echo rc_icono('external'); ?></a>
                 <?php endif; ?>
             </p>
             <?php endif; ?>
