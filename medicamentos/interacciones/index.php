@@ -96,7 +96,6 @@ $err = function ($campo) use ($errores) {
             </nav>
             <h1 class="vd-h1">¿Los medicamentos que tomás se llevan bien?</h1>
             <p class="vd-bajada">Elegí los medicamentos que tomás, contanos algunos datos y te mostramos las posibles interacciones y advertencias, explicadas en lenguaje simple. Te mandamos una copia por email.</p>
-            <?php if (!VR_MENSAJES_APROBADOS): ?><p class="vr-borrador">Borrador: los textos para pacientes están pendientes de revisión médica.</p><?php endif; ?>
         </div>
     </section>
 

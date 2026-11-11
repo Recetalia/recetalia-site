@@ -37,7 +37,6 @@ function vr_enviar_resultado($email, array $productos, array $alertas, $bajaToke
         . '<p style="font-size:15px;line-height:1.5;">Medicamentos revisados: ' . vd_e($lista) . '.</p>'
         . '<p style="font-size:17px;font-weight:bold;color:#212832;">' . vd_e(vr_titulo_resumen($resumen)) . '</p>'
         . ($alertas ? vr_html_alertas($alertas, true) : '<p style="font-size:15px;line-height:1.5;">' . vd_e(VR_SIN_HALLAZGOS) . '</p>')
-        . (VR_MENSAJES_APROBADOS ? '' : '<p style="font-size:13px;color:#B54708;">Borrador: los textos de este informe están pendientes de revisión médica.</p>')
         . '<p style="font-size:14px;font-weight:bold;line-height:1.5;color:#212832;">' . vd_e(VR_AVISO) . '</p>'
         . '<p style="font-size:12px;line-height:1.5;color:#5B636E;">' . vd_e(vr_fuentes_usadas($alertas)) . '</p>'
         . '<p style="font-size:12px;line-height:1.5;color:#5B636E;">Recibiste este email porque lo pediste en recetalia.com. '

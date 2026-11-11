@@ -1,8 +1,8 @@
 <?php
 // Mensajes para pacientes del verificador de interacciones: uno por tipo de alerta × gravedad.
 // Son los ÚNICOS textos "en lenguaje simple": no se genera texto por alerta. Los redactó el equipo y
-// los tiene que aprobar un médico (Daniel Carbajal) antes de PROD; mientras VR_MENSAJES_APROBADOS sea
-// false, la página los marca como borrador. Cambiar un texto = subir VR_MENSAJES_VERSION (se guarda
+// los tiene que aprobar un médico (Daniel Carbajal) antes de PROD (VR_MENSAJES_APROBADOS). Desde 2026-11-11 la
+// página ya no muestra la marca de borrador (pedido de Pablo); la aprobación sigue siendo requisito de PROD. Cambiar un texto = subir VR_MENSAJES_VERSION (se guarda
 // con cada consulta). Spec: doc/plans/2026-11-11-verificador-pacientes-design.md.
 
 const VR_MENSAJES_VERSION = '2026-11-11-borrador';
