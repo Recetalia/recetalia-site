@@ -162,3 +162,20 @@
 .vr-email-estado { font-size: 15px; color: var(--vd-texto); margin: 18px 0; }
 
 .vd [hidden] { display: none !important; }
+
+/* Landing en dos columnas (Médicos / Pacientes) */
+.vd-hero .vd-contenedor { max-width: 1080px; }
+.vd-columnas { display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 12px; }
+@media (min-width: 900px) { .vd-columnas { grid-template-columns: 1fr 1fr; } }
+.vd-col { background: #fff; border: 1px solid var(--vd-borde); border-top: 4px solid var(--vd-acento); padding: 22px 22px 18px; }
+.vd-col-pacientes { border-top-color: var(--vd-oscuro); }
+.vd-col-etiqueta { margin: 0 0 4px; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--vd-acento); }
+.vd-col-pacientes .vd-col-etiqueta { color: var(--vd-oscuro); }
+.vd-col .vd-bajada { font-size: 16px; margin-bottom: 16px; }
+
+/* Aviso en recuadro + consentimiento chico debajo (pedido de Daniel, 2026-11-11) */
+.vr-aviso-caja { border: 2px solid var(--vd-oscuro); background: var(--vd-fondo); padding: 14px 16px; margin: 4px 0 12px; }
+.vr-aviso-caja p { margin: 0; font-size: 15px; line-height: 1.55; font-weight: 600; color: var(--vd-oscuro); }
+.vr-consentimiento label { font-size: 13px; line-height: 1.45; min-height: 36px; padding-top: 6px; color: var(--vd-suave); }
+.vr-consentimiento input { width: 18px; height: 18px; }
+.vr-deshabilitado label { color: #9AA1A9; cursor: not-allowed; }

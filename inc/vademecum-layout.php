@@ -35,7 +35,7 @@ function vd_head(array $meta) {
     <link rel="stylesheet" href="/css/slimmenu.min.css" />
     <link rel="stylesheet" href="/styles.css" />
     <link rel="stylesheet" href="/css/responsive.css" />
-    <link rel="stylesheet" href="/css/vademecum.css?v=3" />
+    <link rel="stylesheet" href="/css/vademecum.css?v=4" />
     <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700&display=swap" rel="stylesheet">
     <?php if (!empty($meta['jsonld'])): ?>
     <script type="application/ld+json"><?php echo json_encode($meta['jsonld'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG); ?></script>

@@ -28,7 +28,11 @@ vd_head(array(
     <section class="vd-hero">
         <div class="container vd-contenedor">
             <h1 class="vd-h1">Medicamentos</h1>
-            <p class="vd-bajada">Buscá un medicamento registrado en Uruguay por su nombre comercial o su principio activo y consultá su ficha técnica de referencia.</p>
+            <div class="vd-columnas">
+            <section class="vd-col" aria-labelledby="vd-col-medicos">
+            <p class="vd-col-etiqueta">Médicos</p>
+            <h2 id="vd-col-medicos" class="vd-h2">Información técnica de medicamentos</h2>
+            <p class="vd-bajada">Buscá cualquier medicamento registrado en Uruguay y consultá su ficha técnica de referencia: indicaciones, posología, contraindicaciones e interacciones.</p>
             <form class="vd-buscador" action="/medicamentos/" method="get" role="search">
                 <label for="vd-q" class="vd-etiqueta">Nombre o principio activo</label>
                 <div class="vd-buscador-fila">
@@ -38,6 +42,14 @@ vd_head(array(
                 </div>
                 <p id="vd-ayuda" class="vd-ayuda">Escribí al menos 2 letras. No hace falta poner tildes.</p>
             </form>
+            </section>
+            <section class="vd-col vd-col-pacientes" aria-labelledby="vd-col-pacientes">
+            <p class="vd-col-etiqueta">Pacientes</p>
+            <h2 id="vd-col-pacientes" class="vd-h2">Mis medicamentos</h2>
+            <p class="vd-bajada">¿Tomás más de un medicamento? Revisá si se llevan bien entre sí y con tu situación (edad, embarazo, alergias, enfermedades), explicado en lenguaje simple.</p>
+            <p><a class="vd-boton" href="/medicamentos/interacciones/">Revisar mis medicamentos</a></p>
+            </section>
+            </div>
         </div>
     </section>
 
@@ -60,12 +72,6 @@ vd_head(array(
         <?php elseif ($q !== '' && !$resultados): ?>
             <p class="vd-estado" id="vd-vacio">No encontramos medicamentos con «<?php echo vd_e($q); ?>». Probá con el principio activo o con menos letras.</p>
         <?php endif; ?>
-
-        <section class="vr-llamado" aria-labelledby="vr-llamado-t">
-            <h2 id="vr-llamado-t" class="vd-h2">¿Tomás más de un medicamento?</h2>
-            <p>Revisá si se llevan bien entre sí y con tu situación (edad, embarazo, alergias, enfermedades).</p>
-            <p><a class="vd-boton" href="/medicamentos/interacciones/">Revisar interacciones</a></p>
-        </section>
 
         <aside class="vd-fuente vd-fuente-inicio" aria-label="Sobre esta información">
             <h2 class="vd-h3">De dónde sale esta información</h2>

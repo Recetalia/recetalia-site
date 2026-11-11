@@ -157,9 +157,13 @@ $err = function ($campo) use ($errores) {
                         <?php echo $err('sexo'); ?>
                     </div>
                 </div>
-                <div id="vr-femenino" class="vr-opciones vr-checks">
-                    <label><input type="checkbox" name="embarazo" value="1"<?php echo $datos['embarazo'] ? ' checked' : ''; ?>> Estoy embarazada</label>
-                    <label><input type="checkbox" name="lactancia" value="1"<?php echo $datos['lactancia'] ? ' checked' : ''; ?>> Estoy amamantando</label>
+                <div id="vr-femenino" class="vr-campo">
+                    <span class="vd-etiqueta">Embarazo y lactancia</span>
+                    <div class="vr-opciones vr-checks">
+                        <label><input type="checkbox" name="embarazo" value="1"<?php echo $datos['embarazo'] ? ' checked' : ''; ?>> Estoy embarazada</label>
+                        <label><input type="checkbox" name="lactancia" value="1"<?php echo $datos['lactancia'] ? ' checked' : ''; ?>> Estoy amamantando</label>
+                    </div>
+                    <p class="vr-ayuda" id="vr-femenino-ayuda">Se habilita al elegir sexo femenino.</p>
                 </div>
                 <div class="vr-campo">
                     <label for="vr-alergias" class="vd-etiqueta">Alergias a medicamentos <span class="vr-opcional">(opcional)</span></label>
@@ -182,16 +186,18 @@ $err = function ($campo) use ($errores) {
                     <p class="vr-ayuda">Te mandamos una copia del resultado.</p>
                     <?php echo $err('email'); ?>
                 </div>
-                <div class="vr-consentimiento">
-                    <label><input type="checkbox" name="consentimiento" value="1" required> Acepto que Recetalia guarde estos datos (incluidos datos de salud) para darme el resultado y enviármelo por email, según la <a href="/privacy/" target="_blank" rel="noopener">política de privacidad</a>. Puedo pedir que los borren en cualquier momento.</label>
-                    <?php echo $err('consentimiento'); ?>
-                    <label><input type="checkbox" name="novedades" value="1"<?php echo $datos['novedades'] ? ' checked' : ''; ?>> Quiero recibir novedades de Recetalia por email <span class="vr-opcional">(opcional)</span>.</label>
-                </div>
             </fieldset>
+            <div class="vr-aviso-caja" role="note">
+                <p><?php echo vd_e(VR_AVISO); ?></p>
+            </div>
+            <div class="vr-consentimiento">
+                <label><input type="checkbox" name="consentimiento" value="1" required> Acepto que Recetalia guarde estos datos (incluidos datos de salud) para darme el resultado y enviármelo por email, según la <a href="/privacy/" target="_blank" rel="noopener">política de privacidad</a>. Puedo pedir que los borren en cualquier momento.</label>
+                <?php echo $err('consentimiento'); ?>
+                <label><input type="checkbox" name="novedades" value="1"<?php echo $datos['novedades'] ? ' checked' : ''; ?>> Quiero recibir novedades de Recetalia por email (opcional).</label>
+            </div>
             <button type="submit" class="vd-boton vr-enviar">Ver interacciones</button>
-            <p class="vd-aviso vr-aviso-form"><?php echo vd_e(VR_AVISO); ?></p>
         </form>
     <?php endif; ?>
     </div>
 </main>
-<?php vd_pie('<script src="/js/verificador.js?v=2" defer></script>'); ?>
+<?php vd_pie('<script src="/js/verificador.js?v=3" defer></script>'); ?>

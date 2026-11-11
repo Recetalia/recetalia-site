@@ -157,11 +157,13 @@
 
     // ---- Embarazo / lactancia sólo con sexo femenino ---------------------------------------
     var fem = document.getElementById('vr-femenino');
+    var femAyuda = document.getElementById('vr-femenino-ayuda');
     function pintarSexo() {
         var f = form.querySelector('input[name="sexo"]:checked');
-        var es = f && f.value === 'F';
-        fem.hidden = !es;
-        if (!es) fem.querySelectorAll('input').forEach(function (c) { c.checked = false; });
+        var es = !!(f && f.value === 'F');
+        fem.classList.toggle('vr-deshabilitado', !es);
+        femAyuda.hidden = es;
+        fem.querySelectorAll('input').forEach(function (c) { c.disabled = !es; if (!es) c.checked = false; });
     }
     form.querySelectorAll('input[name="sexo"]').forEach(function (r) { r.addEventListener('change', pintarSexo); });
     pintarSexo();
