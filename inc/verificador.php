@@ -80,7 +80,7 @@ function vr_validar(array $post) {
     $d['email'] = $email;
 
     if (empty($post['consentimiento'])) {
-        $e['consentimiento'] = 'Para continuar tenés que aceptar el uso de tus datos.';
+        $e['consentimiento'] = 'No pudimos registrar tu aceptación. Recargá la página y probá de nuevo.';
     }
     $d['novedades'] = !empty($post['novedades']);
 

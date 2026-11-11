@@ -99,4 +99,6 @@ const VR_SIN_HALLAZGOS = 'No encontramos interacciones ni advertencias en nuestr
 
 const VR_AVISO = 'Esta herramienta es informativa y no reemplaza la consulta con un profesional de la salud. ' . VR_CIERRE;
 
-const VR_CONSENTIMIENTO_VERSION = '2026-11-11';
+// Cambiar el texto de consentimiento (medicamentos/interacciones/index.php) = subir la versión.
+// 2026-11-11b: consentimiento por acción afirmativa (texto junto al botón, sin casilla).
+const VR_CONSENTIMIENTO_VERSION = '2026-11-11b';

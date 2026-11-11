@@ -191,11 +191,14 @@ $err = function ($campo) use ($errores) {
                 <p><?php echo vd_e(VR_AVISO); ?></p>
             </div>
             <div class="vr-consentimiento">
-                <label><input type="checkbox" name="consentimiento" value="1" required> Acepto que Recetalia guarde estos datos (incluidos datos de salud) para darme el resultado y enviármelo por email, según la <a href="/privacy/" target="_blank" rel="noopener">política de privacidad</a>. Puedo pedir que los borren en cualquier momento.</label>
-                <?php echo $err('consentimiento'); ?>
                 <label><input type="checkbox" name="novedades" value="1"<?php echo $datos['novedades'] ? ' checked' : ''; ?>> Quiero recibir novedades de Recetalia por email (opcional).</label>
             </div>
-            <button type="submit" class="vd-boton vr-enviar">Ver interacciones</button>
+            <?php // Consentimiento por acción afirmativa: tocar el botón, con el texto al lado (decisión de Pablo, 2026-11-11).
+                  // El campo oculto prueba que el envío salió de este formulario, que muestra el texto. ?>
+            <input type="hidden" name="consentimiento" value="<?php echo vd_e(VR_CONSENTIMIENTO_VERSION); ?>">
+            <button type="submit" class="vd-boton vr-enviar" aria-describedby="vr-consent-texto">Ver interacciones</button>
+            <p id="vr-consent-texto" class="vr-consent-texto">Al tocar <strong>Ver interacciones</strong> aceptás que Recetalia guarde estos datos (incluidos datos de salud) para darte el resultado y enviártelo por email, según la <a href="/privacy/" target="_blank" rel="noopener">política de privacidad</a>. Podés pedir que los borren en cualquier momento.</p>
+            <?php echo $err('consentimiento'); ?>
         </form>
     <?php endif; ?>
     </div>

@@ -179,3 +179,4 @@
 .vr-consentimiento label { font-size: 13px; line-height: 1.45; min-height: 36px; padding-top: 6px; color: var(--vd-suave); }
 .vr-consentimiento input { width: 18px; height: 18px; }
 .vr-deshabilitado label { color: #9AA1A9; cursor: not-allowed; }
+.vr-consent-texto { font-size: 13px; line-height: 1.5; color: var(--vd-suave); margin: 10px 0 0; max-width: 72ch; }
