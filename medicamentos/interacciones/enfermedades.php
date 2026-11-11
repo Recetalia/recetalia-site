@@ -15,7 +15,8 @@ if (mb_strlen($q, 'UTF-8') < 3) {
 $r = vr_consilio('GET', '/conditions/search?' . http_build_query(array('q' => $q, 'limit' => 8)), null, 4);
 $out = array();
 foreach (isset($r['results']) ? $r['results'] : array() as $c) {
-    if (!empty($c['code']) && !empty($c['name'])) {
+    // Sólo códigos individuales (E11, E11.9): los rangos de capítulo (E08-E13) no los acepta vr_validar.
+    if (!empty($c['code']) && !empty($c['name']) && preg_match('/^[A-Z][0-9]{2}(\.[0-9A-Z]{1,4})?$/', $c['code'])) {
         $out[] = array('codigo' => $c['code'], 'nombre' => $c['name']);
     }
 }
