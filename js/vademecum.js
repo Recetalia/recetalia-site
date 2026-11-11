@@ -3,12 +3,23 @@
 (function () {
     'use strict';
 
+    // ---- Menú y header fijo (custom.js no se carga: inicializa carruseles que acá no existen) ----
+    if (window.jQuery) {
+        var $ = window.jQuery;
+        if ($.fn.slimmenu) {
+            $('.slimmenu').slimmenu({ resizeWidth: '800', collapserTitle: 'Menú', animSpeed: 'medium', indentChildren: true });
+        }
+        $(window).on('scroll', function () {
+            $('.themeix-header-navigation').toggleClass('fixed-navigation', $(this).scrollTop() > 90);
+        });
+    }
+
     // ---- Secciones plegables -------------------------------------------------------------
     // Se pliegan sólo si el texto supera el alto de ~5 líneas; si no, no hace falta el botón.
     var plegables = document.querySelectorAll('[data-plegable]');
     Array.prototype.forEach.call(plegables, function (el, i) {
         el.classList.add('vd-plegado');
-        if (el.scrollHeight <= el.clientHeight + 8) {
+        if (el.scrollHeight <= el.clientHeight + 2 * parseFloat(getComputedStyle(el).lineHeight || 28)) {
             el.classList.remove('vd-plegado');
             return;
         }

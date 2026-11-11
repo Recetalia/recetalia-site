@@ -32,7 +32,7 @@ vd_head(array(
             <form class="vd-buscador" action="/medicamentos/" method="get" role="search">
                 <label for="vd-q" class="vd-etiqueta">Nombre o principio activo</label>
                 <div class="vd-buscador-fila">
-                    <input id="vd-q" name="q" type="search" value="<?php echo vd_e($q); ?>" placeholder="Ej.: perifar, paracetamol, amoxicilina"
+                    <input id="vd-q" name="q" type="search" value="<?php echo vd_e($q); ?>" placeholder="Ej.: perifar o paracetamol"
                            autocomplete="off" minlength="2" maxlength="80" aria-describedby="vd-ayuda" aria-controls="vd-resultados">
                     <button type="submit" class="vd-boton">Buscar</button>
                 </div>

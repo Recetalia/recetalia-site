@@ -14,7 +14,7 @@ function vd_404() {
         'robots' => 'noindex',
     ));
     ?>
-    <main id="contenido" class="vd-main"><div class="container vd-contenedor">
+    <main id="contenido" class="vd-main"><div class="container vd-contenedor vd-404">
         <h1 class="vd-h1">No encontramos ese medicamento</h1>
         <p>Puede que el enlace esté mal escrito o que el producto ya no figure en el catálogo.</p>
         <p><a class="vd-boton" href="/medicamentos/">Buscar un medicamento</a></p>
@@ -108,7 +108,9 @@ vd_head(array(
         <section class="vd-ficha" aria-labelledby="vd-ficha-titulo">
             <h2 id="vd-ficha-titulo" class="vd-h2">Ficha técnica de referencia del principio activo</h2>
             <?php if ($ficha['estado'] === 'ok' && $secciones): ?>
-                <p class="vd-ficha-origen">Texto oficial de la AEMPS (España), sin modificaciones. Puede diferir del producto registrado en Uruguay.</p>
+                <p class="vd-ficha-origen">Texto oficial de la AEMPS (España), sin modificaciones, de la ficha de
+                    <strong><?php echo vd_e($fuente ? $fuente['nombre_ref'] : ''); ?></strong>, el medicamento español de referencia con el
+                    mismo principio activo: por eso el texto puede nombrar esa marca. Puede diferir del producto registrado en Uruguay.</p>
                 <?php foreach ($secciones as $s): ?>
                 <section class="vd-seccion" id="seccion-<?php echo vd_e(str_replace('.', '-', $s['seccion'])); ?>">
                     <h3 class="vd-h3"><?php echo vd_e($s['rotulo']); ?></h3>

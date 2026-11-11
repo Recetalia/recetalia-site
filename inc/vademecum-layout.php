@@ -3,9 +3,10 @@
 // a PROD. Todas las rutas son absolutas desde la raíz.
 require_once __DIR__ . '/vademecum.php';
 
+// Canonical, Open Graph y sitemap apuntan siempre al dominio público (no al Host del pedido, que
+// lo elige el cliente). SITE_PUBLIC_URL permite otro dominio sin tocar código.
 function vd_url_absoluta($ruta) {
-    $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'recetalia.com';
-    return 'https://' . $host . $ruta;
+    return rtrim(getenv('SITE_PUBLIC_URL') ?: 'https://recetalia.com', '/') . $ruta;
 }
 
 // $meta: title, description, canonical (ruta), og_type, jsonld (array|null), robots (opcional)
@@ -34,7 +35,7 @@ function vd_head(array $meta) {
     <link rel="stylesheet" href="/css/slimmenu.min.css" />
     <link rel="stylesheet" href="/styles.css" />
     <link rel="stylesheet" href="/css/responsive.css" />
-    <link rel="stylesheet" href="/css/vademecum.css?v=1" />
+    <link rel="stylesheet" href="/css/vademecum.css?v=2" />
     <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700&display=swap" rel="stylesheet">
     <?php if (!empty($meta['jsonld'])): ?>
     <script type="application/ld+json"><?php echo json_encode($meta['jsonld'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG); ?></script>
@@ -53,9 +54,7 @@ function vd_pie($scriptsExtra = '') {
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/jquery.slimmenu.min.js"></script>
-    <script src="/js/wow.min.js"></script>
-    <script src="/js/custom.js"></script>
-    <script src="/js/vademecum.js?v=1" defer></script>
+    <script src="/js/vademecum.js?v=2" defer></script>
     <?php echo $scriptsExtra; ?>
 </body>
 </html>
