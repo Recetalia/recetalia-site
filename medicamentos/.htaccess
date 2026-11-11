@@ -1,0 +1,10 @@
+# Vademécum público. /medicamentos/<slug>-<amp_id> → producto.php (ver inc/vademecum.php: vd_url).
+RewriteEngine On
+RewriteBase /medicamentos/
+
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
+RewriteRule ^buscar$ buscar.php [L,QSA]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([a-z0-9-]+)$ producto.php?ruta=$1 [L,QSA]

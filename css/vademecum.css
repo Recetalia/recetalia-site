@@ -1,0 +1,110 @@
+/* Vademécum público (/medicamentos). Marca: teal #13A0B2, gris #F4F6F8, oscuro #212832, Poppins.
+   Accesibilidad: el teal de marca sobre blanco da 3:1 → no se usa para texto; texto y botones con
+   --vd-acento (#0B7A88, ≈ 4,9:1). Texto largo a 17 px, interlineado 1,65, máx. 72 caracteres. */
+.vd {
+    --vd-marca: #13A0B2;
+    --vd-acento: #0B7A88;
+    --vd-acento-oscuro: #075E69;
+    --vd-fondo: #F4F6F8;
+    --vd-oscuro: #212832;
+    --vd-texto: #2F343B;
+    --vd-suave: #5B636E;
+    --vd-borde: #DDE2E7;
+}
+
+.vd-saltar { position: absolute; left: -9999px; top: 0; z-index: 1000; background: var(--vd-oscuro); color: #fff; padding: 12px 16px; }
+.vd-saltar:focus { left: 8px; top: 8px; color: #fff; }
+.vd-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.vd-main { background: #fff; padding-bottom: 56px; color: var(--vd-texto); }
+.vd-contenedor { max-width: 880px; }
+
+.vd-main a { color: var(--vd-acento); text-decoration: underline; text-underline-offset: 2px; }
+.vd-main a:hover { color: var(--vd-acento-oscuro); }
+.vd-main a:focus-visible, .vd-main button:focus-visible, .vd-main input:focus-visible {
+    outline: 3px solid var(--vd-marca); outline-offset: 2px;
+}
+
+.vd-h1 { font-size: 28px; line-height: 1.25; font-weight: 700; color: var(--vd-oscuro); margin: 0 0 8px; }
+.vd-h2 { font-size: 21px; line-height: 1.3; font-weight: 600; color: var(--vd-oscuro); margin: 0 0 12px; }
+.vd-h3 { font-size: 17px; line-height: 1.35; font-weight: 600; color: var(--vd-oscuro); margin: 0 0 8px; }
+.vd-main p, .vd-main li, .vd-main dd, .vd-main dt, .vd-main span { color: inherit; line-height: inherit; }
+@media (min-width: 768px) { .vd-h1 { font-size: 34px; } .vd-h2 { font-size: 23px; } }
+
+/* Buscador */
+.vd-hero { background: var(--vd-fondo); padding: 32px 0 28px; border-bottom: 1px solid var(--vd-borde); margin-bottom: 8px; }
+.vd-bajada { font-size: 17px; line-height: 1.6; color: var(--vd-suave); margin: 0 0 20px; max-width: 62ch; }
+.vd-etiqueta { display: block; font-weight: 500; color: var(--vd-oscuro); margin-bottom: 6px; font-size: 15px; }
+.vd-buscador-fila { display: flex; gap: 8px; }
+.vd-buscador input {
+    flex: 1; min-width: 0; height: 52px; padding: 0 16px; font-size: 17px; color: var(--vd-texto);
+    border: 2px solid var(--vd-borde); border-radius: 0; background: #fff; transition: border-color .15s ease;
+}
+.vd-buscador input:focus { border-color: var(--vd-acento); }
+.vd-ayuda { font-size: 14px; color: var(--vd-suave); margin: 8px 0 0; line-height: 1.5; }
+.vd-boton {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 0 24px;
+    background: var(--vd-acento); color: #fff !important; border: 0; border-radius: 0; font-weight: 500;
+    text-transform: uppercase; letter-spacing: .03em; text-decoration: none !important; cursor: pointer;
+    transition: background-color .15s ease; touch-action: manipulation;
+}
+.vd-boton:hover { background: var(--vd-oscuro); }
+.vd-contador { min-height: 24px; margin: 16px 0 8px; font-size: 15px; color: var(--vd-suave); }
+
+/* Listas de resultados / relacionados */
+.vd-lista { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--vd-borde); }
+.vd-lista li { border-bottom: 1px solid var(--vd-borde); }
+.vd-main a.vd-item {
+    display: block; padding: 14px 8px; min-height: 56px; text-decoration: none; color: var(--vd-texto);
+    transition: background-color .15s ease;
+}
+.vd-main a.vd-item:hover { background: var(--vd-fondo); }
+.vd-item-nombre { display: block; font-weight: 600; color: var(--vd-acento) !important; font-size: 17px; line-height: 1.35; }
+.vd-item-detalle { display: block; font-size: 15px; color: var(--vd-suave) !important; line-height: 1.5; margin-top: 2px; }
+
+/* Producto */
+.vd-migas { font-size: 14px; color: var(--vd-suave); padding: 20px 0 12px; line-height: 1.5; }
+.vd-migas a { color: var(--vd-suave) !important; }
+.vd-producto { padding: 8px 0 24px; border-bottom: 1px solid var(--vd-borde); margin-bottom: 28px; }
+.vd-sobretitulo { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--vd-acento); font-weight: 600; margin: 0 0 6px; }
+.vd-generico { font-size: 18px; color: var(--vd-suave); margin: 0 0 20px; line-height: 1.5; }
+.vd-datos { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 0; }
+@media (min-width: 576px) { .vd-datos { grid-template-columns: 1fr 1fr; } }
+.vd-datos > div { background: var(--vd-fondo); padding: 10px 14px; border-left: 3px solid var(--vd-marca); }
+.vd-datos dt { font-size: 13px; font-weight: 500; color: var(--vd-suave); text-transform: uppercase; letter-spacing: .04em; line-height: 1.4; }
+.vd-datos dd { margin: 2px 0 0; font-size: 16px; color: var(--vd-oscuro); line-height: 1.45; font-weight: 500; }
+
+/* Ficha */
+.vd-ficha { margin-bottom: 24px; }
+.vd-ficha-origen { font-size: 15px; color: var(--vd-suave); margin: 0 0 20px; line-height: 1.55; }
+.vd-seccion { padding: 18px 0; border-top: 1px solid var(--vd-borde); }
+.vd-texto { font-size: 17px; line-height: 1.65; max-width: 72ch; color: var(--vd-texto); overflow-wrap: anywhere; }
+.vd-texto p, .vd-texto li { margin: 0 0 10px; }
+.vd-texto ul, .vd-texto ol { padding-left: 22px; margin: 0 0 10px; }
+.vd-texto table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; font-size: 15px; display: block; overflow-x: auto; }
+.vd-texto td, .vd-texto th { border: 1px solid var(--vd-borde); padding: 6px 8px; vertical-align: top; line-height: 1.45; }
+.vd-texto.vd-plegado { max-height: calc(1.65em * 5); overflow: hidden; position: relative; }
+.vd-texto.vd-plegado::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2.4em;
+    background: linear-gradient(rgba(255,255,255,0), #fff);
+}
+.vd-vermas {
+    margin-top: 8px; min-height: 44px; padding: 0 14px; background: #fff; color: var(--vd-acento);
+    border: 2px solid var(--vd-acento); border-radius: 0; font-weight: 600; font-size: 15px; cursor: pointer;
+    transition: background-color .15s ease, color .15s ease; touch-action: manipulation;
+}
+.vd-vermas:hover { background: var(--vd-acento); color: #fff; }
+.vd-estado { background: var(--vd-fondo); padding: 18px 20px; font-size: 16px; line-height: 1.55; color: var(--vd-texto); }
+
+/* Fuente y aviso */
+.vd-fuente { background: var(--vd-fondo); border-left: 4px solid var(--vd-oscuro); padding: 18px 20px; margin: 8px 0 32px; font-size: 15px; line-height: 1.6; }
+.vd-fuente p { margin: 0 0 10px; }
+.vd-fuente p:last-child { margin-bottom: 0; }
+.vd-aviso { font-weight: 600; color: var(--vd-oscuro) !important; }
+.vd-fuente-inicio { margin-top: 32px; }
+
+.vd-relacionados { margin-top: 8px; }
+
+@media (prefers-reduced-motion: reduce) {
+    .vd * { transition: none !important; }
+}

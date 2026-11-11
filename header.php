@@ -94,7 +94,9 @@
                             </li>
 							-->
 
-                            <li><a href="#ContactSet">Contacto</a></li>
+                            <li><a href="/medicamentos/">Medicamentos</a></li>
+                            <?php // Fuera de la portada el ancla tiene que llevar a la portada. ?>
+                            <li><a href="<?php echo (isset($_SERVER['SCRIPT_NAME']) && $_SERVER['SCRIPT_NAME'] === '/index.php') ? '' : '/'; ?>#ContactSet">Contacto</a></li>
                         </ul>
                     </nav>
                 </div>

@@ -60,7 +60,7 @@ function vd_consilio_pedir(array $sustancias) {
     ));
     $cuerpo = curl_exec($ch);
     $codigo = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
+    if (PHP_VERSION_ID < 80000) { curl_close($ch); } // no-op desde 8.0, deprecada en 8.5
     if ($cuerpo === false || $codigo !== 200) {
         error_log("vademecum: Consilio respondió $codigo");
         return null;

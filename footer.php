@@ -6,7 +6,7 @@
                     <div class="col-lg-4 col-md-6">
                         <div class="footer-widget">
                             <div class="footer-logo">
-                                <a href="index.html"><img src="/images/footer-brand.png" alt="footer logo img" /></a>
+                                <a href="/"><img src="/images/footer-brand.png" alt="footer logo img" /></a>
                             </div>
                             <p>
 							<i class="fa fa-envelope mr-2" aria-hidden="true"></i> hello@recetalia.com<br>
