@@ -103,6 +103,11 @@ vd_head(array(
                 <div><dt>Código ATC</dt><dd><?php echo vd_e($f['atc']['codigo']); ?><?php if (!empty($f['atc']['nombre'])): ?> · <?php echo vd_e($f['atc']['nombre']); ?><?php endif; ?></dd></div>
                 <?php endif; ?>
             </dl>
+            <p class="vr-agregar-fila">
+                <button type="button" class="vd-boton vr-agregar" data-vr-agregar data-id="<?php echo vd_e($p['amp_id']); ?>"
+                        data-nombre="<?php echo vd_e($nombre); ?>" data-detalle="<?php echo vd_e($generico); ?>">Agregar a mi lista para revisar interacciones</button>
+                <a class="vr-ir" href="/medicamentos/interacciones/">Revisar interacciones</a>
+            </p>
         </header>
 
         <section class="vd-ficha" aria-labelledby="vd-ficha-titulo">
@@ -154,4 +159,4 @@ vd_head(array(
         <?php endif; ?>
     </div>
 </main>
-<?php vd_pie(); ?>
+<?php vd_pie('<script src="/js/verificador.js?v=1" defer></script>'); ?>

@@ -61,6 +61,12 @@ vd_head(array(
             <p class="vd-estado" id="vd-vacio">No encontramos medicamentos con «<?php echo vd_e($q); ?>». Probá con el principio activo o con menos letras.</p>
         <?php endif; ?>
 
+        <section class="vr-llamado" aria-labelledby="vr-llamado-t">
+            <h2 id="vr-llamado-t" class="vd-h2">¿Tomás más de un medicamento?</h2>
+            <p>Revisá si se llevan bien entre sí y con tu situación (edad, embarazo, alergias, enfermedades).</p>
+            <p><a class="vd-boton" href="/medicamentos/interacciones/">Revisar interacciones</a></p>
+        </section>
+
         <aside class="vd-fuente vd-fuente-inicio" aria-label="Sobre esta información">
             <h2 class="vd-h3">De dónde sale esta información</h2>
             <p>El catálogo de productos es el Diccionario Nacional de Medicamentos y Afines (DNMA) de Uruguay. La ficha técnica de
