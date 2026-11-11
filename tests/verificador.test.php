@@ -26,6 +26,8 @@ ok($v['datos']['email'] === 'ana@example.com', 'email normalizado');
 ok($v['datos']['edad'] === 45 && $v['datos']['sexo'] === 'F', 'edad y sexo');
 ok($v['datos']['embarazo'] === true && $v['datos']['lactancia'] === false, 'embarazo / lactancia');
 ok($v['datos']['alergias'] === array('penicilina', 'ibuprofeno'), 'alergias: líneas limpias, sin vacías');
+$v = vr_validar(post_base(array('alergias' => array('Amoxicillin|Amoxicilina', 'Ibuprofen|Ibuprofeno', ''))));
+ok($v['datos']['alergias'] === array('Amoxicillin', 'Ibuprofen'), 'alergias del buscador: se guarda el nombre canónico');
 ok($v['datos']['patologias'] === array(array('codigo' => 'N18.5', 'nombre' => 'Enfermedad renal crónica, estadio 5')), 'patologías código|nombre');
 ok($v['datos']['novedades'] === false, 'novedades opcional');
 $v = vr_validar(post_base(array('sexo' => 'M', 'embarazo' => '1')));

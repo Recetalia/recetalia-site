@@ -2,3 +2,4 @@ RewriteEngine On
 RewriteBase /medicamentos/interacciones/
 RewriteRule ^baja$ baja.php [L,QSA]
 RewriteRule ^enfermedades$ enfermedades.php [L,QSA]
+RewriteRule ^farmacos$ farmacos.php [L,QSA]

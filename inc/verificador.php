@@ -49,11 +49,16 @@ function vr_validar(array $post) {
     $d['embarazo'] = $sexo === 'F' && !empty($post['embarazo']);
     $d['lactancia'] = $sexo === 'F' && !empty($post['lactancia']);
 
+    // Alergias: del buscador llegan como "nombre canónico|nombre para mostrar" (alergias[]); se guarda y se
+    // manda a Consilio el canónico. Un texto suelto (sin buscador) se acepta igual.
     $alergias = array();
-    foreach (preg_split('/[\r\n,;]+/', isset($post['alergias']) ? (string)$post['alergias'] : '') as $a) {
-        $a = trim(preg_replace('/\s+/', ' ', $a));
+    $crudas = isset($post['alergias']) ? $post['alergias'] : array();
+    $crudas = is_array($crudas) ? $crudas : preg_split('/[\r\n,;]+/', (string)$crudas);
+    foreach ($crudas as $a) {
+        $partes = explode('|', (string)$a, 2);
+        $a = trim(preg_replace('/\s+/', ' ', $partes[0]));
         if ($a !== '') {
-            $alergias[] = mb_substr($a, 0, 60, 'UTF-8');
+            $alergias[] = mb_substr($a, 0, 100, 'UTF-8');
         }
     }
     $d['alergias'] = array_slice(array_values(array_unique($alergias)), 0, VR_MAX_ALERGIAS);

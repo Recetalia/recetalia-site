@@ -159,4 +159,4 @@ vd_head(array(
         <?php endif; ?>
     </div>
 </main>
-<?php vd_pie('<script src="/js/verificador.js?v=1" defer></script>'); ?>
+<?php vd_pie('<script src="/js/verificador.js?v=2" defer></script>'); ?>

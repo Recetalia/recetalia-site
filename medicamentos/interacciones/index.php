@@ -163,7 +163,11 @@ $err = function ($campo) use ($errores) {
                 </div>
                 <div class="vr-campo">
                     <label for="vr-alergias" class="vd-etiqueta">Alergias a medicamentos <span class="vr-opcional">(opcional)</span></label>
-                    <textarea id="vr-alergias" name="alergias" rows="2" maxlength="600" placeholder="Una por línea. Ej.: penicilina"><?php echo vd_e(implode("\n", $datos['alergias'])); ?></textarea>
+                    <input id="vr-alergias" type="search" autocomplete="off" placeholder="Ej.: amoxicilina, ibuprofeno" aria-controls="vr-alergias-sug">
+                    <ul id="vr-alergias-sug" class="vd-lista vr-sugerencias"></ul>
+                    <ul id="vr-alergias-lista" class="vr-lista" data-inicial="<?php echo vd_e(json_encode(array_map(function ($a) {
+                        return array('nombre' => $a, 'mostrar' => $a); }, $datos['alergias']), JSON_UNESCAPED_UNICODE)); ?>"></ul>
+                    <p class="vr-ayuda">Elegí el medicamento de la lista que aparece al escribir.</p>
                 </div>
                 <div class="vr-campo">
                     <label for="vr-enf" class="vd-etiqueta">Enfermedades que tenés <span class="vr-opcional">(opcional)</span></label>
@@ -190,4 +194,4 @@ $err = function ($campo) use ($errores) {
     <?php endif; ?>
     </div>
 </main>
-<?php vd_pie('<script src="/js/verificador.js?v=1" defer></script>'); ?>
+<?php vd_pie('<script src="/js/verificador.js?v=2" defer></script>'); ?>

@@ -96,7 +96,7 @@
                             var li = el('li');
                             var b = el('button', 'vd-item vr-sug');
                             b.type = 'button';
-                            b.appendChild(el('span', 'vd-item-nombre', it.nombre));
+                            b.appendChild(el('span', 'vd-item-nombre', it.mostrar || it.nombre));
                             if (it.detalle || it.codigo) b.appendChild(el('span', 'vd-item-detalle', it.detalle || it.codigo));
                             b.addEventListener('click', function () {
                                 alElegir(it); input.value = ''; lista.innerHTML = ''; input.focus();
@@ -120,30 +120,40 @@
             guardar(l); pintarLista();
         }, 2);
 
-    // ---- Enfermedades (CIE-10) -------------------------------------------------------------
-    var enfUl = document.getElementById('vr-enf-lista');
-    var enf = [];
-    try { enf = JSON.parse(enfUl.getAttribute('data-inicial') || '[]'); } catch (e) { enf = []; }
-    function pintarEnf() {
-        enfUl.innerHTML = '';
-        enf.forEach(function (p, i) {
-            var li = el('li', 'vr-item');
-            li.appendChild(el('span', 'vr-item-texto', p.nombre));
-            var h = el('input');
-            h.type = 'hidden'; h.name = 'patologias[]'; h.value = p.codigo + '|' + p.nombre;
-            var q = el('button', 'vr-quitar', 'Quitar');
-            q.type = 'button';
-            q.setAttribute('aria-label', 'Quitar ' + p.nombre);
-            q.addEventListener('click', function () { enf.splice(i, 1); pintarEnf(); });
-            li.appendChild(h); li.appendChild(q); enfUl.appendChild(li);
-        });
+    // ---- Etiquetas elegidas de un buscador (enfermedades CIE-10, alergias) -------------------
+    // clave: lo que identifica (y se manda); texto: lo que se muestra; valor: el hidden que viaja.
+    function etiquetas(idLista, campo, clave, texto, valor) {
+        var ul2 = document.getElementById(idLista);
+        var items = [];
+        try { items = JSON.parse(ul2.getAttribute('data-inicial') || '[]'); } catch (e) { items = []; }
+        function pintar() {
+            ul2.innerHTML = '';
+            items.forEach(function (p, i) {
+                var li = el('li', 'vr-item');
+                li.appendChild(el('span', 'vr-item-texto', texto(p)));
+                var h = el('input');
+                h.type = 'hidden'; h.name = campo; h.value = valor(p);
+                var q = el('button', 'vr-quitar', 'Quitar');
+                q.type = 'button';
+                q.setAttribute('aria-label', 'Quitar ' + texto(p));
+                q.addEventListener('click', function () { items.splice(i, 1); pintar(); });
+                li.appendChild(h); li.appendChild(q); ul2.appendChild(li);
+            });
+        }
+        pintar();
+        return function (it) {
+            if (items.length >= 10 || items.some(function (x) { return clave(x) === clave(it); })) return;
+            items.push(it); pintar();
+        };
     }
-    pintarEnf();
+    var agregarEnf = etiquetas('vr-enf-lista', 'patologias[]',
+        function (p) { return p.codigo; }, function (p) { return p.nombre; }, function (p) { return p.codigo + '|' + p.nombre; });
     autocompletar(document.getElementById('vr-enf'), document.getElementById('vr-enf-sug'),
-        '/medicamentos/interacciones/enfermedades?q=', function (it) {
-            if (enf.length >= 10 || enf.some(function (x) { return x.codigo === it.codigo; })) return;
-            enf.push({ codigo: it.codigo, nombre: it.nombre }); pintarEnf();
-        }, 3);
+        '/medicamentos/interacciones/enfermedades?q=', function (it) { agregarEnf({ codigo: it.codigo, nombre: it.nombre }); }, 3);
+    var agregarAl = etiquetas('vr-alergias-lista', 'alergias[]',
+        function (p) { return p.nombre; }, function (p) { return p.mostrar; }, function (p) { return p.nombre + '|' + p.mostrar; });
+    autocompletar(document.getElementById('vr-alergias'), document.getElementById('vr-alergias-sug'),
+        '/medicamentos/interacciones/farmacos?q=', function (it) { agregarAl({ nombre: it.nombre, mostrar: it.mostrar }); }, 3);
 
     // ---- Embarazo / lactancia sólo con sexo femenino ---------------------------------------
     var fem = document.getElementById('vr-femenino');
