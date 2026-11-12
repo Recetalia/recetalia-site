@@ -91,29 +91,6 @@ vd_head(array(
     </section>
     <?php endif; ?>
 
-    <section class="vd-bloque" aria-labelledby="vd-perfiles-titulo">
-        <div class="vd-contenedor vd-contenedor-ancho">
-            <h2 id="vd-perfiles-titulo" class="rc-sr">¿Qué necesitás?</h2>
-            <div class="vd-perfiles">
-                <section class="vd-perfil vd-perfil-medicos" aria-labelledby="vd-col-medicos">
-                    <span class="vd-perfil-icono"><?php echo rc_icono('stethoscope'); ?></span>
-                    <p class="vd-col-etiqueta">Médicos</p>
-                    <h3 id="vd-col-medicos" class="vd-h2">Información técnica de medicamentos</h3>
-                    <p class="vd-perfil-bajada">La ficha técnica oficial de referencia de cada principio activo, ordenada por secciones: indicaciones, posología, contraindicaciones, advertencias, interacciones, embarazo y reacciones adversas.</p>
-                    <p class="vd-perfil-cta"><a class="vd-boton vd-boton-claro" href="#vd-q"><?php echo rc_icono('search'); ?>Buscar un medicamento</a></p>
-                </section>
-                <section class="vd-perfil vd-perfil-pacientes" aria-labelledby="vd-col-pacientes">
-                    <span class="vd-perfil-icono"><?php echo rc_icono('heart-pulse'); ?></span>
-                    <p class="vd-col-etiqueta">Pacientes</p>
-                    <h3 id="vd-col-pacientes" class="vd-h2">Mis medicamentos</h3>
-                    <p class="vd-perfil-bajada">¿Tomás más de un medicamento? Revisá si se llevan bien entre sí y con tu situación (edad, embarazo, alergias, enfermedades), explicado en lenguaje simple.</p>
-                    <p class="vd-perfil-cta"><a class="vd-boton" href="/medicamentos/interacciones/"><?php echo rc_icono('list-check'); ?>Revisar mis medicamentos</a></p>
-                    <svg class="vd-perfil-ilustra" viewBox="0 0 200 200" aria-hidden="true" focusable="false"><circle cx="100" cy="100" r="96" fill="none" stroke="currentColor" stroke-width="2" opacity=".35"/><circle cx="100" cy="100" r="66" fill="none" stroke="currentColor" stroke-width="2" opacity=".5"/><path d="M70 100h18l8-18 12 36 8-18h14" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </section>
-            </div>
-        </div>
-    </section>
-
     <section class="vd-bloque vd-bloque-fondo" aria-labelledby="vd-como-titulo">
         <div class="vd-contenedor vd-contenedor-ancho">
             <h2 id="vd-como-titulo" class="vd-h2 vd-centrado">Cómo funciona</h2>
