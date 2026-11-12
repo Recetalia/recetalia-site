@@ -5,8 +5,8 @@
 // página ya no muestra la marca de borrador (pedido de Pablo); la aprobación sigue siendo requisito de PROD. Cambiar un texto = subir VR_MENSAJES_VERSION (se guarda
 // con cada consulta). Spec: doc/plans/2026-11-11-verificador-pacientes-design.md.
 
-const VR_MENSAJES_VERSION = '2026-11-11-borrador';
-const VR_MENSAJES_APROBADOS = false;
+const VR_MENSAJES_VERSION = '2026-11-12';
+const VR_MENSAJES_APROBADOS = true; // aprobados por Daniel Carbajal (2026-11-12, vía Pablo)
 
 const VR_CIERRE = 'No dejes ni cambies ningún medicamento por tu cuenta: consultalo con tu médico o químico farmacéutico.';
 
