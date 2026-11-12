@@ -18,21 +18,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 header('Cache-Control: no-store');
 vd_head(array('title' => 'Borrar mis datos | Recetalia', 'description' => 'Borrar los datos del verificador de interacciones.',
     'canonical' => '/medicamentos/interacciones/baja', 'robots' => 'noindex'));
+$bajaIcono = array('confirmar' => 'trash', 'borrado' => 'circle-check', 'inexistente' => 'info', 'error' => 'alert');
 ?>
-<main id="contenido" class="vd-main"><div class="container vd-contenedor vd-404">
-    <h1 class="vd-h1">Borrar mis datos</h1>
-    <?php if ($estado === 'confirmar'): ?>
-        <p>Vamos a borrar tu email, tus datos y todas las consultas que hiciste en el verificador de interacciones. No se puede deshacer.</p>
-        <form method="post" action="/medicamentos/interacciones/baja">
-            <input type="hidden" name="t" value="<?php echo vd_e($token); ?>">
-            <button type="submit" class="vd-boton">Borrar mis datos</button>
-        </form>
-    <?php elseif ($estado === 'borrado'): ?>
-        <p class="vd-estado" role="status">Listo: borramos tus datos y tus consultas.</p>
-    <?php elseif ($estado === 'inexistente'): ?>
-        <p class="vd-estado" role="status">No encontramos datos para este enlace. Puede que ya los hayas borrado.</p>
-    <?php else: ?>
-        <p class="vd-estado" role="alert">No pudimos borrar tus datos en este momento. Probá de nuevo en unos minutos.</p>
-    <?php endif; ?>
+<main id="contenido" class="vd-main"><div class="vd-contenedor vd-404">
+    <div class="vd-estado-tarjeta vd-baja vd-baja-<?php echo vd_e($estado); ?>">
+        <span class="vd-estado-icono"><?php echo rc_icono($bajaIcono[$estado]); ?></span>
+        <h1 class="vd-h1">Borrar mis datos</h1>
+        <?php if ($estado === 'confirmar'): ?>
+            <p>Vamos a borrar tu email, tus datos y todas las consultas que hiciste en el verificador de interacciones. No se puede deshacer.</p>
+            <form method="post" action="/medicamentos/interacciones/baja" class="vd-estado-acciones">
+                <input type="hidden" name="t" value="<?php echo vd_e($token); ?>">
+                <button type="submit" class="vd-boton vd-boton-peligro"><?php echo rc_icono('trash'); ?>Borrar mis datos</button>
+                <a class="vd-enlace-icono" href="/medicamentos/interacciones/"><?php echo rc_icono('arrow-left'); ?>Cancelar</a>
+            </form>
+        <?php elseif ($estado === 'borrado'): ?>
+            <p class="vd-estado" role="status">Listo: borramos tus datos y tus consultas.</p>
+        <?php elseif ($estado === 'inexistente'): ?>
+            <p class="vd-estado" role="status">No encontramos datos para este enlace. Puede que ya los hayas borrado.</p>
+        <?php else: ?>
+            <p class="vd-estado" role="alert">No pudimos borrar tus datos en este momento. Probá de nuevo en unos minutos.</p>
+        <?php endif; ?>
+        <?php if ($estado !== 'confirmar'): ?>
+        <p class="vd-estado-acciones"><a class="vd-enlace-icono" href="/medicamentos/"><?php echo rc_icono('arrow-left'); ?>Volver a Medicamentos</a></p>
+        <?php endif; ?>
+    </div>
 </div></main>
 <?php vd_pie(); ?>

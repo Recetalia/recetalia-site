@@ -85,10 +85,19 @@ vd_head(array(
 $err = function ($campo) use ($errores) {
     return isset($errores[$campo]) ? '<p class="vr-error" id="err-' . $campo . '">' . vd_e($errores[$campo]) . '</p>' : '';
 };
+$vrPaso = $resultado ? 3 : 1;
+$vrEtapa = function ($n) use ($vrPaso) {
+    $c = $n < $vrPaso ? ' is-hecho' : ($n === $vrPaso ? ' is-actual' : '');
+    return 'class="vr-etapa' . $c . '"' . ($n === $vrPaso ? ' aria-current="step"' : '');
+};
+$vrCuenta = array('importante' => 0, 'moderada' => 0, 'leve' => 0, 'incierta' => 0);
+if ($resultado) {
+    foreach ($resultado['alertas'] as $a) $vrCuenta[$a['gravedad']]++;
+}
 ?>
-<main id="contenido" class="vd-main">
-    <section class="vd-hero">
-        <div class="container vd-contenedor">
+<main id="contenido" class="vd-main vr-pagina">
+    <section class="vd-hero vr-hero">
+        <div class="vd-contenedor">
             <nav class="vd-migas" aria-label="Ruta de navegación">
                 <a href="/">Inicio</a> <span aria-hidden="true">›</span>
                 <a href="/medicamentos/">Medicamentos</a> <span aria-hidden="true">›</span>
@@ -96,27 +105,48 @@ $err = function ($campo) use ($errores) {
             </nav>
             <h1 class="vd-h1">¿Los medicamentos que tomás se llevan bien?</h1>
             <p class="vd-bajada">Elegí los medicamentos que tomás, contanos algunos datos y te mostramos las posibles interacciones y advertencias, explicadas en lenguaje simple. Te mandamos una copia por email.</p>
+            <ol class="vr-stepper" id="vr-stepper" aria-label="Pasos">
+                <li <?php echo $vrEtapa(1); ?> data-etapa="1"><span class="vr-etapa-num" aria-hidden="true"><span>1</span><?php echo rc_icono('check'); ?></span><span class="vr-etapa-texto">Tus medicamentos</span></li>
+                <li <?php echo $vrEtapa(2); ?> data-etapa="2"><span class="vr-etapa-num" aria-hidden="true"><span>2</span><?php echo rc_icono('check'); ?></span><span class="vr-etapa-texto">Tus datos</span></li>
+                <li <?php echo $vrEtapa(3); ?> data-etapa="3"><span class="vr-etapa-num" aria-hidden="true"><span>3</span><?php echo rc_icono('check'); ?></span><span class="vr-etapa-texto">Resultado</span></li>
+            </ol>
         </div>
     </section>
 
-    <div class="container vd-contenedor">
+    <div class="vd-contenedor">
     <?php if ($resultado): ?>
         <section class="vr-resultado" aria-labelledby="vr-res-titulo">
-            <h2 id="vr-res-titulo" class="vd-h2"><?php echo vd_e(vr_titulo_resumen($resultado['resumen'])); ?></h2>
-            <p class="vr-revisados">Medicamentos revisados: <?php echo vd_e(implode(', ', array_map(function ($p) { return $p['nombre']; }, $productos))); ?>.</p>
+            <div class="vr-resumen<?php echo $resultado['alertas'] ? '' : ' vr-resumen-limpio'; ?>">
+                <span class="vr-resumen-icono"><?php echo rc_icono($resultado['alertas'] ? 'clipboard-check' : 'circle-check'); ?></span>
+                <div class="vr-resumen-texto">
+                    <h2 id="vr-res-titulo" class="vd-h2"><?php echo vd_e(vr_titulo_resumen($resultado['resumen'])); ?></h2>
+                    <p class="vr-revisados">Medicamentos revisados: <?php echo vd_e(implode(', ', array_map(function ($p) { return $p['nombre']; }, $productos))); ?>.</p>
+                </div>
+                <?php if ($resultado['alertas']): ?>
+                <ul class="vr-contadores" aria-label="Alertas por gravedad">
+                    <?php foreach ($vrCuenta as $g => $n): ?>
+                    <li class="vr-contador vr-<?php echo $g; ?><?php echo $n ? '' : ' vr-contador-cero'; ?>"><strong><?php echo $n; ?></strong><span><?php echo vd_e(VR_ROTULO_GRAVEDAD[$g]); ?></span></li>
+                    <?php endforeach; ?>
+                </ul>
+                <?php endif; ?>
+            </div>
             <?php if ($resultado['alertas']): ?>
-                <?php echo vr_html_alertas($resultado['alertas']); ?>
+                <div class="vr-alertas"><?php echo vr_html_alertas($resultado['alertas']); ?></div>
             <?php else: ?>
                 <p class="vd-estado"><?php echo vd_e(VR_SIN_HALLAZGOS); ?></p>
             <?php endif; ?>
-            <p class="vr-email-estado" role="status"><?php echo $resultado['email_enviado']
+            <p class="vr-email-estado<?php echo $resultado['email_enviado'] ? ' vr-email-ok' : ''; ?>" role="status"><?php echo rc_icono('mail'); ?><span><?php echo $resultado['email_enviado']
                 ? 'Te mandamos una copia a ' . vd_e($datos['email']) . '.'
-                : 'No pudimos mandarte la copia por email. Podés guardar o imprimir esta página.'; ?></p>
+                : 'No pudimos mandarte la copia por email. Podés guardar o imprimir esta página.'; ?></span></p>
             <aside class="vd-fuente" aria-label="Aviso y fuentes">
                 <p class="vd-aviso"><?php echo vd_e(VR_AVISO); ?></p>
                 <p><?php echo vd_e(vr_fuentes_usadas($resultado['alertas'])); ?></p>
             </aside>
-            <p><a class="vd-boton" href="/medicamentos/interacciones/">Hacer otra consulta</a></p>
+            <div class="vr-acciones">
+                <a class="vd-boton" href="/medicamentos/interacciones/"><?php echo rc_icono('plus'); ?>Hacer otra consulta</a>
+                <button type="button" class="vd-boton vd-boton-claro" data-vr-imprimir hidden><?php echo rc_icono('printer'); ?>Imprimir o guardar</button>
+                <a class="vd-enlace-icono" href="/medicamentos/"><?php echo rc_icono('arrow-left'); ?>Volver a Medicamentos</a>
+            </div>
         </section>
     <?php else: ?>
         <?php if ($falla): ?><p class="vd-estado vr-falla" role="alert"><?php echo vd_e($falla); ?></p><?php endif; ?>
@@ -125,22 +155,24 @@ $err = function ($campo) use ($errores) {
 
         <form id="vr-form" class="vr-form" action="/medicamentos/interacciones/" method="post" novalidate>
             <?php echo antispam_campos(); ?>
-            <fieldset class="vr-paso">
-                <legend class="vd-h2">1. Tus medicamentos</legend>
+            <fieldset class="vr-paso" id="vr-paso-1">
+                <legend class="vd-h2"><span class="vr-paso-num" aria-hidden="true">1</span><span class="rc-sr">1. </span>Tus medicamentos</legend>
                 <label for="vr-buscar" class="vd-etiqueta">Buscá y agregá los medicamentos que tomás (al menos 2)</label>
-                <div class="vd-buscador-fila">
-                    <input id="vr-buscar" type="search" autocomplete="off" placeholder="Ej.: perifar o paracetamol" aria-controls="vr-sugerencias">
+                <div class="vr-autocompletar">
+                    <div class="vd-buscador-fila">
+                        <input id="vr-buscar" type="search" autocomplete="off" placeholder="Ej.: perifar o paracetamol" aria-controls="vr-sugerencias">
+                    </div>
+                    <ul id="vr-sugerencias" class="vd-lista vr-sugerencias" aria-live="polite"></ul>
                 </div>
-                <ul id="vr-sugerencias" class="vd-lista vr-sugerencias" aria-live="polite"></ul>
                 <h3 class="vd-h3 vr-sub">Tu lista</h3>
-                <ul id="vr-lista" class="vr-lista" data-inicial="<?php echo vd_e(json_encode(array_map(function ($p) {
+                <ul id="vr-lista" class="vr-lista vr-lista-meds" data-inicial="<?php echo vd_e(json_encode(array_map(function ($p) {
                     return array('id' => $p['id'], 'nombre' => $p['nombre'], 'detalle' => $p['generico']); }, $productos), JSON_UNESCAPED_UNICODE)); ?>"></ul>
                 <p id="vr-lista-vacia" class="vr-ayuda">Todavía no agregaste medicamentos.</p>
                 <?php echo $err('productos'); ?>
             </fieldset>
 
-            <fieldset class="vr-paso">
-                <legend class="vd-h2">2. Tus datos</legend>
+            <fieldset class="vr-paso" id="vr-paso-2">
+                <legend class="vd-h2"><span class="vr-paso-num" aria-hidden="true">2</span><span class="rc-sr">2. </span>Tus datos</legend>
                 <div class="vr-fila">
                     <div class="vr-campo">
                         <label for="vr-edad" class="vd-etiqueta">Edad</label>
@@ -149,34 +181,38 @@ $err = function ($campo) use ($errores) {
                     </div>
                     <div class="vr-campo">
                         <span class="vd-etiqueta" id="vr-sexo-et">Sexo</span>
-                        <div class="vr-opciones" role="radiogroup" aria-labelledby="vr-sexo-et">
-                            <label><input type="radio" name="sexo" value="F"<?php echo $datos['sexo'] === 'F' ? ' checked' : ''; ?>> Femenino</label>
-                            <label><input type="radio" name="sexo" value="M"<?php echo $datos['sexo'] === 'M' ? ' checked' : ''; ?>> Masculino</label>
+                        <div class="vr-segmentado" role="radiogroup" aria-labelledby="vr-sexo-et">
+                            <label class="vr-segmento"><input type="radio" name="sexo" value="F"<?php echo $datos['sexo'] === 'F' ? ' checked' : ''; ?>><span>Femenino</span></label>
+                            <label class="vr-segmento"><input type="radio" name="sexo" value="M"<?php echo $datos['sexo'] === 'M' ? ' checked' : ''; ?>><span>Masculino</span></label>
                         </div>
                         <?php echo $err('sexo'); ?>
                     </div>
                 </div>
                 <div id="vr-femenino" class="vr-campo">
                     <span class="vd-etiqueta">Embarazo y lactancia</span>
-                    <div class="vr-opciones vr-checks">
-                        <label><input type="checkbox" name="embarazo" value="1"<?php echo $datos['embarazo'] ? ' checked' : ''; ?>> Estoy embarazada</label>
-                        <label><input type="checkbox" name="lactancia" value="1"<?php echo $datos['lactancia'] ? ' checked' : ''; ?>> Estoy amamantando</label>
+                    <div class="vr-toggles vr-checks">
+                        <label class="vr-toggle"><input type="checkbox" role="switch" name="embarazo" value="1"<?php echo $datos['embarazo'] ? ' checked' : ''; ?>><span>Estoy embarazada</span></label>
+                        <label class="vr-toggle"><input type="checkbox" role="switch" name="lactancia" value="1"<?php echo $datos['lactancia'] ? ' checked' : ''; ?>><span>Estoy amamantando</span></label>
                     </div>
                     <p class="vr-ayuda" id="vr-femenino-ayuda">Se habilita al elegir sexo femenino.</p>
                 </div>
                 <div class="vr-campo">
                     <label for="vr-alergias" class="vd-etiqueta">Alergias a medicamentos <span class="vr-opcional">(opcional)</span></label>
-                    <input id="vr-alergias" type="search" autocomplete="off" placeholder="Ej.: amoxicilina, ibuprofeno" aria-controls="vr-alergias-sug">
-                    <ul id="vr-alergias-sug" class="vd-lista vr-sugerencias"></ul>
-                    <ul id="vr-alergias-lista" class="vr-lista" data-inicial="<?php echo vd_e(json_encode(array_map(function ($a) {
+                    <div class="vr-autocompletar">
+                        <input id="vr-alergias" type="search" autocomplete="off" placeholder="Ej.: amoxicilina, ibuprofeno" aria-controls="vr-alergias-sug">
+                        <ul id="vr-alergias-sug" class="vd-lista vr-sugerencias"></ul>
+                    </div>
+                    <ul id="vr-alergias-lista" class="vr-lista vr-chips" data-inicial="<?php echo vd_e(json_encode(array_map(function ($a) {
                         return array('nombre' => $a, 'mostrar' => $a); }, $datos['alergias']), JSON_UNESCAPED_UNICODE)); ?>"></ul>
                     <p class="vr-ayuda">Elegí el medicamento de la lista que aparece al escribir.</p>
                 </div>
                 <div class="vr-campo">
                     <label for="vr-enf" class="vd-etiqueta">Enfermedades que tenés <span class="vr-opcional">(opcional)</span></label>
-                    <input id="vr-enf" type="search" autocomplete="off" placeholder="Ej.: diabetes, hipertensión" aria-controls="vr-enf-sug">
-                    <ul id="vr-enf-sug" class="vd-lista vr-sugerencias"></ul>
-                    <ul id="vr-enf-lista" class="vr-lista" data-inicial="<?php echo vd_e(json_encode($datos['patologias'], JSON_UNESCAPED_UNICODE)); ?>"></ul>
+                    <div class="vr-autocompletar">
+                        <input id="vr-enf" type="search" autocomplete="off" placeholder="Ej.: diabetes, hipertensión" aria-controls="vr-enf-sug">
+                        <ul id="vr-enf-sug" class="vd-lista vr-sugerencias"></ul>
+                    </div>
+                    <ul id="vr-enf-lista" class="vr-lista vr-chips" data-inicial="<?php echo vd_e(json_encode($datos['patologias'], JSON_UNESCAPED_UNICODE)); ?>"></ul>
                     <?php echo $err('patologias'); ?>
                 </div>
                 <div class="vr-campo">
@@ -186,23 +222,26 @@ $err = function ($campo) use ($errores) {
                     <?php echo $err('email'); ?>
                 </div>
             </fieldset>
-            <div class="vr-aviso-caja" role="note">
-                <?php echo rc_icono('alert'); ?>
-                <p><?php echo vd_e(VR_AVISO); ?></p>
+
+            <div class="vr-paso vr-paso-envio">
+                <div class="vr-aviso-caja" role="note">
+                    <?php echo rc_icono('alert'); ?>
+                    <p><?php echo vd_e(VR_AVISO); ?></p>
+                </div>
+                <div class="vr-consentimiento">
+                    <label class="vr-toggle vr-toggle-chico"><input type="checkbox" name="novedades" value="1"<?php echo $datos['novedades'] ? ' checked' : ''; ?>><span>Quiero recibir novedades de Recetalia por email (opcional).</span></label>
+                </div>
+                <?php // Consentimiento por acción afirmativa: tocar el botón, con el texto al lado (decisión de Pablo, 2026-11-11).
+                      // El campo oculto prueba que el envío salió de este formulario, que muestra el texto. ?>
+                <input type="hidden" name="consentimiento" value="<?php echo vd_e(VR_CONSENTIMIENTO_VERSION); ?>">
+                <div class="vr-enviar-fila">
+                <button type="submit" class="vd-boton vr-enviar" aria-describedby="vr-consent-texto">Ver interacciones<?php echo rc_icono('arrow-right'); ?></button>
+                <p id="vr-consent-texto" class="vr-consent-texto">Al tocar <strong>Ver interacciones</strong> aceptás que Recetalia guarde estos datos (incluidos datos de salud) para darte el resultado y enviártelo por email, según la <a href="/privacy/" target="_blank" rel="noopener">política de privacidad</a>. Podés pedir que los borren en cualquier momento.</p>
+                </div>
+                <?php echo $err('consentimiento'); ?>
             </div>
-            <div class="vr-consentimiento">
-                <label><input type="checkbox" name="novedades" value="1"<?php echo $datos['novedades'] ? ' checked' : ''; ?>> Quiero recibir novedades de Recetalia por email (opcional).</label>
-            </div>
-            <?php // Consentimiento por acción afirmativa: tocar el botón, con el texto al lado (decisión de Pablo, 2026-11-11).
-                  // El campo oculto prueba que el envío salió de este formulario, que muestra el texto. ?>
-            <input type="hidden" name="consentimiento" value="<?php echo vd_e(VR_CONSENTIMIENTO_VERSION); ?>">
-            <div class="vr-enviar-fila">
-            <button type="submit" class="vd-boton vr-enviar" aria-describedby="vr-consent-texto">Ver interacciones</button>
-            <p id="vr-consent-texto" class="vr-consent-texto">Al tocar <strong>Ver interacciones</strong> aceptás que Recetalia guarde estos datos (incluidos datos de salud) para darte el resultado y enviártelo por email, según la <a href="/privacy/" target="_blank" rel="noopener">política de privacidad</a>. Podés pedir que los borren en cualquier momento.</p>
-            </div>
-            <?php echo $err('consentimiento'); ?>
         </form>
     <?php endif; ?>
     </div>
 </main>
-<?php vd_pie('<script src="/js/verificador.js?v=3" defer></script>'); ?>
+<?php vd_pie('<script src="/js/verificador.js?v=4" defer></script>'); ?>

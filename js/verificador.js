@@ -45,6 +45,13 @@
         pintarBoton();
     }
 
+    // ---- Resultado: imprimir o guardar como PDF -------------------------------------------
+    var imprimir = document.querySelector('[data-vr-imprimir]');
+    if (imprimir && window.print) {
+        imprimir.hidden = false;
+        imprimir.addEventListener('click', function () { window.print(); });
+    }
+
     var form = document.getElementById('vr-form');
     if (!form) return;
 
@@ -167,6 +174,28 @@
     }
     form.querySelectorAll('input[name="sexo"]').forEach(function (r) { r.addEventListener('change', pintarSexo); });
     pintarSexo();
+
+    // ---- Indicador de progreso (stepper): 1 hecho con 2+ medicamentos; 2 hecho con edad, sexo y email.
+    var etapas = document.querySelectorAll('#vr-stepper .vr-etapa');
+    function actualizarPasos() {
+        if (etapas.length < 3) return;
+        var uno = leer().length >= 2;
+        var edad = form.querySelector('[name="edad"]').value.trim() !== '';
+        var sexo = !!form.querySelector('input[name="sexo"]:checked');
+        var mail = form.querySelector('[name="email"]');
+        var dos = uno && edad && sexo && mail.value.trim() !== '' && (!mail.checkValidity || mail.checkValidity());
+        var hechos = [uno, dos, false];
+        var actual = !uno ? 0 : (!dos ? 1 : 2);
+        Array.prototype.forEach.call(etapas, function (li, i) {
+            li.classList.toggle('is-hecho', hechos[i]);
+            li.classList.toggle('is-actual', i === actual);
+            if (i === actual) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
+        });
+    }
+    if (window.MutationObserver) new MutationObserver(actualizarPasos).observe(ul, { childList: true });
+    form.addEventListener('input', actualizarPasos);
+    form.addEventListener('change', actualizarPasos);
+    actualizarPasos();
 
     form.addEventListener('submit', function (e) {
         if (leer().length < 2) {
