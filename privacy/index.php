@@ -75,6 +75,16 @@ Nuestra política con respecto al envío de nuestros propios correos electrónic
 
 
                     
+
+<h3 class="mt-3 h5 text-left" id="verificador">VERIFICADOR DE INTERACCIONES PARA PACIENTES (recetalia.com/medicamentos/interacciones)</h3>
+<?php // Agregado 2026-11-12 (pendiente de revisión legal; decisión de Pablo: sale y se verifica después). ?>
+<p class="text-left">Esta sección se aplica a quienes usan el verificador de interacciones de medicamentos del sitio recetalia.com, que funciona sin cuenta de usuario y es independiente de la receta digital.<br><br>
+<strong>Qué datos guardamos.</strong> Tu email; tu edad y sexo; si indicaste embarazo o lactancia; las alergias y enfermedades que hayas cargado; los medicamentos que consultaste; un resumen del resultado (cantidad y tipo de alertas); la fecha de la consulta y la fecha y versión del texto de consentimiento que aceptaste. Varios de estos datos son <strong>datos de salud</strong>, que la Ley N° 18.331 considera datos sensibles: los tratamos únicamente con tu consentimiento expreso, que das al tocar «Ver interacciones» después de leer el aviso correspondiente.<br><br>
+<strong>Para qué los usamos.</strong> Para calcular el resultado de tu consulta y enviártelo por email. Si marcaste la opción de novedades, también para enviarte novedades de Recetalia por email; podés dejar de recibirlas en cualquier momento. No usamos estos datos para tomar decisiones sobre vos ni los vendemos.<br><br>
+<strong>Con quién los compartimos.</strong> No los cedemos a terceros. Para calcular el resultado enviamos a nuestro motor de información farmacológica (Consilio) los medicamentos y los datos clínicos de la consulta, sin tu email ni ningún dato que te identifique. El email se envía a través de nuestro proveedor de correo.<br><br>
+<strong>Dónde y por cuánto tiempo.</strong> Se guardan en la base de datos de Recetalia, separados de la información de la receta digital y con acceso restringido. Los conservamos durante <strong>2 años desde tu última consulta</strong>; pasado ese plazo se eliminan. Si antes pedís que los borremos, los eliminamos en ese momento.<br><br>
+<strong>Tus derechos.</strong> Podés pedir acceso, rectificación, actualización o supresión de tus datos. Para borrarlos, usá el enlace «Borrar mis datos» que llega en cada email del verificador (elimina tus datos y todas tus consultas), o escribinos a <a href="mailto:hello@recetalia.com">hello@recetalia.com</a>. También podés presentar un reclamo ante la Unidad Reguladora y de Control de Datos Personales (URCDP).<br><br>
+<strong>Carácter de la información.</strong> El resultado del verificador es información genérica y orientativa basada en fuentes públicas de referencia; no reemplaza la consulta con un profesional de la salud.</p>
             </div>
         </div>
     </section>

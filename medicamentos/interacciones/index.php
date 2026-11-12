@@ -240,7 +240,7 @@ if ($resultado) {
                 <input type="hidden" name="consentimiento" value="<?php echo vd_e(VR_CONSENTIMIENTO_VERSION); ?>">
                 <div class="vr-enviar-fila">
                 <button type="submit" class="vd-boton vr-enviar" aria-describedby="vr-consent-texto">Ver interacciones<?php echo rc_icono('arrow-right'); ?></button>
-                <p id="vr-consent-texto" class="vr-consent-texto">Al tocar <strong>Ver interacciones</strong> aceptás que Recetalia guarde estos datos (incluidos datos de salud) para darte el resultado y enviártelo por email, según la <a href="/privacy/" target="_blank" rel="noopener">política de privacidad</a>. Podés pedir que los borren en cualquier momento.</p>
+                <p id="vr-consent-texto" class="vr-consent-texto">Al tocar <strong>Ver interacciones</strong> aceptás que Recetalia guarde estos datos (incluidos datos de salud) para darte el resultado y enviártelo por email, según la <a href="/privacy/#verificador" target="_blank" rel="noopener">política de privacidad</a>. Podés pedir que los borren en cualquier momento.</p>
                 </div>
                 <?php echo $err('consentimiento'); ?>
             </div>
