@@ -14,10 +14,20 @@ function vd_404() {
         'robots' => 'noindex',
     ));
     ?>
-    <main id="contenido" class="vd-main"><div class="container vd-contenedor vd-404">
-        <h1 class="vd-h1">No encontramos ese medicamento</h1>
-        <p>Puede que el enlace esté mal escrito o que el producto ya no figure en el catálogo.</p>
-        <p><a class="vd-boton" href="/medicamentos/">Buscar un medicamento</a></p>
+    <main id="contenido" class="vd-main"><div class="vd-contenedor vd-404">
+        <div class="vd-estado-tarjeta">
+            <span class="vd-estado-icono"><?php echo rc_icono('search'); ?></span>
+            <h1 class="vd-h1">No encontramos ese medicamento</h1>
+            <p>Puede que el enlace esté mal escrito o que el producto ya no figure en el catálogo.</p>
+            <form class="vd-404-buscar" action="/medicamentos/" method="get" role="search">
+                <label for="vd-404-q" class="vd-etiqueta">Nombre o principio activo</label>
+                <div class="vd-buscador-fila">
+                    <input id="vd-404-q" name="q" type="search" placeholder="Ej.: perifar o paracetamol" minlength="2" maxlength="80" autocomplete="off">
+                    <button type="submit" class="vd-boton"><?php echo rc_icono('search'); ?><span>Buscar</span></button>
+                </div>
+            </form>
+            <p class="vd-estado-acciones"><a class="vd-enlace-icono" href="/medicamentos/"><?php echo rc_icono('arrow-left'); ?>Volver a Medicamentos</a></p>
+        </div>
     </div></main>
     <?php
     vd_pie();
@@ -80,74 +90,94 @@ vd_head(array(
         'url' => vd_url_absoluta($canonica),
     ),
 ));
+$vdIconos = array('4.1' => 'clipboard-check', '4.2' => 'clock', '4.3' => 'ban', '4.4' => 'alert', '4.5' => 'cruce',
+    '4.6' => 'baby', '4.8' => 'activity');
 ?>
-<main id="contenido" class="vd-main">
-    <div class="container vd-contenedor">
+<main id="contenido" class="vd-main vd-producto-pagina">
+    <div class="vd-contenedor vd-contenedor-ancho">
         <nav class="vd-migas" aria-label="Ruta de navegación">
             <a href="/">Inicio</a> <span aria-hidden="true">›</span>
             <a href="/medicamentos/">Medicamentos</a> <span aria-hidden="true">›</span>
             <span aria-current="page"><?php echo vd_e($nombre); ?></span>
         </nav>
 
-        <header class="vd-producto">
-            <p class="vd-sobretitulo"><?php echo rc_icono('pill', 'rc-icono rc-icono-chico'); ?>Medicamento registrado en Uruguay</p>
-            <h1 class="vd-h1"><?php echo vd_e($nombre); ?></h1>
-            <p class="vd-generico"><?php echo vd_e(vd_nombre($generico)); ?></p>
-            <dl class="vd-datos">
-                <div><dt>Principio activo</dt><dd><?php echo vd_e(implode(' + ', $sustancias)); ?></dd></div>
-                <?php if ($p['laboratorio']): ?><div><dt>Laboratorio</dt><dd><?php echo vd_e($p['laboratorio']); ?></dd></div><?php endif; ?>
-                <?php if ($p['nro_msp']): ?><div><dt>Registro MSP</dt><dd><?php echo vd_e($p['nro_msp']); ?></dd></div><?php endif; ?>
-                <div><dt>Estado</dt><dd><?php echo $comercializado ? 'Comercializado' : 'No comercializado'; ?></dd></div>
-                <?php if ($condvta): ?><div><dt>Condición de venta</dt><dd><?php echo vd_e($condvta); ?></dd></div><?php endif; ?>
-                <?php if ($ficha['estado'] === 'ok' && !empty($f['atc']['codigo'])): ?>
-                <div><dt>Código ATC</dt><dd><?php echo vd_e($f['atc']['codigo']); ?><?php if (!empty($f['atc']['nombre'])): ?> · <?php echo vd_e($f['atc']['nombre']); ?><?php endif; ?></dd></div>
-                <?php endif; ?>
-            </dl>
-            <p class="vr-agregar-fila">
-                <button type="button" class="vd-boton vr-agregar" data-vr-agregar data-id="<?php echo vd_e($p['amp_id']); ?>"
-                        data-nombre="<?php echo vd_e($nombre); ?>" data-detalle="<?php echo vd_e($generico); ?>">Agregar a mi lista para revisar interacciones</button>
-                <a class="vr-ir" href="/medicamentos/interacciones/">Revisar interacciones</a>
-            </p>
-        </header>
+        <div class="vd-ficha-grilla">
+            <header class="vd-producto">
+                <p class="vd-sobretitulo"><?php echo rc_icono('pill', 'rc-icono rc-icono-chico'); ?>Medicamento registrado en Uruguay</p>
+                <h1 class="vd-h1"><?php echo vd_e($nombre); ?></h1>
+                <p class="vd-generico"><?php echo vd_e(vd_nombre($generico)); ?></p>
+                <dl class="vd-datos">
+                    <div><dt>Principio activo</dt><dd><?php echo vd_e(implode(' + ', $sustancias)); ?></dd></div>
+                    <?php if ($p['laboratorio']): ?><div><dt>Laboratorio</dt><dd><?php echo vd_e($p['laboratorio']); ?></dd></div><?php endif; ?>
+                    <?php if ($p['nro_msp']): ?><div><dt>Registro MSP</dt><dd><?php echo vd_e($p['nro_msp']); ?></dd></div><?php endif; ?>
+                    <div class="<?php echo $comercializado ? 'vd-dato-ok' : 'vd-dato-no'; ?>"><dt>Estado</dt><dd><?php echo $comercializado ? 'Comercializado' : 'No comercializado'; ?></dd></div>
+                    <?php if ($condvta): ?><div><dt>Condición de venta</dt><dd><?php echo vd_e($condvta); ?></dd></div><?php endif; ?>
+                    <?php if ($ficha['estado'] === 'ok' && !empty($f['atc']['codigo'])): ?>
+                    <div><dt>Código ATC</dt><dd><?php echo vd_e($f['atc']['codigo']); ?><?php if (!empty($f['atc']['nombre'])): ?> · <?php echo vd_e($f['atc']['nombre']); ?><?php endif; ?></dd></div>
+                    <?php endif; ?>
+                </dl>
+            </header>
 
-        <section class="vd-ficha" aria-labelledby="vd-ficha-titulo">
-            <h2 id="vd-ficha-titulo" class="vd-h2">Ficha técnica de referencia del principio activo</h2>
-            <?php if ($ficha['estado'] === 'ok' && $secciones): ?>
-                <p class="vd-ficha-origen">Texto oficial de la AEMPS (España), sin modificaciones, de la ficha de
-                    <strong><?php echo vd_e($fuente ? $fuente['nombre_ref'] : ''); ?></strong>, el medicamento español de referencia con el
-                    mismo principio activo: por eso el texto puede nombrar esa marca. Puede diferir del producto registrado en Uruguay.</p>
-                <?php foreach ($secciones as $s): ?>
-                <section class="vd-seccion" id="seccion-<?php echo vd_e(str_replace('.', '-', $s['seccion'])); ?>">
-                    <h3 class="vd-h3"><?php echo vd_e($s['rotulo']); ?></h3>
-                    <div class="vd-texto" data-plegable><?php echo $s['html']; ?></div>
+            <div class="vd-lateral">
+                <section class="vd-lateral-tarjeta vd-lateral-lista" aria-labelledby="vd-lista-titulo">
+                    <h2 id="vd-lista-titulo" class="vd-lateral-titulo"><?php echo rc_icono('list-check'); ?>Interacciones</h2>
+                    <p>¿Tomás este medicamento junto con otros? Agregalo a tu lista y revisá si se llevan bien.</p>
+                    <p class="vr-agregar-fila">
+                        <button type="button" class="vd-boton vr-agregar" data-vr-agregar data-id="<?php echo vd_e($p['amp_id']); ?>"
+                                data-nombre="<?php echo vd_e($nombre); ?>" data-detalle="<?php echo vd_e($generico); ?>">Agregar a mi lista para revisar interacciones</button>
+                        <a class="vr-ir" href="/medicamentos/interacciones/">Revisar interacciones<?php echo rc_icono('arrow-right', 'rc-icono rc-icono-chico'); ?></a>
+                    </p>
                 </section>
-                <?php endforeach; ?>
-            <?php elseif ($ficha['estado'] === 'no_disponible'): ?>
-                <p class="vd-estado">La ficha técnica no está disponible en este momento. Volvé a intentarlo en unos minutos.</p>
-            <?php else: ?>
-                <p class="vd-estado">No hay ficha técnica de referencia para este principio activo.</p>
-            <?php endif; ?>
-        </section>
-
-        <aside class="vd-fuente" aria-label="Fuente y aviso">
-            <?php if ($fuente): ?>
-            <p><strong>Fuente:</strong> ficha técnica de la Agencia Española de Medicamentos y Productos Sanitarios (AEMPS) de
-                <em><?php echo vd_e($fuente['nombre_ref']); ?></em> (nº de registro <?php echo vd_e($fuente['nregistro']); ?>)<?php
-                $fecha = vd_fecha(isset($fuente['fecha_ficha']) ? $fuente['fecha_ficha'] : null);
-                echo $fecha ? ', actualizada el ' . vd_e($fecha) : ''; ?>.
-                Es la referencia española del principio activo y puede diferir del producto registrado en Uruguay.
-                <?php if (!empty($fuente['url_ficha'])): ?>
-                <a href="<?php echo vd_e($fuente['url_ficha']); ?>" target="_blank" rel="noopener nofollow">Ver ficha completa en la AEMPS<span class="vd-sr"> (abre en otra pestaña)</span><?php echo rc_icono('external'); ?></a>
+                <?php if ($ficha['estado'] === 'ok' && $secciones): ?>
+                <nav class="vd-lateral-tarjeta vd-indice" aria-labelledby="vd-indice-titulo">
+                    <h2 id="vd-indice-titulo" class="vd-lateral-titulo"><?php echo rc_icono('list'); ?>En esta ficha</h2>
+                    <ul>
+                        <?php foreach ($secciones as $s): ?>
+                        <li><a href="#seccion-<?php echo vd_e(str_replace('.', '-', $s['seccion'])); ?>"><?php echo rc_icono(isset($vdIconos[$s['seccion']]) ? $vdIconos[$s['seccion']] : 'file-text', 'rc-icono rc-icono-chico'); ?><?php echo vd_e($s['rotulo']); ?></a></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </nav>
                 <?php endif; ?>
-            </p>
-            <?php endif; ?>
-            <p class="vd-aviso"><?php echo vd_e(VD_AVISO); ?></p>
-        </aside>
+                <aside class="vd-lateral-tarjeta vd-fuente" aria-label="Fuente y aviso">
+                    <h2 class="vd-lateral-titulo"><?php echo rc_icono('book-open'); ?>Fuente</h2>
+                    <?php if ($fuente): ?>
+                    <p>Ficha técnica de la Agencia Española de Medicamentos y Productos Sanitarios (AEMPS) de
+                        <em><?php echo vd_e($fuente['nombre_ref']); ?></em> (nº de registro <?php echo vd_e($fuente['nregistro']); ?>)<?php
+                        $fecha = vd_fecha(isset($fuente['fecha_ficha']) ? $fuente['fecha_ficha'] : null);
+                        echo $fecha ? ', actualizada el ' . vd_e($fecha) : ''; ?>.
+                        Es la referencia española del principio activo y puede diferir del producto registrado en Uruguay.</p>
+                    <?php if (!empty($fuente['url_ficha'])): ?>
+                    <p><a class="vd-enlace-icono" href="<?php echo vd_e($fuente['url_ficha']); ?>" target="_blank" rel="noopener nofollow">Ver ficha completa en la AEMPS<span class="vd-sr"> (abre en otra pestaña)</span><?php echo rc_icono('external', 'rc-icono rc-icono-chico'); ?></a></p>
+                    <?php endif; ?>
+                    <?php endif; ?>
+                    <p class="vd-aviso"><?php echo vd_e(VD_AVISO); ?></p>
+                </aside>
+            </div>
+
+            <section class="vd-ficha" aria-labelledby="vd-ficha-titulo">
+                <h2 id="vd-ficha-titulo" class="vd-h2">Ficha técnica de referencia del principio activo</h2>
+                <?php if ($ficha['estado'] === 'ok' && $secciones): ?>
+                    <p class="vd-ficha-origen"><?php echo rc_icono('info'); ?><span>Texto oficial de la AEMPS (España), sin modificaciones, de la ficha de
+                        <strong><?php echo vd_e($fuente ? $fuente['nombre_ref'] : ''); ?></strong>, el medicamento español de referencia con el
+                        mismo principio activo: por eso el texto puede nombrar esa marca. Puede diferir del producto registrado en Uruguay.</span></p>
+                    <?php foreach ($secciones as $s): ?>
+                    <section class="vd-seccion" id="seccion-<?php echo vd_e(str_replace('.', '-', $s['seccion'])); ?>">
+                        <h3 class="vd-h3 vd-seccion-titulo"><span class="vd-seccion-icono"><?php echo rc_icono(isset($vdIconos[$s['seccion']]) ? $vdIconos[$s['seccion']] : 'file-text'); ?></span><?php echo vd_e($s['rotulo']); ?></h3>
+                        <div class="vd-texto" data-plegable><?php echo $s['html']; ?></div>
+                    </section>
+                    <?php endforeach; ?>
+                <?php elseif ($ficha['estado'] === 'no_disponible'): ?>
+                    <p class="vd-estado">La ficha técnica no está disponible en este momento. Volvé a intentarlo en unos minutos.</p>
+                <?php else: ?>
+                    <p class="vd-estado">No hay ficha técnica de referencia para este principio activo.</p>
+                <?php endif; ?>
+            </section>
+        </div>
 
         <?php if ($relacionados): ?>
         <section class="vd-relacionados" aria-labelledby="vd-rel-titulo">
             <h2 id="vd-rel-titulo" class="vd-h2">Otros productos con <?php echo vd_e(implode(' + ', $sustancias)); ?></h2>
-            <ul class="vd-lista">
+            <ul class="vd-lista vd-grilla-tarjetas">
                 <?php foreach ($relacionados as $r): ?>
                 <li><a class="vd-item" href="<?php echo vd_e(vd_url($r['amp_id'], $r['amp_dsc'])); ?>">
                     <span class="vd-item-nombre"><?php echo vd_e(vd_nombre($r['amp_dsc'])); ?></span>
@@ -159,4 +189,4 @@ vd_head(array(
         <?php endif; ?>
     </div>
 </main>
-<?php vd_pie('<script src="/js/verificador.js?v=3" defer></script>'); ?>
+<?php vd_pie('<script src="/js/verificador.js?v=4" defer></script>'); ?>
