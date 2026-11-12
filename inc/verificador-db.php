@@ -71,6 +71,17 @@ function vr_guardar_consulta(PDO $pdo, $personaId, array $datos, array $producto
         ));
 }
 
+// Retención (política de privacidad, § verificador): 2 años desde la última consulta. Se corre después de cada
+// consulta nueva: la tabla es chica y así no depende de un cron. Devuelve cuántas personas borró.
+function vr_purgar_vencidos(PDO $pdo) {
+    $st = $pdo->prepare("DELETE FROM publico.persona p
+        WHERE p.creado < (now() AT TIME ZONE 'UTC') - interval '2 years'
+          AND NOT EXISTS (SELECT 1 FROM publico.consulta c
+                          WHERE c.persona_id = p.id AND c.creado >= (now() AT TIME ZONE 'UTC') - interval '2 years')");
+    $st->execute();
+    return $st->rowCount();
+}
+
 // Borra la persona y sus consultas. Devuelve true si existía.
 function vr_baja(PDO $pdo, $token) {
     if (!preg_match('/^[0-9a-f]{48}$/', (string)$token)) return false;

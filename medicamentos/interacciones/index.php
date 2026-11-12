@@ -64,6 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $resumen = vr_resumen($alertas);
                 list($personaId, $token) = vr_guardar_persona($pdo, $datos['email'], $datos['novedades']);
                 vr_guardar_consulta($pdo, $personaId, $datos, $productos, $resumen);
+                try {
+                    $purgados = vr_purgar_vencidos($pdo);
+                    if ($purgados) error_log("verificador: retención 2 años, $purgados persona(s) borradas");
+                } catch (PDOException $e) {
+                    error_log('verificador purga: ' . $e->getMessage()); // no frena la consulta
+                }
                 $enviado = vr_enviar_resultado($datos['email'], $productos, $alertas, $token);
                 $resultado = array('alertas' => $alertas, 'resumen' => $resumen, 'email_enviado' => $enviado);
             }
