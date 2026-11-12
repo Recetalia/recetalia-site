@@ -20,7 +20,7 @@ function vd_head(array $meta) {
         'og_type' => isset($meta['og_type']) ? $meta['og_type'] : 'website',
         'robots' => isset($meta['robots']) ? $meta['robots'] : null,
         'jsonld' => isset($meta['jsonld']) ? $meta['jsonld'] : null,
-        'css' => array('/css/vademecum.css?v=12'),
+        'css' => array('/css/vademecum.css?v=13'),
         'body_clase' => 'vd',
     ));
 }

@@ -26,7 +26,8 @@ vd_head(array(
 ?>
 <main id="contenido" class="vd-main vd-landing">
     <section class="vd-buscador-hero" aria-labelledby="vd-titulo">
-        <div class="vd-contenedor vd-contenedor-ancho">
+        <div class="vd-contenedor vd-contenedor-ancho vd-hero-grilla">
+            <div class="vd-hero-principal">
             <p class="vd-sobretitulo"><?php echo rc_icono('shield-check', 'rc-icono rc-icono-chico'); ?>Medicamentos registrados en Uruguay</p>
             <h1 id="vd-titulo" class="vd-h1">Medicamentos</h1>
             <p class="vd-bajada">Buscá cualquier medicamento registrado en Uruguay y consultá su ficha técnica de referencia: indicaciones, posología, contraindicaciones e interacciones.</p>
@@ -53,6 +54,14 @@ vd_head(array(
                     <a href="/medicamentos/?q=losartan">losartán</a>
                 </p>
             </form>
+            </div>
+            <aside class="vd-hero-pacientes" aria-labelledby="vd-hero-pac-titulo">
+                <span class="vd-hero-pac-icono"><?php echo rc_icono('heart-pulse'); ?></span>
+                <p class="vd-hero-pac-etiqueta">Pacientes</p>
+                <h2 id="vd-hero-pac-titulo" class="vd-hero-pac-titulo">¿Tomás más de un medicamento?</h2>
+                <p class="vd-hero-pac-texto">Revisá si se llevan bien entre sí y con tu situación (edad, embarazo, alergias, enfermedades), explicado en lenguaje simple.</p>
+                <a class="vd-boton vd-hero-pac-boton" href="/medicamentos/interacciones/"><?php echo rc_icono('list-check'); ?>Revisar mis medicamentos</a>
+            </aside>
         </div>
     </section>
 

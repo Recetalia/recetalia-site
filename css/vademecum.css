@@ -593,3 +593,17 @@
     .vr-alerta, .vr-resumen { box-shadow: none; break-inside: avoid; }
     .vr-detalle:not([open]) > *:not(summary) { display: block; }
 }
+
+/* Acceso de Pacientes en el hero de /medicamentos/ (visible sin scrollear; pedido de Pablo 2026-11-11) */
+.vd-hero-grilla { display: grid; grid-template-columns: 1fr; gap: var(--rc-s5, 32px); align-items: center; }
+@media (min-width: 1024px) { .vd-hero-grilla { grid-template-columns: minmax(0, 1.65fr) minmax(300px, 1fr); gap: 48px; } }
+.vd-hero-pacientes {
+    position: relative; background: #fff; color: var(--rc-texto); border-radius: 16px; padding: 28px 26px 26px;
+    box-shadow: 0 18px 40px rgba(6, 40, 46, .28); border-top: 5px solid var(--rc-marca);
+}
+.vd-hero-pac-icono { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 12px; background: var(--rc-tinte); color: var(--rc-primario); margin-bottom: 14px; }
+.vd-hero-pac-icono .rc-icono { width: 28px; height: 28px; }
+.vd-hero-pac-etiqueta { margin: 0 0 4px; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--rc-primario); }
+.vd-hero-pac-titulo { margin: 0 0 8px; font-family: Lexend, sans-serif; font-size: 24px; line-height: 1.25; font-weight: 700; color: var(--rc-tinta); }
+.vd-hero-pac-texto { margin: 0 0 18px; font-size: 16px; line-height: 1.55; color: var(--rc-texto); }
+.vd-hero-pac-boton { width: 100%; justify-content: center; }
