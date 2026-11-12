@@ -88,6 +88,7 @@
 
         form.addEventListener('submit', function (e) {
             e.preventDefault();
+            // Sólo se exige el token si la página renderizó el widget (SITE_RECAPTCHA_SITEKEY definida).
             if (window.grecaptcha && typeof window.grecaptcha.getResponse === 'function'
                 && document.getElementById('html_element') && document.getElementById('html_element').children.length
                 && window.grecaptcha.getResponse() === '') {

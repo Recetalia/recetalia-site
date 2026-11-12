@@ -3,6 +3,15 @@
 // vademécum, vía vd_head/vd_pie). Sin <base href>: en PRE mandaría los links a PROD; todas las rutas
 // son absolutas desde la raíz. Sistema de diseño: design-system/recetalia/MASTER.md.
 
+// reCAPTCHA del formulario de contacto, por entorno. La clave de sitio está registrada sólo para
+// recetalia.com: en PRE (otro dominio) Google muestra "el dominio de la clave no es válido". Sin
+// SITE_RECAPTCHA_SITEKEY no se carga el script de Google ni el widget, y js/rc.js no exige el token;
+// el antispam del servidor (inc/antispam.php) sigue igual. En PROD hay que definir
+// SITE_RECAPTCHA_SITEKEY con la clave actual (6LdnY14aAAAAANJNq-fqC7aUT2lrU9C4jZvKsete).
+function rc_recaptcha_sitekey() {
+    return trim((string)getenv('SITE_RECAPTCHA_SITEKEY'));
+}
+
 function rc_e($s) {
     return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8');
 }
@@ -35,6 +44,21 @@ function rc_icono($nombre, $clase = 'rc-icono') {
         'info' => '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
         'alert' => '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
         'heart-pulse' => '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/>',
+        'trash' => '<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/>',
+        'clock' => '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+        'ban' => '<circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/>',
+        'baby' => '<path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5 1.1 3.5 2.5s-.9 2.5-2 2.5c-.8 0-1.5-.4-1.5-1"/>',
+        'activity' => '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
+        'cruce' => '<path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/>',
+        'clipboard-check' => '<rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/>',
+        'landmark' => '<line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/>',
+        'globe' => '<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>',
+        'printer' => '<polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/>',
+        'circle-check' => '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',
+        'book-open' => '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+        'list' => '<line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/>',
+        'plus' => '<path d="M5 12h14"/><path d="M12 5v14"/>',
+        'arrow-left' => '<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
         'list-check' => '<path d="M11 18H3"/><path d="m15 18 2 2 4-4"/><path d="M16 12H3"/><path d="M16 6H3"/>',
     );
     if (!isset($paths[$nombre])) return '';
@@ -85,10 +109,10 @@ function rc_head(array $meta) {
     <?php if (!empty($meta['jsonld'])): ?>
     <script type="application/ld+json"><?php echo json_encode($meta['jsonld'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG); ?></script>
     <?php endif; ?>
-    <?php if (!empty($meta['recaptcha'])): ?>
+    <?php if (!empty($meta['recaptcha']) && rc_recaptcha_sitekey() !== ''): ?>
     <script>
     var onloadCallback = function () {
-        grecaptcha.render('html_element', { 'sitekey': '6LdnY14aAAAAANJNq-fqC7aUT2lrU9C4jZvKsete' });
+        grecaptcha.render('html_element', { 'sitekey': <?php echo json_encode(rc_recaptcha_sitekey(), JSON_HEX_TAG); ?> });
     };
     </script>
     <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit&hl=es" async defer></script>
@@ -105,7 +129,7 @@ function rc_head(array $meta) {
 function rc_pie($scriptsExtra = '', $chat = false) {
     include __DIR__ . '/../footer.php';
     ?>
-    <script src="/js/rc.js?v=2" defer></script>
+    <script src="/js/rc.js?v=3" defer></script>
     <?php echo $scriptsExtra; ?>
     <?php if ($chat): ?>
     <script src="https://videoconsulta.iwtg.com/video-chat.umd.min.js" defer></script>
@@ -148,7 +172,9 @@ function rc_contacto() {
                     <label class="rc-label" for="comment">Mensaje</label>
                     <textarea class="rc-input" rows="5" name="comment" id="comment" maxlength="4000"></textarea>
                 </div>
+                <?php if (rc_recaptcha_sitekey() !== ''): ?>
                 <div class="rc-campo rc-captcha"><div id="html_element"></div></div>
+                <?php endif; ?>
                 <button type="submit" class="rc-btn rc-btn-primario" id="submit"><?php echo rc_icono('send'); ?>Enviar mensaje</button>
                 <div id="message" class="rc-form-mensaje" role="status" aria-live="polite"></div>
             </form>
