@@ -21,7 +21,7 @@ rc_head(array(
                     <a class="rc-btn rc-btn-primario rc-btn-grande" href="https://medicos.recetalia.com/login" target="_blank" rel="noopener"><?php echo rc_icono('stethoscope'); ?>Soy médico<span class="rc-sr"> (abre en otra pestaña)</span></a>
                     <a class="rc-btn rc-btn-secundario rc-btn-grande" href="https://farmacias.recetalia.com/login" target="_blank" rel="noopener"><?php echo rc_icono('store'); ?>Soy farmacia<span class="rc-sr"> (abre en otra pestaña)</span></a>
                 </div>
-                <p class="rc-hero-pacientes">¿Sos paciente? <a href="/medicamentos/">Consultá tus medicamentos<?php echo rc_icono('arrow-right'); ?></a></p>
+                <p class="rc-hero-pacientes">¿Sos paciente? <a href="/medicamentos/interacciones/">Consultá tus medicamentos<?php echo rc_icono('arrow-right'); ?></a></p>
             </div>
             <div class="rc-hero-visual">
                 <picture>
