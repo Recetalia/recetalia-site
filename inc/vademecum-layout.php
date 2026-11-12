@@ -20,13 +20,13 @@ function vd_head(array $meta) {
         'og_type' => isset($meta['og_type']) ? $meta['og_type'] : 'website',
         'robots' => isset($meta['robots']) ? $meta['robots'] : null,
         'jsonld' => isset($meta['jsonld']) ? $meta['jsonld'] : null,
-        'css' => array('/css/vademecum.css?v=9'),
+        'css' => array('/css/vademecum.css?v=12'),
         'body_clase' => 'vd',
     ));
 }
 
 function vd_pie($scriptsExtra = '') {
-    rc_pie('<script src="/js/vademecum.js?v=3" defer></script>' . $scriptsExtra);
+    rc_pie('<script src="/js/vademecum.js?v=4" defer></script>' . $scriptsExtra);
 }
 
 // Aviso legal que va en todas las páginas del vademécum.
