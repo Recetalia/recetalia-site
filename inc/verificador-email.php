@@ -36,6 +36,8 @@ function vr_enviar_resultado($email, array $productos, array $alertas, $bajaToke
         . '<h1 style="font-size:20px;color:#212832;">Resultado de tu consulta de interacciones</h1>'
         . '<p style="font-size:15px;line-height:1.5;">Medicamentos revisados: ' . vd_e($lista) . '.</p>'
         . '<p style="font-size:17px;font-weight:bold;color:#212832;">' . vd_e(vr_titulo_resumen($resumen)) . '</p>'
+        . '<div style="border:2px solid #B54708;background:#FFFAEB;padding:12px 14px;margin:0 0 16px;font-size:14px;line-height:1.5;color:#7A2E0E;font-weight:bold;">'
+        . vd_e(VR_EMAIL_DISCLAIMER) . '</div>'
         . ($alertas ? vr_html_alertas($alertas, true) : '<p style="font-size:15px;line-height:1.5;">' . vd_e(VR_SIN_HALLAZGOS) . '</p>')
         . '<p style="font-size:14px;font-weight:bold;line-height:1.5;color:#212832;">' . vd_e(VR_AVISO) . '</p>'
         . '<p style="font-size:12px;line-height:1.5;color:#5B636E;">' . vd_e(vr_fuentes_usadas($alertas)) . '</p>'
@@ -58,7 +60,7 @@ function vr_enviar_resultado($email, array $productos, array $alertas, $bajaToke
     $m->Subject = 'Tu consulta de interacciones — Recetalia';
     $m->isHTML(true);
     $m->Body = $cuerpo;
-    $m->AltBody = vr_titulo_resumen($resumen) . "\n\n" . VR_AVISO . "\n\nBorrar mis datos: " . $baja;
+    $m->AltBody = vr_titulo_resumen($resumen) . "\n\n" . VR_EMAIL_DISCLAIMER . "\n\n" . VR_AVISO . "\n\nBorrar mis datos: " . $baja;
     if (!$m->send()) {
         error_log('verificador: falló el envío del email: ' . $m->ErrorInfo);
         return false;

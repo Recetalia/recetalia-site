@@ -1,6 +1,6 @@
 <?php
 // Verificador de interacciones para pacientes. GET: formulario (lista de medicamentos + datos).
-// POST: valida, consulta a Consilio, guarda perfil y consulta (schema `publico`), envía la copia por
+// POST: valida, consulta a Consilio, guarda perfil y consulta (schema `publico`), envía el detalle por
 // email y muestra el resultado. Spec: doc/plans/2026-11-11-verificador-pacientes-design.md.
 require_once __DIR__ . '/../../inc/verificador-db.php';
 require_once __DIR__ . '/../../inc/verificador-consilio.php';
@@ -104,7 +104,7 @@ if ($resultado) {
                 <span aria-current="page">Interacciones</span>
             </nav>
             <h1 class="vd-h1">¿Los medicamentos que tomás se llevan bien?</h1>
-            <p class="vd-bajada">Elegí los medicamentos que tomás, contanos algunos datos y te mostramos las posibles interacciones y advertencias, explicadas en lenguaje simple. Te mandamos una copia por email.</p>
+            <p class="vd-bajada">Elegí los medicamentos que tomás, contanos algunos datos y te mandamos por email las posibles interacciones y advertencias, explicadas en lenguaje simple.</p>
             <ol class="vr-stepper" id="vr-stepper" aria-label="Pasos">
                 <li <?php echo $vrEtapa(1); ?> data-etapa="1"><span class="vr-etapa-num" aria-hidden="true"><span>1</span><?php echo rc_icono('check'); ?></span><span class="vr-etapa-texto">Tus medicamentos</span></li>
                 <li <?php echo $vrEtapa(2); ?> data-etapa="2"><span class="vr-etapa-num" aria-hidden="true"><span>2</span><?php echo rc_icono('check'); ?></span><span class="vr-etapa-texto">Tus datos</span></li>
@@ -130,21 +130,25 @@ if ($resultado) {
                 </ul>
                 <?php endif; ?>
             </div>
-            <?php if ($resultado['alertas']): ?>
-                <div class="vr-alertas"><?php echo vr_html_alertas($resultado['alertas']); ?></div>
+            <?php if ($resultado['email_enviado']): ?>
+                <?php // En pantalla sólo el encabezado; el detalle va al email (pedido de Daniel, 2026-11-12). ?>
+                <p class="vr-email-estado vr-email-ok vr-email-leyenda" role="status"><?php echo rc_icono('mail'); ?><span>Toda la información detallada la podés ver en tu email: <strong><?php echo vd_e($datos['email']); ?></strong>. Si no lo ves en unos minutos, revisá la carpeta de spam.</span></p>
             <?php else: ?>
-                <p class="vd-estado"><?php echo vd_e(VR_SIN_HALLAZGOS); ?></p>
+                <?php // Si el email no salió, el detalle se muestra acá: si no, el paciente se queda sin nada. ?>
+                <?php if ($resultado['alertas']): ?>
+                    <div class="vr-alertas"><?php echo vr_html_alertas($resultado['alertas']); ?></div>
+                <?php else: ?>
+                    <p class="vd-estado"><?php echo vd_e(VR_SIN_HALLAZGOS); ?></p>
+                <?php endif; ?>
+                <p class="vr-email-estado" role="status"><?php echo rc_icono('mail'); ?><span>No pudimos mandarte el detalle por email, así que te lo mostramos acá. Podés guardar o imprimir esta página.</span></p>
             <?php endif; ?>
-            <p class="vr-email-estado<?php echo $resultado['email_enviado'] ? ' vr-email-ok' : ''; ?>" role="status"><?php echo rc_icono('mail'); ?><span><?php echo $resultado['email_enviado']
-                ? 'Te mandamos una copia a ' . vd_e($datos['email']) . '.'
-                : 'No pudimos mandarte la copia por email. Podés guardar o imprimir esta página.'; ?></span></p>
             <aside class="vd-fuente" aria-label="Aviso y fuentes">
                 <p class="vd-aviso"><?php echo vd_e(VR_AVISO); ?></p>
                 <p><?php echo vd_e(vr_fuentes_usadas($resultado['alertas'])); ?></p>
             </aside>
             <div class="vr-acciones">
                 <a class="vd-boton" href="/medicamentos/interacciones/"><?php echo rc_icono('plus'); ?>Hacer otra consulta</a>
-                <button type="button" class="vd-boton vd-boton-claro" data-vr-imprimir hidden><?php echo rc_icono('printer'); ?>Imprimir o guardar</button>
+                <?php if (!$resultado['email_enviado']): ?><button type="button" class="vd-boton vd-boton-claro" data-vr-imprimir hidden><?php echo rc_icono('printer'); ?>Imprimir o guardar</button><?php endif; ?>
                 <a class="vd-enlace-icono" href="/medicamentos/"><?php echo rc_icono('arrow-left'); ?>Volver a Medicamentos</a>
             </div>
         </section>
@@ -218,7 +222,7 @@ if ($resultado) {
                 <div class="vr-campo">
                     <label for="vr-email" class="vd-etiqueta">Email</label>
                     <input id="vr-email" name="email" type="email" autocomplete="email" required maxlength="200" value="<?php echo vd_e($datos['email']); ?>"<?php echo isset($errores['email']) ? ' aria-invalid="true" aria-describedby="err-email"' : ''; ?>>
-                    <p class="vr-ayuda">Te mandamos una copia del resultado.</p>
+                    <p class="vr-ayuda">Ahí te mandamos el resultado detallado.</p>
                     <?php echo $err('email'); ?>
                 </div>
             </fieldset>

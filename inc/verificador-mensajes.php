@@ -97,6 +97,9 @@ const VR_MENSAJES = array(
 // Resultado sin hallazgos: nunca "es seguro".
 const VR_SIN_HALLAZGOS = 'No encontramos interacciones ni advertencias en nuestras fuentes para estos medicamentos y los datos que indicaste. Eso no significa que no existan: las fuentes no cubren todos los casos. Ante cualquier duda, consultalo con tu médico o químico farmacéutico.';
 
+// Disclaimer destacado del email (pedido de Daniel, 2026-11-12): el detalle sólo llega por email.
+const VR_EMAIL_DISCLAIMER = 'La información de este informe es genérica y orientativa: surge de fuentes públicas de referencia, no tiene en cuenta toda tu situación de salud y no reemplaza la consulta médica. Siempre consultá a tu médico o químico farmacéutico antes de tomar, dejar o cambiar un medicamento.';
+
 const VR_AVISO = 'Esta herramienta es informativa y no reemplaza la consulta con un profesional de la salud. ' . VR_CIERRE;
 
 // Cambiar el texto de consentimiento (medicamentos/interacciones/index.php) = subir la versión.
