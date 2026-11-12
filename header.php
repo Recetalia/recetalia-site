@@ -1,103 +1,37 @@
-    <header class="themeix-header">
-        <div class="themeix-header-top bg-color2">
-            <div class="container">
-                <div class="d-flex justify-content-between themeix">
-                    <div class="themeix-top-bar-left">
-                        <p class="top-content"><a href="mailto:hello@recetalia.com">hello@recetalia.com</a></p>
-                    </div>
-
-                    <div class="dropdown">
-                        <a class="top-sign-btn dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="dropdownMenu2" ><i class="fa fa-user"></i>Ingresar</a>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                        <!--a class="dropdown-item" href="https://pacientes.recetalia.com/login">Pacientes</a-->
-                        <a class="dropdown-item" href="https://medicos.recetalia.com/login" target="_blank" rel="noopener">Médicos</a>
-                        <a class="dropdown-item" href="https://farmacias.recetalia.com/login" target="_blank" rel="noopener">Farmacias</a>
-                        <a class="dropdown-item" href="https://prestadores.recetalia.com/login" target="_blank" rel="noopener">Prestadores</a>
-                      </div>
-                    </div>
-
+<?php
+// Header común (sticky). Se incluye desde rc_head() en inc/layout.php. Menú de celular y de
+// "Ingresar": js/rc.js (sin jQuery). Sin JS el menú queda siempre visible (clase rc-js en <html>).
+require_once __DIR__ . '/inc/layout.php';
+$rcSeccion = rc_seccion();
+// Fuera de la portada el ancla tiene que llevar a la portada.
+$rcContacto = $rcSeccion === 'inicio' ? '#ContactSet' : '/#ContactSet';
+$rcActual = function ($s) use ($rcSeccion) { return $rcSeccion === $s ? ' aria-current="page"' : ''; };
+?>
+    <header class="rc-header" id="rc-header">
+        <div class="rc-container rc-header-fila">
+            <a class="rc-logo" href="/"><img src="/images/header-brand.png" alt="Recetalia, receta digital: inicio" width="154" height="48"></a>
+            <button type="button" class="rc-hamburguesa" id="rc-hamburguesa" aria-expanded="false" aria-controls="rc-nav">
+                <span class="rc-hamburguesa-abrir"><?php echo rc_icono('menu'); ?></span>
+                <span class="rc-hamburguesa-cerrar"><?php echo rc_icono('x'); ?></span>
+                <span class="rc-sr">Menú</span>
+            </button>
+            <nav class="rc-nav" id="rc-nav" aria-label="Principal">
+                <ul class="rc-nav-lista">
+                    <li><a class="rc-nav-link" href="/"<?php echo $rcActual('inicio'); ?>>Inicio</a></li>
+                    <li><a class="rc-nav-link" href="/medicamentos/"<?php echo $rcActual('medicamentos'); ?>>Medicamentos</a></li>
+                    <li><a class="rc-nav-link" href="/farmacias-habilitadas.php"<?php echo $rcActual('farmacias'); ?>>Farmacias habilitadas</a></li>
+                    <li><a class="rc-nav-link" href="<?php echo $rcContacto; ?>">Contacto</a></li>
+                </ul>
+                <div class="rc-ingresar">
+                    <button type="button" class="rc-btn rc-btn-primario rc-ingresar-btn" id="rc-ingresar-btn" aria-expanded="false" aria-controls="rc-ingresar-menu">
+                        <?php echo rc_icono('log-in'); ?>Ingresar<?php echo rc_icono('chevron-down', 'rc-icono rc-ingresar-flecha'); ?>
+                    </button>
+                    <ul class="rc-ingresar-menu" id="rc-ingresar-menu" aria-label="Ingresar como">
+                        <li><a href="https://medicos.recetalia.com/login" target="_blank" rel="noopener"><?php echo rc_icono('stethoscope'); ?><span>Médicos</span><?php echo rc_icono('external', 'rc-icono rc-icono-chico'); ?><span class="rc-sr"> (abre en otra pestaña)</span></a></li>
+                        <li><a href="https://farmacias.recetalia.com/login" target="_blank" rel="noopener"><?php echo rc_icono('store'); ?><span>Farmacias</span><?php echo rc_icono('external', 'rc-icono rc-icono-chico'); ?><span class="rc-sr"> (abre en otra pestaña)</span></a></li>
+                        <li><a href="https://prestadores.recetalia.com/login" target="_blank" rel="noopener"><?php echo rc_icono('building'); ?><span>Prestadores</span><?php echo rc_icono('external', 'rc-icono rc-icono-chico'); ?><span class="rc-sr"> (abre en otra pestaña)</span></a></li>
+                    </ul>
                 </div>
-            </div>
-        </div>
-        <!-- Modal -->
-        <div class="top-login-modal modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="tmx-loginform" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="tmx-loginform">Area de Acceso</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="login-form-modal">
-                            <form action="#" method="get">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-row">
-                                            <div class="form-group col-md-12">
-                                                <input type="text" class="form-control" placeholder="Nombre">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-row">
-                                            <div class="form-group col-md-12">
-                                                <input type="password" class="form-control" placeholder="Password">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-row">
-                                            <div class="form-group col-md-12">
-                                                <button type="submit" class="btn btn-primary login-btn">Ingreso</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p class="message">No está registrado? <a href="#">Cree una cuenta</a></p>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="themeix-header-navigation bg-color">
-            <div class="container">
-                <div class="d-flex justify-content-between themeix">
-                    <div class="themeix-logo">
-                        <a class="themeix-brand" href="/"><img src="/images/header-brand.png" alt="Recetalia" /></a>
-                    </div>
-                    <nav class="themeix-menu">
-                        <ul id="navigation-menu" class="slimmenu">
-                            <li><a href="/">Inicio</a></li>
-							<!--
-                            <li><a href="about.html">About</a></li>
-                            <li>
-                                <a href="#">Blog </a>
-                                <ul>
-                                    <li><a href="blog-left-sidebar.html">Blog  Left Sidebar</a></li>
-                                    <li><a href="blog-right-sidebar.html">Blog Right Sidebar</a></li>
-                                    <li><a href="single.html">Blog Details</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">Pages </a>
-                                <ul>
-                                    <li><a href="services-details.html">Service Details</a></li>
-                                    <li><a href="#">Projects</a></li>
-                                    <li><a href="projects-details.html">Project Details</a></li>
-                                    <li><a href="single.html">Blog Details</a></li>
-                                    <li><a href="about.html">About</a></li>
-                                    <li><a href="404.html">404 Page</a></li>
-                                </ul>
-                            </li>
-							-->
-
-                            <li><a href="#ContactSet">Contacto</a></li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
+            </nav>
         </div>
     </header>

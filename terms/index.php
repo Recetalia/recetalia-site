@@ -1,50 +1,28 @@
-<!DOCTYPE HTML>
-<html lang="en-US">
-
-<head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="author" content="Recetalia" />
-    <title>Términos y condiciones - Receta Digital</title>
-    <!--  Add Favicon Icon-->
-    <link rel="shortcut icon" href="/images/favicon-recetalia.png" type="image/x-icon">
-    <link rel="icon" href="/images/favicon-recetalia.png" type="image/x-icon">
-    <!-- Add All Style -->
-    <link rel="stylesheet" href="../css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../css/font-awesome.min.css" />
-    <link rel="stylesheet" href="../css/owl.carousel.min.css" />
-    <link rel="stylesheet" href="../css/slimmenu.min.css" />
-    <link rel="stylesheet" href="../css/modal-video.min.css" />
-    <link rel="stylesheet" href="../css/animate.min.css" />
-    <link rel="stylesheet" href="../styles.css" />
-    <link rel="stylesheet" href="../css/responsive.css" />
-    <!-- Poppins Google Font -->
-    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700" rel="stylesheet">
-
-    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
-    <script>
-    var onloadCallback = function() {
-	grecaptcha.render('html_element', {
-    'sitekey' : '6LdnY14aAAAAANJNq-fqC7aUT2lrU9C4jZvKsete'
-    });
-    };
-    
-    
-    
-    </script>
-    
-  
-	
-</head>
-<body>
-<?php include_once("../header.php");?>
-    <section class="feature-section bg-color3 section-spacing wow fadeIn"  data-wow-duration="1s">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-10 m-auto">
-                    <div class="section-title margin-bottom-60 text-center">
-                        <h2>Términos y condiciones</h2><br>
+<?php
+// Términos y condiciones. El texto legal va tal cual; sólo cambia el layout (inc/layout.php).
+require_once __DIR__ . '/../inc/layout.php';
+rc_head(array(
+    'title' => 'Términos y condiciones | Recetalia',
+    'description' => 'Términos y condiciones de uso de Recetalia, la plataforma de receta digital.',
+    'canonical' => rtrim(getenv('SITE_PUBLIC_URL') ?: 'https://recetalia.com', '/') . '/terms/',
+));
+?>
+<main id="contenido">
+    <section class="rc-pagina-cabeza" aria-labelledby="pagina-titulo">
+        <div class="rc-container rc-angosto">
+            <nav class="rc-migas" aria-label="Ruta de navegación">
+                <ol>
+                    <li><a href="/">Inicio</a><?php echo rc_icono('chevron-right'); ?></li>
+                    <li><span aria-current="page">Términos y condiciones</span></li>
+                </ol>
+            </nav>
+            <h1 id="pagina-titulo">Términos y condiciones</h1>
+        </div>
+    </section>
+    <section class="rc-seccion rc-seccion-pegada">
+        <div class="rc-container rc-angosto">
+            <div class="rc-prosa">
+                        
 <p class="text-left">AVISO LEGAL<br><br><br>
 
 0. OBJETO<br>
@@ -71,34 +49,9 @@ RECETALIA quedará eximido de cumplir cualquiera de sus obligaciones sí: a) su 
 	<br><br><br>6. ATENCIÓN AL CLIENTE<br>Para realizar cualquier consulta a RECETALIA relacionada con el funcionamiento del sitio web, información o disponibilidad de servicios, el cliente deberá hacerlo enviando un correo electrónico a hello@ RECETALIA.com<br><br><br>7. LEGISLACIÓN APLICABLE<br>Las condiciones presentes se regirán por la legislación uruguaya vigente.<br>La lengua utilizada será el Castellano.<br><br><br>POLÍTICA DE COOKIES<br>¿Qué son las cookies?<br>Una cookie es un fichero que se descarga en su ordenador al acceder a determinadas páginas web. Las cookies permiten a una página web, entre otras cosas, almacenar y recuperar información sobre hábitos de navegación de un usuario o de su equipo y, dependiendo de la información que contengan y de la forma que utilice su equipo, pueden utilizarse para reconocer al usuario.<br>¿Para qué utiliza las cookies esta página web y cuáles son?<br>Esta página web utiliza las cookies para una serie de finalidades, incluidas:<br>Análisis: son aquellas cookies que bien, tratadas por nosotros o por terceros, nos permiten cuantificar el número de usuarios y así realizar la medición y análisis estadístico de la utilización que hacen los usuarios del servicio. Para ello se analiza su navegación en nuestra página web con el fin de mejorar la experiencia del usuario.<br>¿Cómo puedo desactivar o eliminar estas cookies?<br>Puede usted permitir, bloquear o eliminar las cookies instaladas en su equipo mediante la configuración de las opciones del navegador instalado en su ordenador.<br>
 
 </p>
-                    </div>
-                </div>
+                    
             </div>
-
         </div>
     </section>
-    <!-- End Feature -->
-	
-	
-    <?php include_once("../footer.php");?>
-    <!-- Add Javascript File -->
-    <script src="../js/jquery-3.2.1.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="../js/popper.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/owl.carousel.min.js"></script>
-    <script src="../js/jquery-modal-video.min.js"></script>
-    <script src="../js/isotope.pkgd.min.js"></script>
-    <script src="../js/jquery.slimmenu.min.js"></script>
-    <script src="../js/wow.min.js"></script>
-    <script src="../js/custom.js"></script>
-    
-    
-    <script src="https://videoconsulta.iwtg.com/video-chat.umd.min.js"></script>
-    <link rel="stylesheet" href="https://videoconsulta.iwtg.com/video-chat.css">
-    <video-chat bottom right text-color="#ffffff" primary-color="#13a0b2" public-key="QXfeToaWrocXmZosEiwJlXcoy" ></video-chat>
-    
-    
-</body>
-
-</html>
+</main>
+<?php rc_pie('', true); ?>

@@ -1,55 +1,28 @@
-<!DOCTYPE HTML>
-<html lang="en-US">
-
-<head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="author" content="Recetalia" />
-    <title>Política de Privacidad - Receta Digital</title>
-    <!--  Add Favicon Icon-->
-    <link rel="shortcut icon" href="/images/favicon-recetalia.png" type="image/x-icon">
-    <link rel="icon" href="/images/favicon-recetalia.png" type="image/x-icon">
-    <!-- Add All Style -->
-    <link rel="stylesheet" href="../css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../css/font-awesome.min.css" />
-    <link rel="stylesheet" href="../css/owl.carousel.min.css" />
-    <link rel="stylesheet" href="../css/slimmenu.min.css" />
-    <link rel="stylesheet" href="../css/modal-video.min.css" />
-    <link rel="stylesheet" href="../css/animate.min.css" />
-    <link rel="stylesheet" href="../styles.css" />
-    <link rel="stylesheet" href="../css/responsive.css" />
-    <!-- Poppins Google Font -->
-    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700" rel="stylesheet">
-
-    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
-    <script>
-    var onloadCallback = function() {
-	grecaptcha.render('html_element', {
-    'sitekey' : '6LdnY14aAAAAANJNq-fqC7aUT2lrU9C4jZvKsete'
-    });
-    };
-    
-    
-    
-    </script>
-    
-  
-	
-</head>
-<body>
-<?php include_once("../header.php");?>
-    <section class="feature-section bg-color3 section-spacing wow fadeIn"  data-wow-duration="1s">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-10 m-auto">
-                    <div class="section-title margin-bottom-60 text-center">
-
-
-
-
-
-<h1 class="h5 text-left">RECETALIA</h1><br>
+<?php
+// Política de privacidad. El texto legal va tal cual; sólo cambia el layout (inc/layout.php).
+require_once __DIR__ . '/../inc/layout.php';
+rc_head(array(
+    'title' => 'Política de privacidad | Recetalia',
+    'description' => 'Política de privacidad de Recetalia (Ley N° 18.331 de protección de datos personales).',
+    'canonical' => rtrim(getenv('SITE_PUBLIC_URL') ?: 'https://recetalia.com', '/') . '/privacy/',
+));
+?>
+<main id="contenido">
+    <section class="rc-pagina-cabeza" aria-labelledby="pagina-titulo">
+        <div class="rc-container rc-angosto">
+            <nav class="rc-migas" aria-label="Ruta de navegación">
+                <ol>
+                    <li><a href="/">Inicio</a><?php echo rc_icono('chevron-right'); ?></li>
+                    <li><span aria-current="page">Política de privacidad</span></li>
+                </ol>
+            </nav>
+            <h1 id="pagina-titulo">Política de privacidad</h1>
+        </div>
+    </section>
+    <section class="rc-seccion rc-seccion-pegada">
+        <div class="rc-container rc-angosto">
+            <div class="rc-prosa">
+<h2 class="h5 text-left">RECETALIA</h2><br>
 <h3 class="h5 text-left">Política de privacidad.</h3><br>
 
 <h3 class="mt-3 h5 text-left">POLÍTICA DE PRIVACIDAD USUARIOS (comprende a todos los perfiles de usuario, ejemplo “usuario paciente” y “usuario médico prestador”).</h3>
@@ -101,34 +74,19 @@ Nuestra política con respecto al envío de nuestros propios correos electrónic
 
 
 
-                    </div>
-                </div>
-            </div>
+                    
 
+<h3 class="mt-3 h5 text-left" id="verificador">VERIFICADOR DE INTERACCIONES PARA PACIENTES (recetalia.com/medicamentos/interacciones)</h3>
+<?php // Agregado 2026-11-12 (pendiente de revisión legal; decisión de Pablo: sale y se verifica después). ?>
+<p class="text-left">Esta sección se aplica a quienes usan el verificador de interacciones de medicamentos del sitio recetalia.com, que funciona sin cuenta de usuario y es independiente de la receta digital.<br><br>
+<strong>Qué datos guardamos.</strong> Tu email; tu edad y sexo; si indicaste embarazo o lactancia; las alergias y enfermedades que hayas cargado; los medicamentos que consultaste; un resumen del resultado (cantidad y tipo de alertas); la fecha de la consulta y la fecha y versión del texto de consentimiento que aceptaste. Varios de estos datos son <strong>datos de salud</strong>, que la Ley N° 18.331 considera datos sensibles: los tratamos únicamente con tu consentimiento expreso, que das al tocar «Ver interacciones» después de leer el aviso correspondiente.<br><br>
+<strong>Para qué los usamos.</strong> Para calcular el resultado de tu consulta y enviártelo por email. Si marcaste la opción de novedades, también para enviarte novedades de Recetalia por email; podés dejar de recibirlas en cualquier momento. No usamos estos datos para tomar decisiones sobre vos ni los vendemos.<br><br>
+<strong>Con quién los compartimos.</strong> No los cedemos a terceros. Para calcular el resultado enviamos a nuestro motor de información farmacológica (Consilio) los medicamentos y los datos clínicos de la consulta, sin tu email ni ningún dato que te identifique. El email se envía a través de nuestro proveedor de correo.<br><br>
+<strong>Dónde y por cuánto tiempo.</strong> Se guardan en la base de datos de Recetalia, separados de la información de la receta digital y con acceso restringido. Los conservamos durante <strong>2 años desde tu última consulta</strong>; pasado ese plazo se eliminan. Si antes pedís que los borremos, los eliminamos en ese momento.<br><br>
+<strong>Tus derechos.</strong> Podés pedir acceso, rectificación, actualización o supresión de tus datos. Para borrarlos, usá el enlace «Borrar mis datos» que llega en cada email del verificador (elimina tus datos y todas tus consultas), o escribinos a <a href="mailto:hello@recetalia.com">hello@recetalia.com</a>. También podés presentar un reclamo ante la Unidad Reguladora y de Control de Datos Personales (URCDP).<br><br>
+<strong>Carácter de la información.</strong> El resultado del verificador es información genérica y orientativa basada en fuentes públicas de referencia; no reemplaza la consulta con un profesional de la salud.</p>
+            </div>
         </div>
     </section>
-    <!-- End Feature -->
-	
-	
-    <?php include_once("../footer.php");?>
-    <!-- Add Javascript File -->
-    <script src="../js/jquery-3.2.1.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="../js/popper.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/owl.carousel.min.js"></script>
-    <script src="../js/jquery-modal-video.min.js"></script>
-    <script src="../js/isotope.pkgd.min.js"></script>
-    <script src="../js/jquery.slimmenu.min.js"></script>
-    <script src="../js/wow.min.js"></script>
-    <script src="../js/custom.js"></script>
-    
-    
-    <script src="https://videoconsulta.iwtg.com/video-chat.umd.min.js"></script>
-    <link rel="stylesheet" href="https://videoconsulta.iwtg.com/video-chat.css">
-    <video-chat bottom right text-color="#ffffff" primary-color="#13a0b2" public-key="QXfeToaWrocXmZosEiwJlXcoy" ></video-chat>
-    
-    
-</body>
-
-</html>
+</main>
+<?php rc_pie('', true); ?>

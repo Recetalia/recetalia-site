@@ -1,106 +1,47 @@
-<!-- Start Footer -->
-    <footer class="footer-section">
-        <div class="footer-widget-container section-spacing bg-color4">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 col-md-6">
-                        <div class="footer-widget">
-                            <div class="footer-logo">
-                                <a href="index.html"><img src="/images/footer-brand.png" alt="footer logo img" /></a>
-                            </div>
-                            <p>
-							<i class="fa fa-envelope mr-2" aria-hidden="true"></i> hello@recetalia.com<br>
-							<i class="fa fa-map-marker mr-2" aria-hidden="true"></i> WTC Montevideo, Torre III, Piso 12.</p>
-							<!--
-                            <h5>Subscribe</h5>
-                            <form class="footer-subscribe " action="#">
-                                <div class="input-group">
-                                    <input type="email" class="form-control" placeholder="Your Email">
-                                    <span class="input-group-btn">
-                              <button class="btn btn-primary" type="submit"><i class="fa fa-long-arrow-right"></i></button>
-                              </span>
-                                </div>
-                            </form>
-							-->
-							<!--
-                            <ul class="footer-social-link list-inline">
-                                <li class="list-inline-item"><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li class="list-inline-item"><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li class="list-inline-item"><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                <li class="list-inline-item"><a href="#"><i class="fa fa-youtube"></i></a></li>
-                            </ul>
-							--->
-                        </div>
-                    </div>
-					<!--
-                    <div class="col-lg-2 col-md-6">
-                        <div class="footer-widget">
-                            <h4>Usefull Link </h4>
-                            <ul class="footer-usefull-link list-inline">
-                                <li><a href="#">Consulting</a></li>
-                                <li><a href="#">Help Line</a></li>
-                                <li><a href="#">About Us</a></li>
-                                <li><a href="#">Services</a></li>
-                                <li><a href="#">Project</a></li>
-                                <li><a href="#">Meet Team</a></li>
-                            </ul>
-                        </div>
-                    </div>
-					-->
-					<!--
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-widget">
-                            <h4>Our Blog Post</h4>
-                            <ul class="footer-post-link list-inline">
-                                <li>
-                                    <a href="#">Finance project  amet quis tullam cursus, metus .</a>
-                                    <span>05 may 2017</span>
-                                </li>
-                                <li>
-                                    <a href="#">Helex  is Your Best quis tullam cursus, metus .</a>
-                                    <span>05 may 2017</span>
-                                </li>
-                                <li>
-                                    <a href="#">Established sed fact will  quis tullam cursus, metus .</a>
-                                    <span>05 may 2017</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-					-->
-					<!--
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-widget">
-                            <h4>Contact  Form</h4>
-                        </div>
-                        <form class="footer-contact-form">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Name">
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Email Address">
-                            </div>
-                            <div class="form-group">
-                                <textarea class="form-control" rows="5" placeholder="Message"></textarea>
-                            </div>
-                            <button type="submit" class="btn-style1 btn-color1 btn btn-primary">Submit</button>
-                        </form>
-                    </div>
-					-->
-					
-                </div>
+<?php
+// Footer común. Se incluye desde rc_pie() en inc/layout.php.
+require_once __DIR__ . '/inc/layout.php';
+?>
+    <footer class="rc-footer">
+        <div class="rc-container rc-footer-grilla">
+            <div class="rc-footer-marca">
+                <a href="/" class="rc-footer-logo"><img src="/images/footer-brand.png" alt="Recetalia: inicio" width="154" height="48" loading="lazy"></a>
+                <p>Plataforma de prescripción de órdenes médicas en formato electrónico.</p>
+                <ul class="rc-footer-datos">
+                    <li><?php echo rc_icono('mail'); ?><a href="mailto:hello@recetalia.com">hello@recetalia.com</a></li>
+                    <li><?php echo rc_icono('map-pin'); ?><span>WTC Montevideo, Torre III, Piso 12.</span></li>
+                </ul>
             </div>
+            <nav class="rc-footer-col" aria-label="Sitio">
+                <h2 class="rc-footer-titulo">Sitio</h2>
+                <ul>
+                    <li><a href="/">Inicio</a></li>
+                    <li><a href="/medicamentos/">Medicamentos</a></li>
+                    <li><a href="/medicamentos/interacciones/">Interacciones</a></li>
+                    <li><a href="/farmacias-habilitadas.php">Farmacias habilitadas</a></li>
+                    <li><a href="/tutorial-farmacias/">Tutorial para farmacias</a></li>
+                </ul>
+            </nav>
+            <nav class="rc-footer-col" aria-label="Ingresar">
+                <h2 class="rc-footer-titulo">Ingresar</h2>
+                <ul>
+                    <li><a href="https://medicos.recetalia.com/login" target="_blank" rel="noopener">Médicos<span class="rc-sr"> (abre en otra pestaña)</span></a></li>
+                    <li><a href="https://farmacias.recetalia.com/login" target="_blank" rel="noopener">Farmacias<span class="rc-sr"> (abre en otra pestaña)</span></a></li>
+                    <li><a href="https://prestadores.recetalia.com/login" target="_blank" rel="noopener">Prestadores<span class="rc-sr"> (abre en otra pestaña)</span></a></li>
+                </ul>
+            </nav>
+            <nav class="rc-footer-col" aria-label="Legal">
+                <h2 class="rc-footer-titulo">Legal</h2>
+                <ul>
+                    <li><a href="/terms/">Términos y condiciones</a></li>
+                    <li><a href="/privacy/">Política de privacidad</a></li>
+                </ul>
+            </nav>
         </div>
-        <div class="footer-intro-container bg-color5">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4 mt-3 mb-3"><a href="/terms" class="small">Términos y condiciones</a> <span class="text-secondary">|</span> <a href="/privacy" class="small">Política de privacidad</a></div>
-                    <div class="col-md-4 small text-secondary mt-4 mb-3 text-center">&copy; Copyright - 2022 Recetalia</div>
-                    <div class="col-md-4 mt-3 mb-3"><center><a href="https://www.iwtg.com/"><img style="max-width: 150px;" src="/iwtg/powered-by-iwtg.png" alt="IWTG"></a></center></div>
-                </div>
-                
-                
+        <div class="rc-footer-base">
+            <div class="rc-container rc-footer-base-fila">
+                <p>&copy; <?php echo date('Y'); ?> Recetalia. Todos los derechos reservados.</p>
+                <a href="https://www.iwtg.com/" class="rc-footer-iwtg" target="_blank" rel="noopener"><img src="/iwtg/powered-by-iwtg.png" alt="Powered by IWTG" width="132" height="22" loading="lazy"><span class="rc-sr"> (abre en otra pestaña)</span></a>
             </div>
         </div>
     </footer>
-    <!-- End Footer -->
